@@ -1,661 +1,444 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CarrefourSA Gift Card Promotion</title>
-<style>
-/* Google Fonts - Daha modern bir görünüm için */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
-    :root {
-        --primary-color: #e74c3c;
-        --secondary-color: #f39c12;
-        --success-color: #27ae60;
-        --dark-blue-1: #0f3460;
-        --dark-blue-2: #16213e;
-        --dark-blue-3: #1a1a2e;
-        --text-light: #ecf0f1;
-        --text-dark: #bdc3c7;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f3460" />
+  <title>Carrefour Gift Card Promotion</title>
+  <style>
+    :root{
+      --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460;
+      --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.12);
+      --accent:#e74c3c; --accent2:#c0392b;
+      --success:#2ecc71; --success2:#27ae60;
+      --warn:#f39c12; --text:#ecf0f1;
+      --radius:20px; --shadow:0 20px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+      color:#fff;
+      padding:16px;
+      display:grid;
+      place-items:start center;
+    }
+    .container{
+      width:min(960px,100%);
+      margin-inline:auto;
+      background:var(--glass);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:clamp(18px,3vw,32px);
+      box-shadow:var(--shadow);
     }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+    /* language toggle */
+    .language-toggle{
+      display:flex; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap
+    }
+    .lang-btn{
+      appearance:none; border:0; cursor:pointer; padding:10px 18px;
+      border-radius:999px; font-weight:700; letter-spacing:.2px;
+      background:linear-gradient(45deg,var(--accent),var(--accent2));
+      color:#fff; transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+      touch-action:manipulation
+    }
+    .lang-btn:hover{transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.35)}
+    .lang-btn.active{background:linear-gradient(45deg,var(--success2),var(--success)); transform:scale(1.03)}
+    .header{text-align:center; margin-bottom:28px}
+    .title{
+      font-size:clamp(28px,4.5vw,40px); font-weight:800;
+      background:linear-gradient(45deg,#f39c12,#e67e22);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+      margin:0 0 8px
+    }
+    .subtitle{font-size:clamp(15px,2.5vw,18px); color:var(--text); margin:0 0 10px}
+    .gift-amount{
+      font-size:clamp(36px,6vw,54px); font-weight:900; color:var(--accent);
+      text-shadow:0 0 20px rgba(231,76,60,.45)
     }
 
-    body {
-        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, var(--dark-blue-3), var(--dark-blue-2), var(--dark-blue-1));
-        color: var(--text-light);
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+    /* logos */
+    .logos-section{
+      display:grid; gap:16px; margin:24px 0;
+      grid-template-columns:repeat( auto-fit, minmax(110px,1fr) );
+      align-items:center
+    }
+    .logo{
+      height:54px; max-width:100%; object-fit:contain; display:block; margin-inline:auto;
+      filter:brightness(1.08); transition:transform .2s ease; will-change:transform;
+    }
+    .logo:hover{transform:scale(1.04)}
+    .logo[loading="lazy"]{content-visibility:auto}
+
+    /* features */
+    .features{
+      display:grid; gap:16px; margin:22px 0;
+      grid-template-columns:repeat( auto-fit, minmax(220px,1fr) );
+    }
+    .feature{
+      background:var(--glass2); border:1px solid var(--border);
+      padding:18px; border-radius:16px; text-align:center
+    }
+    .feature-icon{font-size:28px; margin-bottom:6px}
+
+    /* countdown */
+    .countdown-section{
+      text-align:center; margin:26px 0; padding:22px;
+      background:rgba(0,0,0,.28); border-radius:16px; border:2px solid rgba(231,76,60,.28)
+    }
+    .countdown-title{font-size:clamp(16px,2.4vw,20px); margin-bottom:14px; color:var(--warn); font-weight:700}
+    .countdown{
+      display:flex; justify-content:center; gap:12px; flex-wrap:wrap
+    }
+    .countdown-item{
+      background:linear-gradient(45deg,var(--accent),var(--accent2));
+      border-radius:14px; padding:16px 18px; min-width:86px;
+      box-shadow:0 10px 28px rgba(231,76,60,.3)
+    }
+    .countdown-number{display:block; font-size:clamp(26px,5vw,36px); font-weight:800; line-height:1}
+    .countdown-label{font-size:12px; opacity:.9; margin-top:4px; letter-spacing:.3px}
+
+    /* form */
+    .form-section{
+      margin-top:20px; padding:20px;
+      background:rgba(0,0,0,.22); border-radius:16px; border:1px solid var(--border)
+    }
+    .form-section h2{margin:0 0 14px; font-size:clamp(18px,2.6vw,22px)}
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block; margin-bottom:8px; font-weight:700; color:var(--text)}
+    .form-group input{
+      width:100%; padding:14px 14px; border-radius:12px; border:2px solid transparent;
+      background:rgba(255,255,255,.1); color:#fff; font-size:16px; outline:none;
+      transition:border-color .2s ease, background .2s ease
+    }
+    .form-group input:focus{border-color:var(--accent); background:rgba(255,255,255,.16)}
+    .form-group input::placeholder{color:rgba(255,255,255,.6)}
+    .checkbox-group{display:flex; align-items:flex-start; gap:10px; margin-top:8px}
+    .checkbox-group input[type="checkbox"]{margin-top:3px}
+    .submit-btn{
+      width:100%; padding:16px; margin-top:14px; border:0; cursor:pointer;
+      border-radius:12px; font-size:17px; font-weight:800; letter-spacing:.2px;
+      background:linear-gradient(45deg,var(--success2),var(--success)); color:#fff;
+      transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease
+    }
+    .submit-btn:hover{transform:translateY(-2px); box-shadow:0 15px 28px rgba(39,174,96,.4)}
+    .submit-btn:disabled{background:#7f8c8d; cursor:not-allowed; transform:none; box-shadow:none; opacity:.85}
+
+    .status-message{
+      text-align:center; padding:14px; border-radius:10px; margin-top:14px; display:none
+    }
+    .success{background:rgba(39,174,96,.2); border:1px solid var(--success2); color:var(--success)}
+    .error{background:rgba(231,76,60,.2); border:1px solid var(--accent); color:var(--accent)}
+    .closed{background:rgba(149,165,166,.18); border:1px solid #95a5a6; color:#bdc3c7}
+
+    /* small phones tweaks */
+    @media (max-width:480px){
+      body{padding:10px}
+      .container{padding:16px}
+      .logo{height:44px}
+      .countdown-item{min-width:78px; padding:14px 12px}
     }
 
-    .container {
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        animation: fadeIn 0.8s ease-out;
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .lang-btn,.logo{transition:none}
     }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .language-toggle {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .lang-btn {
-        background: linear-gradient(45deg, var(--primary-color), #c0392b);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 0 10px;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .lang-btn.active {
-        background: linear-gradient(45deg, var(--success-color), #2ecc71);
-        transform: scale(1.1);
-        box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-    }
-
-    .lang-btn:not(.active):hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
-    .title {
-        font-size: 2.8em;
-        font-weight: 700;
-        background: linear-gradient(45deg, var(--secondary-color), #e67e22);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 10px;
-    }
-
-    .subtitle {
-        font-size: 1.2em;
-        color: var(--text-dark);
-        margin-bottom: 20px;
-    }
-
-    .gift-amount {
-        font-size: 3.5em;
-        font-weight: 700;
-        color: var(--primary-color);
-        text-shadow: 0 0 25px rgba(231, 76, 60, 0.6);
-    }
-
-    /* --- MOBİL UYUMLU LOGO ALANI (ÇÖZÜM) --- */
-    .logos-section {
-        display: grid;
-        /* `auto-fit` ve `minmax` ile logoların otomatik olarak sığmasını sağlıyoruz */
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        gap: 25px;
-        margin: 40px 0;
-        align-items: center;
-    }
-
-    .logo {
-        max-height: 50px; /* `height` yerine `max-height` daha esnek */
-        width: 100%; /* Genişliğin grid alanını doldurmasını sağlar */
-        object-fit: contain;
-        filter: brightness(0.9) saturate(1.2) contrast(1.1);
-        transition: transform 0.3s ease, filter 0.3s ease;
-        opacity: 0.9;
-    }
-
-    .logo:hover {
-        transform: scale(1.1);
-        filter: brightness(1.1) saturate(1.2) contrast(1.1);
-        opacity: 1;
-    }
-
-    .countdown-section {
-        text-align: center;
-        margin: 40px 0;
-        padding: 30px;
-        background: rgba(0, 0, 0, 0.3);
-        border-radius: 15px;
-        border: 1px solid rgba(231, 76, 60, 0.2);
-    }
-
-    .countdown-title {
-        font-size: 1.5em;
-        font-weight: 600;
-        margin-bottom: 20px;
-        color: var(--secondary-color);
-    }
-
-    .countdown {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-wrap: wrap;
-    }
-
-    .countdown-item {
-        background: linear-gradient(45deg, var(--primary-color), #c0392b);
-        border-radius: 15px;
-        padding: 20px;
-        min-width: 90px;
-        box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
-        text-align: center;
-    }
-
-    .countdown-number {
-        font-size: 2.5em;
-        font-weight: 700;
-        display: block;
-    }
-
-    .countdown-label {
-        font-size: 0.9em;
-        opacity: 0.8;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .form-section {
-        margin-top: 40px;
-        padding: 30px;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        /* Başlangıçta gizli olacak */
-        display: none; 
-    }
-
-    .form-title {
-        text-align: center;
-        font-size: 1.8em;
-        font-weight: 600;
-        margin-bottom: 25px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: var(--text-light);
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.08);
-        color: white;
-        font-size: 16px;
-        font-family: 'Poppins', sans-serif;
-        border: 2px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .form-group input:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    .form-group input::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
-    
-    .checkbox-group {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin: 25px 0;
-        font-size: 0.9em;
-    }
-
-    .checkbox-group input[type="checkbox"] {
-        width: auto;
-        margin-top: 4px; /* Hizalama için */
-        flex-shrink: 0;
-    }
-
-    .submit-btn {
-        width: 100%;
-        padding: 18px;
-        background: linear-gradient(45deg, var(--success-color), #2ecc71);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 1.2em;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 10px;
-    }
-
-    .submit-btn:hover:not(:disabled) {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(39, 174, 96, 0.4);
-    }
-
-    .submit-btn:disabled {
-        background: #7f8c8d;
-        cursor: not-allowed;
-        box-shadow: none;
-        transform: none;
-    }
-
-    .features {
-        margin: 40px 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-    }
-
-    .feature {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 25px;
-        border-radius: 15px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .feature:hover {
-        transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.08);
-    }
-
-    .feature-icon {
-        font-size: 2.5em;
-        margin-bottom: 15px;
-        display: block;
-    }
-    
-    .feature h3 {
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .status-message {
-        text-align: center;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 20px;
-        font-weight: 600;
-        display: none; /* JS ile kontrol edilecek */
-    }
-    
-    .live-status {
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 1.2em;
-        font-weight: 600;
-    }
-
-    .success {
-        background: rgba(39, 174, 96, 0.2);
-        border: 1px solid var(--success-color);
-        color: #2ecc71;
-    }
-
-    .error {
-        background: rgba(231, 76, 60, 0.2);
-        border: 1px solid var(--primary-color);
-        color: var(--primary-color);
-    }
-
-    .closed {
-        background: rgba(149, 165, 166, 0.2);
-        border: 1px solid #95a5a6;
-        color: var(--text-dark);
-    }
-
-    /* --- MOBİL UYUMLULUK İYİLEŞTİRMELERİ --- */
-    @media (max-width: 768px) {
-        body {
-            padding: 10px;
-        }
-        .container {
-            padding: 25px;
-        }
-
-        .title {
-            font-size: 2.2em;
-        }
-
-        .gift-amount {
-            font-size: 2.8em;
-        }
-
-        .countdown {
-            gap: 10px;
-        }
-
-        .countdown-item {
-            padding: 15px;
-            min-width: 75px;
-        }
-
-        .countdown-number {
-            font-size: 2em;
-        }
-
-        .logos-section {
-            gap: 20px;
-            /* `auto-fit` sayesinde buraya tekrar kod yazmaya gerek yok, kendi kendine ayarlar */
-        }
-
-        .logo {
-            max-height: 40px;
-        }
-    }
-</style>
+  </style>
 </head>
 <body>
-<div class="container">
-<div class="language-toggle">
-<button class="lang-btn active" onclick="setLanguage('en')">English</button>
-<button class="lang-btn" onclick="setLanguage('tr')">Türkçe</button>
-</div>
+  <div class="container" role="main" aria-labelledby="title">
+    <div class="language-toggle" role="tablist" aria-label="Language switch">
+      <button class="lang-btn active" onclick="setLanguage('en', this)" aria-selected="true">English</button>
+      <button class="lang-btn" onclick="setLanguage('tr', this)" aria-selected="false">Türkçe</button>
+    </div>
 
-    <header class="header">
-        <h1 class="title" id="title">CarrefourSA Gift Card</h1>
-        <p class="subtitle" id="subtitle">Valid on Coca Cola and Nestlé products</p>
-        <div class="gift-amount" id="gift-amount">€15</div>
-    </header>
+    <div class="header">
+      <h1 class="title" id="title">Carrefour Gift Card</h1>
+      <p class="subtitle" id="subtitle">Valid on Coca Cola and Nestlé products • Form opens at 01:00 CET</p>
+      <div class="gift-amount" id="gift-amount">€15</div>
+    </div>
 
-    <section class="logos-section">
-        <img src="[https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png](https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png)" alt="Kyrosil" class="logo">
-        <img src="[https://kyrosil.eu/wp-content/uploads/2025/04/image-17.png](https://kyrosil.eu/wp-content/uploads/2025/04/image-17.png)" alt="Carrefour" class="logo">
-        <img src="[https://kyrosil.eu/wp-content/uploads/2025/04/image-16.png](https://kyrosil.eu/wp-content/uploads/2025/04/image-16.png)" alt="CarrefourSA" class="logo">
-        <img src="[https://kyrosil.eu/wp-content/uploads/2025/04/image-3.png](https://kyrosil.eu/wp-content/uploads/2025/04/image-3.png)" alt="Nestlé" class="logo">
-        <img src="[https://kyrosil.eu/wp-content/uploads/2025/04/image-5.png](https://kyrosil.eu/wp-content/uploads/2025/04/image-5.png)" alt="Coca Cola" class="logo">
-    </section>
+    <div class="logos-section" aria-label="Partner logos">
+      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil" class="logo">
+      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-17.png" alt="Carrefour" class="logo">
+      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-16.png" alt="CarrefourSA" class="logo">
+      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-3.png" alt="Nestlé" class="logo">
+      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-5.png" alt="Coca Cola" class="logo">
+    </div>
 
-    <section class="features">
-        <div class="feature">
-            <span class="feature-icon">🎯</span>
-            <h3 id="feature1-title">No Minimum Limit</h3>
-            <p id="feature1-desc">Use your gift card without any minimum purchase requirement</p>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon" aria-hidden="true">🎯</div>
+        <h3 id="feature1-title">No Minimum Limit</h3>
+        <p id="feature1-desc">Use your gift card without any minimum purchase requirement</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon" aria-hidden="true">⚡</div>
+        <h3 id="feature2-title">Instant Activation</h3>
+        <p id="feature2-desc">Your gift card will be activated instantly through KyrosilRewards Bot</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon" aria-hidden="true">👥</div>
+        <h3 id="feature3-title">No Participant Limit</h3>
+        <p id="feature3-desc">Everyone can participate in this amazing offer</p>
+      </div>
+    </div>
+
+    <div class="countdown-section" aria-live="polite">
+      <h2 class="countdown-title" id="countdown-title">Form Opens In:</h2>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="countdown-number" id="hours">00</span>
+          <span class="countdown-label" id="hours-label">Hours</span>
         </div>
-        <div class="feature">
-            <span class="feature-icon">⚡</span>
-            <h3 id="feature2-title">Instant Activation</h3>
-            <p id="feature2-desc">Your gift card will be activated instantly through KyrosilRewards Bot</p>
+        <div class="countdown-item">
+          <span class="countdown-number" id="minutes">00</span>
+          <span class="countdown-label" id="minutes-label">Minutes</span>
         </div>
-        <div class="feature">
-            <span class="feature-icon">👥</span>
-            <h3 id="feature3-title">No Participant Limit</h3>
-            <p id="feature3-desc">Everyone can participate in this amazing offer</p>
+        <div class="countdown-item">
+          <span class="countdown-number" id="seconds">00</span>
+          <span class="countdown-label" id="seconds-label">Seconds</span>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section class="countdown-section">
-        <h2 class="countdown-title" id="countdown-title">Form Opens In:</h2>
-        <div class="countdown" id="countdown">
-            <div class="countdown-item">
-                <span class="countdown-number" id="hours">00</span>
-                <span class="countdown-label" id="hours-label">Hours</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="minutes">00</span>
-                <span class="countdown-label" id="minutes-label">Minutes</span>
-            </div>
-            <div class="countdown-item">
-                <span class="countdown-number" id="seconds">00</span>
-                <span class="countdown-label" id="seconds-label">Seconds</span>
-            </div>
+    <div class="form-section" id="form-section">
+      <h2 id="form-title">Registration Form</h2>
+      <form id="registration-form" novalidate>
+        <div class="form-group">
+          <label for="fullName" id="fullname-label">Full Name:</label>
+          <input type="text" id="fullName" name="fullName" autocomplete="name" required placeholder="Jane Doe" />
         </div>
-    </section>
 
-    <section class="form-section" id="form-section">
-        <h2 class="form-title" id="form-title">Registration Form</h2>
-        <form id="registration-form">
-            <div class="form-group">
-                <label for="fullName" id="fullname-label">Full Name:</label>
-                <input type="text" id="fullName" name="fullName" placeholder="e.g. John Doe" required>
-            </div>
+        <div class="form-group">
+          <label for="username" id="username-label">EU Portal or Instagram Username:</label>
+          <input type="text" id="username" name="username" required placeholder="@yourhandle" />
+        </div>
 
-            <div class="form-group">
-                <label for="username" id="username-label">EU Portal or Instagram Username:</label>
-                <input type="text" id="username" name="username" placeholder="@username" required>
-            </div>
+        <div class="form-group">
+          <label for="cardNumber" id="card-label">Carrefour Card Number or Registered GSM:</label>
+          <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" required placeholder="XXXX XXXX / 5XXXXXXXXX" />
+        </div>
 
-            <div class="form-group">
-                <label for="cardNumber" id="card-label">Carrefour Card Number or Registered GSM:</label>
-                <input type="text" id="cardNumber" name="cardNumber" placeholder="7052... or 5xxxxxxxxx" required>
-            </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="gdprConsent" name="gdprConsent" required />
+          <label for="gdprConsent" id="gdpr-label">I agree to the GDPR terms and conditions for data processing.</label>
+        </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" id="gdprConsent" name="gdprConsent" required>
-                <label for="gdprConsent" id="gdpr-label">I agree to the GDPR terms and conditions for data processing.</label>
-            </div>
+        <button type="submit" class="submit-btn" id="submit-btn" disabled>Register Now</button>
+      </form>
 
-            <button type="submit" class="submit-btn" id="submit-btn">Register Now</button>
-        </form>
+      <div class="status-message" id="status-message" role="status" aria-live="polite"></div>
+    </div>
+  </div>
 
-        <div class="status-message" id="status-message"></div>
-    </section>
-</div>
-
-<script>
-    // --- KODUNUZDAKİ ÇEVİRİ VE TEMEL MANTIK DEĞİŞTİRİLMEDİ ---
+  <script>
+    // Translations (EN/TR) — includes CET timing notes
     const translations = {
-        en: {
-            title: "CarrefourSA Gift Card",
-            subtitle: "Valid on Coca Cola and Nestlé products",
-            giftAmount: "€15",
-            feature1Title: "No Minimum Limit",
-            feature1Desc: "Use your gift card without any minimum purchase requirement",
-            feature2Title: "Instant Activation", 
-            feature2Desc: "Your gift card will be activated instantly through KyrosilRewards Bot",
-            feature3Title: "No Participant Limit",
-            feature3Desc: "Everyone can participate in this amazing offer",
-            countdownTitle: "Form Opens In:",
-            formTitle: "Registration Form",
-            fullnameLabel: "Full Name:",
-            usernameLabel: "EU Portal or Instagram Username:",
-            cardLabel: "Carrefour Card Number or Registered GSM:",
-            gdprLabel: "I agree to the GDPR terms and conditions for data processing.",
-            submitBtn: "Register Now",
-            hoursLabel: "Hours",
-            minutesLabel: "Minutes", 
-            secondsLabel: "Seconds",
-            formClosed: "Registration period has ended.",
-            formOpen: "Registration is LIVE!",
-            successMessage: "Registration successful! You will receive an SMS confirmation shortly.",
-            smsMessage: "Your CarrefourSA gift card has been registered successfully. You will receive activation details soon."
-        },
-        tr: {
-            title: "CarrefourSA Hediye Kartı",
-            subtitle: "Coca Cola ve Nestlé ürünlerinde geçerli",
-            giftAmount: "300₺",
-            feature1Title: "Alt Limit Yok",
-            feature1Desc: "Hediye kartınızı minimum alışveriş tutarı olmadan kullanabilirsiniz",
-            feature2Title: "Anında Aktivasyon",
-            feature2Desc: "Hediye kartınız KyrosilRewards Bot aracılığıyla anında aktive edilecek",
-            feature3Title: "Kişi Sınırı Yok", 
-            feature3Desc: "Bu muhteşem fırsata herkes katılabilir",
-            countdownTitle: "Form Açılışına:",
-            formTitle: "Kayıt Formu",
-            fullnameLabel: "Ad Soyad:",
-            usernameLabel: "EU Portal veya Instagram Kullanıcı Adı:",
-            cardLabel: "Carrefour Kart Numarası veya Kayıtlı GSM:",
-            gdprLabel: "Kişisel verilerimin işlenmesine dair KVKK şartlarını kabul ediyorum.",
-            submitBtn: "Şimdi Kayıt Ol",
-            hoursLabel: "Saat",
-            minutesLabel: "Dakika",
-            secondsLabel: "Saniye",
-            formClosed: "Kayıt süresi sona erdi.",
-            formOpen: "Kayıtlar Başladı!",
-            successMessage: "Kayıt başarılı! Kısa süre içinde SMS onayı alacaksınız.",
-            smsMessage: "CarrefourSA hediye kartınız başarıyla kaydedildi. Aktivasyon detaylarını yakında alacaksınız."
-        }
+      en: {
+        title: "Carrefour Gift Card",
+        subtitle: "Valid on Coca Cola and Nestlé products • Form opens at 01:00 CET",
+        giftAmount: "€15",
+        feature1Title: "No Minimum Limit",
+        feature1Desc: "Use your gift card without any minimum purchase requirement",
+        feature2Title: "Instant Activation",
+        feature2Desc: "Your gift card will be activated instantly through KyrosilRewards Bot",
+        feature3Title: "No Participant Limit",
+        feature3Desc: "Everyone can participate in this amazing offer",
+        countdownTitle: "Form Opens In:",
+        formTitle: "Registration Form",
+        fullnameLabel: "Full Name:",
+        usernameLabel: "EU Portal or Instagram Username:",
+        cardLabel: "Carrefour Card Number or Registered GSM:",
+        gdprLabel: "I agree to the GDPR terms and conditions for data processing.",
+        submitBtn: "Register Now",
+        hoursLabel: "Hours",
+        minutesLabel: "Minutes",
+        secondsLabel: "Seconds",
+        formClosed: "Registration period has ended.",
+        formClosedBadge: "Registration Closed",
+        formOpen: "Form is Open!",
+        formLiveBadge: "Registration is Live!",
+        formNotOpen: "Registration form will open at 01:00 CET",
+        successMessage: "Registration successful! You will receive an SMS confirmation shortly.",
+        smsMessage: "Your Carrefour gift card has been registered successfully. You will receive activation details soon."
+      },
+      tr: {
+        title: "CarrefourSA Hediye Kartı",
+        subtitle: "Coca Cola ve Nestlé ürünlerinde geçerli • Form 01:00 CET’te açılır",
+        giftAmount: "300₺",
+        feature1Title: "Alt Limit Yok",
+        feature1Desc: "Hediye kartınızı minimum alışveriş olmadan kullanabilirsiniz",
+        feature2Title: "Anında Aktivasyon",
+        feature2Desc: "Hediye kartınız KyrosilRewards Bot aracılığıyla anında aktive edilecek",
+        feature3Title: "Kişi Sınırı Yok",
+        feature3Desc: "Bu fırsata herkes katılabilir",
+        countdownTitle: "Form Açılışına:",
+        formTitle: "Kayıt Formu",
+        fullnameLabel: "Ad Soyad:",
+        usernameLabel: "EU Portal veya Instagram Kullanıcı Adı:",
+        cardLabel: "Carrefour Kart Numarası veya Kayıtlı GSM:",
+        gdprLabel: "Kişisel verilerimin işlenmesine dair KVKK şartlarını kabul ediyorum.",
+        submitBtn: "Şimdi Kayıt Ol",
+        hoursLabel: "Saat",
+        minutesLabel: "Dakika",
+        secondsLabel: "Saniye",
+        formClosed: "Kayıt süresi sona erdi.",
+        formClosedBadge: "Kayıt Kapalı",
+        formOpen: "Form Açık!",
+        formLiveBadge: "Kayıt Başladı!",
+        formNotOpen: "Kayıt formu 01:00 CET’te açılacak",
+        successMessage: "Kayıt başarılı! Kısa süre içinde SMS onayı alacaksınız.",
+        smsMessage: "CarrefourSA hediye kartınız başarıyla kaydedildi. Aktivasyon detaylarını yakında alacaksınız."
+      }
     };
 
     let currentLanguage = 'en';
 
-    function setLanguage(lang) {
-        currentLanguage = lang;
-        
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.lang-btn[onclick="setLanguage('${lang}')"]`).classList.add('active');
+    function setLanguage(lang, btnEl){
+      currentLanguage = lang;
 
-        const t = translations[lang];
-        document.getElementById('title').textContent = t.title;
-        document.getElementById('subtitle').textContent = t.subtitle;
-        document.getElementById('gift-amount').textContent = t.giftAmount;
-        document.getElementById('feature1-title').textContent = t.feature1Title;
-        document.getElementById('feature1-desc').textContent = t.feature1Desc;
-        document.getElementById('feature2-title').textContent = t.feature2Title;
-        document.getElementById('feature2-desc').textContent = t.feature2Desc;
-        document.getElementById('feature3-title').textContent = t.feature3Title;
-        document.getElementById('feature3-desc').textContent = t.feature3Desc;
-        document.getElementById('countdown-title').textContent = t.countdownTitle;
-        document.getElementById('form-title').textContent = t.formTitle;
-        document.getElementById('fullname-label').textContent = t.fullnameLabel;
-        document.getElementById('username-label').textContent = t.usernameLabel;
-        document.getElementById('card-label').textContent = t.cardLabel;
-        document.getElementById('gdpr-label').textContent = t.gdprLabel;
-        document.getElementById('submit-btn').textContent = t.submitBtn;
-        document.getElementById('hours-label').textContent = t.hoursLabel;
-        document.getElementById('minutes-label').textContent = t.minutesLabel;
-        document.getElementById('seconds-label').textContent = t.secondsLabel;
-        
-        // Dil değiştiğinde sayaç metnini de güncelle
-        updateCountdownText();
-    }
-    
-    const formSection = document.getElementById('form-section');
-    const countdownTitleEl = document.getElementById('countdown-title');
-    const countdownEl = document.getElementById('countdown');
-    const submitBtn = document.getElementById('submit-btn');
+      // active state
+      document.querySelectorAll('.lang-btn').forEach(b=>{
+        b.classList.toggle('active', b===btnEl);
+        b.setAttribute('aria-selected', b===btnEl ? 'true' : 'false');
+      });
 
-    // Metinleri güncellemek için ayrı bir fonksiyon
-    function updateCountdownText() {
-         const now = new Date();
-         const currentCET = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Berlin" }));
-         const today = new Date(currentCET);
-         today.setHours(1, 0, 0, 0);
-         const tomorrow = new Date(today);
-         tomorrow.setDate(tomorrow.getDate() + 1);
-         let targetTime = today > currentCET ? today : tomorrow;
-         const closeTime = new Date(targetTime);
-         closeTime.setMinutes(5);
+      const t = translations[lang];
+      // text nodes
+      document.getElementById('title').textContent = t.title;
+      document.getElementById('subtitle').textContent = t.subtitle;
+      document.getElementById('gift-amount').textContent = t.giftAmount;
+      document.getElementById('feature1-title').textContent = t.feature1Title;
+      document.getElementById('feature1-desc').textContent = t.feature1Desc;
+      document.getElementById('feature2-title').textContent = t.feature2Title;
+      document.getElementById('feature2-desc').textContent = t.feature2Desc;
+      document.getElementById('feature3-title').textContent = t.feature3Title;
+      document.getElementById('feature3-desc').textContent = t.feature3Desc;
+      document.getElementById('countdown-title').textContent = t.countdownTitle;
+      document.getElementById('form-title').textContent = t.formTitle;
+      document.getElementById('fullname-label').textContent = t.fullnameLabel;
+      document.getElementById('username-label').textContent = t.usernameLabel;
+      document.getElementById('card-label').textContent = t.cardLabel;
+      document.getElementById('gdpr-label').textContent = t.gdprLabel;
+      document.getElementById('submit-btn').textContent = t.submitBtn;
+      document.getElementById('hours-label').textContent = t.hoursLabel;
+      document.getElementById('minutes-label').textContent = t.minutesLabel;
+      document.getElementById('seconds-label').textContent = t.secondsLabel;
 
-         if ((closeTime - currentCET) <= 0) {
-             countdownTitleEl.textContent = translations[currentLanguage].formClosed;
-         } else if ((targetTime - currentCET) <= 0) {
-             countdownTitleEl.textContent = translations[currentLanguage].formOpen;
-         } else {
-             countdownTitleEl.textContent = translations[currentLanguage].countdownTitle;
-         }
+      // status/message re-render for current state
+      renderCountdownState();
     }
 
-    function updateCountdown() {
-        const now = new Date();
-        const currentCET = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Berlin"}));
-        
-        const today = new Date(currentCET);
-        today.setHours(1, 0, 0, 0); // 01:00 CET
-        
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        
-        let targetTime = today > currentCET ? today : tomorrow;
-        const closeTime = new Date(targetTime);
-        closeTime.setMinutes(5); // 01:05 CET
-        
-        const timeDiff = targetTime - currentCET;
-        const closeTimeDiff = closeTime - currentCET;
-        
-        if (closeTimeDiff <= 0) {
-            // Form kalıcı olarak kapalı
-            countdownTitleEl.textContent = translations[currentLanguage].formClosed;
-            countdownEl.innerHTML = `<div class="live-status closed">${translations[currentLanguage].formClosed}</div>`;
-            formSection.style.display = 'none'; // Formu gizle
-            submitBtn.disabled = true;
-            return;
-        }
-        
-        if (timeDiff <= 0 && closeTimeDiff > 0) {
-            // Form açık
-            countdownTitleEl.textContent = translations[currentLanguage].formOpen;
-            countdownEl.innerHTML = `<div class="live-status success">${translations[currentLanguage].formOpen}</div>`;
-            formSection.style.display = 'block'; // Formu göster
-            submitBtn.disabled = false;
-            return;
-        }
-        
-        // Sayacın çalıştığı durum
-        countdownTitleEl.textContent = translations[currentLanguage].countdownTitle;
-        formSection.style.display = 'none'; // Formu gizle
+    function getNowInCET(){
+      // Always compute current CET/CEST time irrespective of client locale
+      const now = new Date();
+      return new Date(now.toLocaleString("en-US",{ timeZone:"Europe/Berlin" }));
+    }
+
+    function getTargetWindows(cetNow){
+      // Target open window: 01:00–01:05 CET (today, else tomorrow)
+      const openStart = new Date(cetNow);
+      openStart.setHours(1,0,0,0);
+
+      let targetStart = openStart > cetNow ? openStart : new Date(openStart.getTime()+86400000);
+      const targetEnd = new Date(targetStart.getTime() + 5*60*1000); // +5 minutes
+
+      return { targetStart, targetEnd };
+    }
+
+    function formatDiff(ms){
+      const totalSeconds = Math.max(0, Math.floor(ms/1000));
+      const h = Math.floor(totalSeconds/3600);
+      const m = Math.floor((totalSeconds%3600)/60);
+      const s = totalSeconds%60;
+      return {h,m,s};
+    }
+
+    function renderCountdownState(){
+      const t = translations[currentLanguage];
+      const cetNow = getNowInCET();
+      const { targetStart, targetEnd } = getTargetWindows(cetNow);
+
+      const untilOpen = targetStart - cetNow;
+      const untilClose = targetEnd - cetNow;
+
+      const countdownEl = document.getElementById('countdown');
+      const titleEl = document.getElementById('countdown-title');
+      const submitBtn = document.getElementById('submit-btn');
+
+      if (untilClose <= 0){
+        // CLOSED
+        titleEl.textContent = t.formClosed;
+        countdownEl.innerHTML = `<div class="status-message closed">${t.formClosedBadge}</div>`;
         submitBtn.disabled = true;
+        return;
+      }
 
-        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-        
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+      if (untilOpen <= 0 && untilClose > 0){
+        // OPEN (only inside the strict window)
+        titleEl.textContent = t.formOpen;
+        countdownEl.innerHTML = `<div class="status-message success">${t.formLiveBadge}</div>`;
+        submitBtn.disabled = false;
+        return;
+      }
+
+      // NOT OPEN YET
+      titleEl.textContent = t.countdownTitle;
+      const {h,m,s} = formatDiff(untilOpen);
+      document.getElementById('hours').textContent = String(h).padStart(2,'0');
+      document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+      document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+      submitBtn.disabled = true;
     }
 
-    document.getElementById('registration-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const statusMessage = document.getElementById('status-message');
-        statusMessage.className = 'status-message success';
-        statusMessage.textContent = translations[currentLanguage].successMessage;
-        statusMessage.style.display = 'block';
-        
-        setTimeout(() => {
-            alert(translations[currentLanguage].smsMessage);
-            statusMessage.style.display = 'none';
-        }, 2000);
-        
-        this.reset();
+    function updateCountdown(){
+      renderCountdownState();
+    }
+
+    // Form submission handler (mock)
+    document.getElementById('registration-form').addEventListener('submit', function(e){
+      e.preventDefault();
+
+      // Safety: prevent submit if not in open window
+      const cetNow = getNowInCET();
+      const { targetStart, targetEnd } = getTargetWindows(cetNow);
+      if (!(cetNow >= targetStart && cetNow < targetEnd)){
+        // Hard block if user tries to bypass disabled state
+        const msg = translations[currentLanguage].formNotOpen;
+        const status = document.getElementById('status-message');
+        status.className = 'status-message error';
+        status.textContent = msg;
+        status.style.display = 'block';
+        return;
+      }
+
+      const status = document.getElementById('status-message');
+      status.className = 'status-message success';
+      status.textContent = translations[currentLanguage].successMessage;
+      status.style.display = 'block';
+
+      setTimeout(()=>{ alert(translations[currentLanguage].smsMessage); }, 1200);
+      this.reset();
+      // Keep the button enabled only while window is open; next tick will handle state
     });
 
-    // Sayfayı ilk yüklemede İngilizce başlat
-    setLanguage('en');
-    // Sayacı başlat
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-</script>
+    // Boot
+    renderCountdownState();
+    const tick = setInterval(updateCountdown, 1000);
+
+    // Initialize with English (activate button state)
+    (function initLang(){
+      const firstBtn = document.querySelector('.lang-btn');
+      setLanguage('en', firstBtn);
+    })();
+  </script>
 </body>
 </html>
