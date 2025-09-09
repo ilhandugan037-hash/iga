@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYROSIL x IGA Contest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        
+        .lang-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .countdown {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .status {
+            font-size: 1.3em;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .question-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .question {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .answer-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            text-align: center;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-section {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .success-message {
+            display: none;
+            background: rgba(76, 175, 80, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        .closed-message {
+            display: none;
+            background: rgba(244, 67, 54, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .logos {
+                gap: 20px;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .countdown {
+                font-size: 2.2em;
+            }
+            
+            .lang-switch {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="switchLanguage('en')">EN</button>
+            <button class="lang-btn" onclick="switchLanguage('tr')">TR</button>
+        </div>
+        
+        <div class="logos">
+            <div class="logo">
+                <img src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil">
+            </div>
+            <div class="logo">
+                <img src="https://kyrosil.eu/wp-content/uploads/2025/04/image-6.png" alt="IGA">
+            </div>
+        </div>
+        
+        <h1 id="title">KYROSIL X ISTANBUL AIRPORT (IGA) COLLABORATION</h1>
+        
+        <div class="status" id="status">Contest starts at 00:00 CET<br>First 500 correct answers win IGA PASS valid until December 31, 2025</div>
+        
+        <div class="countdown" id="countdown">00:00:00</div>
+        
+        <div class="question-section" id="questionSection">
+            <div class="question" id="question">Which city is Istanbul Airport located in?</div>
+            <input type="text" class="answer-input" id="answerInput" placeholder="Enter your answer...">
+            <br><br>
+            <button class="submit-btn" onclick="checkAnswer()" id="checkBtn">Submit Answer</button>
+        </div>
+        
+        <div class="form-section" id="formSection">
+            <form id="contestForm">
+                <div class="form-group">
+                    <label for="fullName" id="nameLabel">Full Name:</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" id="emailLabel">Email Address:</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username" id="usernameLabel">EU Portal or Instagram Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="privacy" required>
+                    <label for="privacy" id="privacyLabel">I accept the GDPR privacy policy</label>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitFormBtn">Submit</button>
+            </form>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            <h2 id="successTitle">Congratulations!</h2>
+            <p id="successText">Your gift will be sent to your email address.</p>
+        </div>
+        
+        <div class="closed-message" id="closedMessage">
+            <h2 id="closedTitle">Contest Closed</h2>
+            <p id="closedText">Participation limit reached. Thank you for your participation!</p>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                title: "KYROSIL X ISTANBUL AIRPORT (IGA) COLLABORATION",
+                status: "Contest starts at 00:00 CET<br>First 500 correct answers win IGA PASS valid until December 31, 2025",
+                question: "Which city is Istanbul Airport located in?",
+                answerPlaceholder: "Enter your answer...",
+                checkBtn: "Submit Answer",
+                nameLabel: "Full Name:",
+                emailLabel: "Email Address:",
+                usernameLabel: "EU Portal or Instagram Username:",
+                privacyLabel: "I accept the GDPR privacy policy",
+                submitFormBtn: "Submit",
+                successTitle: "Congratulations!",
+                successText: "Your gift will be sent to your email address.",
+                closedTitle: "Contest Closed",
+                closedText: "Participation limit reached. Thank you for your participation!",
+                waiting: "Contest starts at 00:00 CET",
+                active: "Contest is now ACTIVE! Answer quickly!",
+                closed: "Participation limit reached - Contest ended",
+                wrongAnswer: "Incorrect answer. Please try again."
+            },
+            tr: {
+                title: "KYROSIL X İSTANBUL HAVAALANI (IGA) İŞBİRLİĞİ",
+                status: "Katılım CET 00:00'da başlayacak<br>Soruyu bilen ilk 500 kişiye 31 Aralık 2025 tarihine kadar kullanabileceği IGA PASS",
+                question: "İstanbul Havalimanı hangi şehirdedir?",
+                answerPlaceholder: "Cevabınızı girin...",
+                checkBtn: "Cevabı Gönder",
+                nameLabel: "Ad-Soyad:",
+                emailLabel: "Mail Adresi:",
+                usernameLabel: "EU Portal veya Instagram Kullanıcı Adı:",
+                privacyLabel: "KVKK gizlilik politikasını kabul ediyorum",
+                submitFormBtn: "Gönder",
+                successTitle: "Tebrikler!",
+                successText: "Hediyeniz mail adresinize iletilecektir.",
+                closedTitle: "Yarışma Sona Erdi",
+                closedText: "Katılım limiti dolmuştur. Katılımınız için teşekkürler!",
+                waiting: "Yarışma CET 00:00'da başlayacak",
+                active: "Yarışma şimdi AKTİF! Hızlıca cevap verin!",
+                closed: "Katılım limiti doldu - Yarışma sona erdi",
+                wrongAnswer: "Yanlış cevap. Lütfen tekrar deneyin."
+            }
+        };
+
+        let currentLang = 'en';
+        let contestActive = false;
+        let contestEnded = false;
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchLanguage('${lang}')"]`).classList.add('active');
+            
+            // Update all text
+            Object.keys(translations[lang]).forEach(key => {
+                const element = document.getElementById(key) || document.querySelector(`[id="${key}"]`);
+                if (element) {
+                    if (key === 'status') {
+                        element.innerHTML = translations[lang][key];
+                    } else if (key === 'answerPlaceholder') {
+                        document.getElementById('answerInput').placeholder = translations[lang][key];
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            
+            updateStatus();
+        }
+
+        async function getCurrentTime() {
+            try {
+                const response = await fetch('https://worldtimeapi.org/api/timezone/Europe/Berlin');
+                const data = await response.json();
+                return new Date(data.datetime);
+            } catch (error) {
+                console.log('WorldTime API error, using local time:', error);
+                // Fallback to local time
+                return new Date();
+            }
+        }
+
+        function updateCountdown() {
+            getCurrentTime().then(now => {
+                const cetTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Berlin"}));
+                const hours = cetTime.getHours();
+                const minutes = cetTime.getMinutes();
+                const seconds = cetTime.getSeconds();
+                
+                // Calculate countdown to next midnight (00:00) CET
+                const tomorrow = new Date(cetTime);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(0, 0, 0, 0);
+                
+                const timeDiff = tomorrow - cetTime;
+                const hoursLeft = Math.floor(timeDiff / (1000 * 60 * 60));
+                const minutesLeft = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const secondsLeft = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                
+                // Show countdown until 00:00, then hide countdown during contest
+                if (hours === 0 && minutes < 7) {
+                    // Contest is active - hide countdown
+                    document.getElementById('countdown').style.display = 'none';
+                    if (!contestActive && !contestEnded) {
+                        startContest();
+                    }
+                } else if (hours === 0 && minutes >= 7 && contestActive) {
+                    // Contest ended
+                    document.getElementById('countdown').style.display = 'none';
+                    endContest();
+                } else {
+                    // Show countdown to next 00:00
+                    document.getElementById('countdown').style.display = 'block';
+                    document.getElementById('countdown').textContent = 
+                        `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
+                }
+                
+                updateStatus();
+            });
+        }
+
+        function updateStatus() {
+            const statusElement = document.getElementById('status');
+            getCurrentTime().then(now => {
+                const cetTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Berlin"}));
+                const hours = cetTime.getHours();
+                const minutes = cetTime.getMinutes();
+                
+                if (contestEnded || (hours === 0 && minutes >= 7)) {
+                    statusElement.textContent = translations[currentLang].closed;
+                    statusElement.style.background = 'rgba(244, 67, 54, 0.9)';
+                } else if (contestActive || (hours === 0 && minutes < 7)) {
+                    statusElement.textContent = translations[currentLang].active;
+                    statusElement.style.background = 'rgba(76, 175, 80, 0.9)';
+                } else {
+                    statusElement.innerHTML = translations[currentLang].status;
+                    statusElement.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+        }
+
+        function startContest() {
+            if (contestEnded) return;
+            
+            contestActive = true;
+            document.getElementById('questionSection').style.display = 'block';
+            updateStatus();
+        }
+
+        function endContest() {
+            contestActive = false;
+            contestEnded = true;
+            document.getElementById('questionSection').style.display = 'none';
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('closedMessage').style.display = 'block';
+            updateStatus();
+        }
+
+        function checkAnswer() {
+            const answer = document.getElementById('answerInput').value.trim();
+            
+            // All possible variations of Istanbul
+            if (answer.toLowerCase() === 'istanbul') {
+                document.getElementById('questionSection').style.display = 'none';
+                document.getElementById('formSection').style.display = 'block';
+            } else {
+                alert(translations[currentLang].wrongAnswer);
+                document.getElementById('answerInput').value = '';
+            }
+        }
+
+        document.getElementById('contestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple form validation
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const privacy = document.getElementById('privacy').checked;
+            
+            if (!fullName || !email || !username || !privacy) {
+                alert('Please fill all fields and accept the privacy policy.');
+                return;
+            }
+            
+            // Hide form and show success message
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Mark contest as participated
+            contestEnded = true;
+        });
+
+        // Start countdown
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Initial language setup
+        switchLanguage('en');
+    </script>
+</body>
+</html>
