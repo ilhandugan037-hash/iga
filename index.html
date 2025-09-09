@@ -38,7 +38,6 @@
       box-shadow:var(--shadow);
     }
 
-    /* language toggle */
     .language-toggle{
       display:flex; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap
     }
@@ -64,7 +63,6 @@
       text-shadow:0 0 20px rgba(231,76,60,.45)
     }
 
-    /* logos */
     .logos-section{
       display:grid; gap:16px; margin:24px 0;
       grid-template-columns:repeat( auto-fit, minmax(110px,1fr) );
@@ -77,7 +75,6 @@
     .logo:hover{transform:scale(1.04)}
     .logo[loading="lazy"]{content-visibility:auto}
 
-    /* features */
     .features{
       display:grid; gap:16px; margin:22px 0;
       grid-template-columns:repeat( auto-fit, minmax(220px,1fr) );
@@ -88,7 +85,6 @@
     }
     .feature-icon{font-size:28px; margin-bottom:6px}
 
-    /* countdown */
     .countdown-section{
       text-align:center; margin:26px 0; padding:22px;
       background:rgba(0,0,0,.28); border-radius:16px; border:2px solid rgba(231,76,60,.28)
@@ -105,7 +101,6 @@
     .countdown-number{display:block; font-size:clamp(26px,5vw,36px); font-weight:800; line-height:1}
     .countdown-label{font-size:12px; opacity:.9; margin-top:4px; letter-spacing:.3px}
 
-    /* form */
     .form-section{
       margin-top:20px; padding:20px;
       background:rgba(0,0,0,.22); border-radius:16px; border:1px solid var(--border)
@@ -138,15 +133,12 @@
     .error{background:rgba(231,76,60,.2); border:1px solid var(--accent); color:var(--accent)}
     .closed{background:rgba(149,165,166,.18); border:1px solid #95a5a6; color:#bdc3c7}
 
-    /* small phones tweaks */
     @media (max-width:480px){
       body{padding:10px}
       .container{padding:16px}
       .logo{height:44px}
       .countdown-item{min-width:78px; padding:14px 12px}
     }
-
-    /* reduce motion */
     @media (prefers-reduced-motion: reduce){
       .lang-btn,.logo{transition:none}
     }
@@ -191,7 +183,7 @@
       </div>
     </div>
 
-    <div class="countdown-section" aria-live="polite">
+    <div class="countdown-section" aria-live="polite" id="countdown-section">
       <h2 class="countdown-title" id="countdown-title">Form Opens In:</h2>
       <div class="countdown" id="countdown">
         <div class="countdown-item">
@@ -240,7 +232,7 @@
   </div>
 
   <script>
-    // Translations (EN/TR) — includes CET timing notes
+    // Translations
     const translations = {
       en: {
         title: "Carrefour Gift Card",
@@ -262,8 +254,6 @@
         hoursLabel: "Hours",
         minutesLabel: "Minutes",
         secondsLabel: "Seconds",
-        formClosed: "Registration period has ended.",
-        formClosedBadge: "Registration Closed",
         formOpen: "Form is Open!",
         formLiveBadge: "Registration is Live!",
         formNotOpen: "Registration form will open at 01:00 CET",
@@ -290,8 +280,6 @@
         hoursLabel: "Saat",
         minutesLabel: "Dakika",
         secondsLabel: "Saniye",
-        formClosed: "Kayıt süresi sona erdi.",
-        formClosedBadge: "Kayıt Kapalı",
         formOpen: "Form Açık!",
         formLiveBadge: "Kayıt Başladı!",
         formNotOpen: "Kayıt formu 01:00 CET’te açılacak",
@@ -304,15 +292,12 @@
 
     function setLanguage(lang, btnEl){
       currentLanguage = lang;
-
-      // active state
       document.querySelectorAll('.lang-btn').forEach(b=>{
         b.classList.toggle('active', b===btnEl);
         b.setAttribute('aria-selected', b===btnEl ? 'true' : 'false');
       });
 
       const t = translations[lang];
-      // text nodes
       document.getElementById('title').textContent = t.title;
       document.getElementById('subtitle').textContent = t.subtitle;
       document.getElementById('gift-amount').textContent = t.giftAmount;
@@ -333,89 +318,62 @@
       document.getElementById('minutes-label').textContent = t.minutesLabel;
       document.getElementById('seconds-label').textContent = t.secondsLabel;
 
-      // status/message re-render for current state
-      renderCountdownState();
+      renderCountdownState(); // dil değişince durumu yeniden çiz
     }
 
     function getNowInCET(){
-      // Always compute current CET/CEST time irrespective of client locale
       const now = new Date();
       return new Date(now.toLocaleString("en-US",{ timeZone:"Europe/Berlin" }));
     }
 
-    function getTargetWindows(cetNow){
-      // Target open window: 01:00–01:05 CET (today, else tomorrow)
+    function getTodayOpenStart(cetNow){
       const openStart = new Date(cetNow);
-      openStart.setHours(1,0,0,0);
-
-      let targetStart = openStart > cetNow ? openStart : new Date(openStart.getTime()+86400000);
-      const targetEnd = new Date(targetStart.getTime() + 5*60*1000); // +5 minutes
-
-      return { targetStart, targetEnd };
-    }
-
-    function formatDiff(ms){
-      const totalSeconds = Math.max(0, Math.floor(ms/1000));
-      const h = Math.floor(totalSeconds/3600);
-      const m = Math.floor((totalSeconds%3600)/60);
-      const s = totalSeconds%60;
-      return {h,m,s};
+      openStart.setHours(1,0,0,0); // 01:00 CET/CEST
+      return openStart;
     }
 
     function renderCountdownState(){
       const t = translations[currentLanguage];
       const cetNow = getNowInCET();
-      const { targetStart, targetEnd } = getTargetWindows(cetNow);
-
-      const untilOpen = targetStart - cetNow;
-      const untilClose = targetEnd - cetNow;
-
-      const countdownEl = document.getElementById('countdown');
-      const titleEl = document.getElementById('countdown-title');
+      const openStart = getTodayOpenStart(cetNow);
+      const countdownSection = document.getElementById('countdown-section');
       const submitBtn = document.getElementById('submit-btn');
 
-      if (untilClose <= 0){
-        // CLOSED
-        titleEl.textContent = t.formClosed;
-        countdownEl.innerHTML = `<div class="status-message closed">${t.formClosedBadge}</div>`;
+      // 01:00 CET öncesi → sayaç + form kilitli
+      if (cetNow < openStart){
+        countdownSection.style.display = '';
+        document.getElementById('countdown-title').textContent = t.countdownTitle;
+
+        const diff = openStart - cetNow;
+        const totalSeconds = Math.max(0, Math.floor(diff/1000));
+        const h = Math.floor(totalSeconds/3600);
+        const m = Math.floor((totalSeconds%3600)/60);
+        const s = totalSeconds%60;
+
+        document.getElementById('hours').textContent = String(h).padStart(2,'0');
+        document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+        document.getElementById('seconds').textContent = String(s).padStart(2,'0');
         submitBtn.disabled = true;
         return;
       }
 
-      if (untilOpen <= 0 && untilClose > 0){
-        // OPEN (only inside the strict window)
-        titleEl.textContent = t.formOpen;
-        countdownEl.innerHTML = `<div class="status-message success">${t.formLiveBadge}</div>`;
-        submitBtn.disabled = false;
-        return;
-      }
-
-      // NOT OPEN YET
-      titleEl.textContent = t.countdownTitle;
-      const {h,m,s} = formatDiff(untilOpen);
-      document.getElementById('hours').textContent = String(h).padStart(2,'0');
-      document.getElementById('minutes').textContent = String(m).padStart(2,'0');
-      document.getElementById('seconds').textContent = String(s).padStart(2,'0');
-      submitBtn.disabled = true;
+      // 01:00 CET ve sonrası → form açık, sayaç tamamen gizlenir (kapanma yok)
+      countdownSection.style.display = 'none';
+      submitBtn.disabled = false;
     }
 
-    function updateCountdown(){
-      renderCountdownState();
-    }
+    function updateCountdown(){ renderCountdownState(); }
 
-    // Form submission handler (mock)
     document.getElementById('registration-form').addEventListener('submit', function(e){
       e.preventDefault();
 
-      // Safety: prevent submit if not in open window
+      // Güvenlik: 01:00 CET öncesi gönderimi engelle
       const cetNow = getNowInCET();
-      const { targetStart, targetEnd } = getTargetWindows(cetNow);
-      if (!(cetNow >= targetStart && cetNow < targetEnd)){
-        // Hard block if user tries to bypass disabled state
-        const msg = translations[currentLanguage].formNotOpen;
+      const openStart = getTodayOpenStart(cetNow);
+      if (cetNow < openStart){
         const status = document.getElementById('status-message');
         status.className = 'status-message error';
-        status.textContent = msg;
+        status.textContent = translations[currentLanguage].formNotOpen;
         status.style.display = 'block';
         return;
       }
@@ -427,14 +385,13 @@
 
       setTimeout(()=>{ alert(translations[currentLanguage].smsMessage); }, 1200);
       this.reset();
-      // Keep the button enabled only while window is open; next tick will handle state
     });
 
-    // Boot
+    // İlk çizim + her saniye güncelle
     renderCountdownState();
-    const tick = setInterval(updateCountdown, 1000);
+    setInterval(updateCountdown, 1000);
 
-    // Initialize with English (activate button state)
+    // Varsayılan dili etkinleştir
     (function initLang(){
       const firstBtn = document.querySelector('.lang-btn');
       setLanguage('en', firstBtn);
