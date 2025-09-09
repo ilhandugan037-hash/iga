@@ -258,7 +258,7 @@
         
         <h1 id="title">KYROSIL X ISTANBUL AIRPORT (IGA) COLLABORATION</h1>
         
-        <div class="status" id="status">"Contest starts at 00:15 CET<br>First 500 correct answers win 1-DAY IGA PASS valid until December 31, 2025"</div>
+        <div class="status" id="status">Contest starts at 00:15 CET<br>First 500 correct answers win 1-DAY IGA PASS valid until December 31, 2025</div>
         
         <div class="countdown" id="countdown">00:00:00</div>
         
@@ -310,7 +310,7 @@
         const translations = {
             en: {
                 title: "KYROSIL X ISTANBUL AIRPORT (IGA) COLLABORATION",
-                status: "Contest starts at 00:15 CET<br>First 500 correct answers win 1-DAY IGA PASS valid until December 31, 2025"
+                status: "Contest starts at 00:15 CET<br>First 500 correct answers win 1-DAY IGA PASS valid until December 31, 2025",
                 question: "Which city is Istanbul Airport located in?",
                 answerPlaceholder: "Enter your answer...",
                 checkBtn: "Submit Answer",
@@ -323,7 +323,7 @@
                 successText: "Your gift will be sent to your email address.",
                 closedTitle: "Contest Closed",
                 closedText: "Participation limit reached. Thank you for your participation!",
-                waiting: "Contest starts at 00:00 CET",
+                waiting: "Contest starts at 00:15 CET",
                 active: "Contest is now ACTIVE! Answer quickly!",
                 closed: "Participation limit reached - Contest ended",
                 wrongAnswer: "Incorrect answer. Please try again."
@@ -343,7 +343,7 @@
                 successText: "Hediyeniz mail adresinize iletilecektir.",
                 closedTitle: "Yarışma Sona Erdi",
                 closedText: "Katılım limiti dolmuştur. Katılımınız için teşekkürler!",
-                waiting: "Yarışma CET 00:00'da başlayacak",
+                waiting: "Yarışma CET 00:15'te başlayacak",
                 active: "Yarışma şimdi AKTİF! Hızlıca cevap verin!",
                 closed: "Katılım limiti doldu - Yarışma sona erdi",
                 wrongAnswer: "Yanlış cevap. Lütfen tekrar deneyin."
@@ -399,29 +399,37 @@
                 const minutes = cetTime.getMinutes();
                 const seconds = cetTime.getSeconds();
                 
-                // Calculate countdown to next midnight (00:00) CET
-                const tomorrow = new Date(cetTime);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(0, 0, 0, 0);
+                // Calculate countdown to next 00:15 CET
+                let targetTime;
+                if (hours === 0 && minutes < 15) {
+                    // Same day 00:15
+                    targetTime = new Date(cetTime);
+                    targetTime.setHours(0, 15, 0, 0);
+                } else {
+                    // Next day 00:15
+                    targetTime = new Date(cetTime);
+                    targetTime.setDate(targetTime.getDate() + 1);
+                    targetTime.setHours(0, 15, 0, 0);
+                }
                 
-                const timeDiff = tomorrow - cetTime;
+                const timeDiff = targetTime - cetTime;
                 const hoursLeft = Math.floor(timeDiff / (1000 * 60 * 60));
                 const minutesLeft = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
                 const secondsLeft = Math.floor((timeDiff % (1000 * 60)) / 1000);
                 
-                // Show countdown until 00:00, then hide countdown during contest
-                if (hours === 0 && minutes < 7) {
+                // Show countdown until 00:15, then hide countdown during contest
+                if (hours === 0 && minutes >= 15 && minutes < 22) {
                     // Contest is active - hide countdown
                     document.getElementById('countdown').style.display = 'none';
                     if (!contestActive && !contestEnded) {
                         startContest();
                     }
-                } else if (hours === 0 && minutes >= 7 && contestActive) {
+                } else if (hours === 0 && minutes >= 22 && contestActive) {
                     // Contest ended
                     document.getElementById('countdown').style.display = 'none';
                     endContest();
                 } else {
-                    // Show countdown to next 00:00
+                    // Show countdown to next 00:15
                     document.getElementById('countdown').style.display = 'block';
                     document.getElementById('countdown').textContent = 
                         `${hoursLeft.toString().padStart(2, '0')}:${minutesLeft.toString().padStart(2, '0')}:${secondsLeft.toString().padStart(2, '0')}`;
@@ -438,10 +446,10 @@
                 const hours = cetTime.getHours();
                 const minutes = cetTime.getMinutes();
                 
-                if (contestEnded || (hours === 0 && minutes >= 7)) {
+                if (contestEnded || (hours === 0 && minutes >= 22)) {
                     statusElement.textContent = translations[currentLang].closed;
                     statusElement.style.background = 'rgba(244, 67, 54, 0.9)';
-                } else if (contestActive || (hours === 0 && minutes < 7)) {
+                } else if (contestActive || (hours === 0 && minutes >= 15 && minutes < 22)) {
                     statusElement.textContent = translations[currentLang].active;
                     statusElement.style.background = 'rgba(76, 175, 80, 0.9)';
                 } else {
