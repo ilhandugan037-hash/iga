@@ -91,7 +91,7 @@
         }
         .logo-container .pullbear-logo {
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
-            max-height: 40px; /* Pull&Bear logosu için özel boyutlandırma */
+            max-height: 40px;
         }
         h1 {
             color: var(--primary-color);
@@ -197,10 +197,10 @@
             transform: translateY(-2px);
             background-color: #c1285b;
         }
-        .instagram-btn img {
+        .instagram-btn svg {
             width: 24px;
             height: 24px;
-            filter: brightness(0) invert(1); /* Logo rengini beyaz yapar */
+            fill: #fff;
         }
         .success-icon {
             font-size: 4em;
@@ -274,10 +274,9 @@
             </div>
 
             <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
-                <img src="https://i.pinimg.com/originals/6a/39/8e/6a398e2bffd61024b7fa8c6eaf6a4e62.png" alt="Instagram Logo">
+                <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
                 Follow @kyrosil
             </a>
-
         </div>
         <div class="success-message-container" id="success-message-en">
             <span class="success-icon">&#10003;</span>
@@ -323,7 +322,7 @@
                     setTimeout(() => {
                         formCard.style.display = 'none';
                         successEn.classList.add('visible');
-                    }, 500); // Wait for shrink animation
+                    }, 500);
                 } else {
                     alert('Please fill out both fields.');
                 }
@@ -338,7 +337,7 @@
                     setTimeout(() => {
                         formCard.style.display = 'none';
                         successTr.classList.add('visible');
-                    }, 500); // Wait for shrink animation
+                    }, 500);
                 } else {
                     alert('Lütfen her iki alanı da doldurunuz.');
                 }
