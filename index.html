@@ -192,15 +192,16 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            margin-top: 20px; /* Buton ile form içeriği arasına boşluk */
         }
         .instagram-btn:hover {
             transform: translateY(-2px);
             background-color: #c1285b;
         }
-        .instagram-btn svg {
+        .instagram-btn .instagram-logo { /* SVG yerine img kullanıldığı için */
             width: 24px;
             height: 24px;
-            fill: #fff;
+            vertical-align: middle;
         }
         .success-icon {
             font-size: 4em;
@@ -234,6 +235,11 @@
                 <img src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil Logo" class="kyrosil-logo">
                 <img src="https://static.vecteezy.com/system/resources/previews/023/871/364/original/pull-and-bear-brand-logo-with-name-black-symbol-clothes-design-icon-abstract-illustration-free-vector.jpg" alt="Pull&Bear Logo" class="pullbear-logo">
             </div>
+            
+            <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
+                <img src="https://i.pinimg.com/originals/6a/39/8e/6a398e2bffd61024b7fa8c6eaf6a4e62.png" alt="Instagram Logo" class="instagram-logo">
+                @kyrosil'i Instagram'da Takip Et
+            </a>
 
             <div id="en-content">
                 <h1>Get Your Pull&Bear Gift Voucher!</h1>
@@ -272,12 +278,8 @@
                     </div>
                 </div>
             </div>
-
-            <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
-                <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
-                Follow @kyrosil
-            </a>
         </div>
+
         <div class="success-message-container" id="success-message-en">
             <span class="success-icon">&#10003;</span>
             <span class="success-text">Your voucher code will be sent to your email after verification.</span>
@@ -313,6 +315,7 @@
 
             langToggleBtn.addEventListener('click', switchLanguage);
 
+            // Form Submit Logic for English
             document.getElementById('submit-btn-en').addEventListener('click', function(event) {
                 event.preventDefault();
                 const instagramInput = document.getElementById('instagram-en');
@@ -328,6 +331,7 @@
                 }
             });
 
+            // Form Submit Logic for Turkish
             document.getElementById('submit-btn-tr').addEventListener('click', function(event) {
                 event.preventDefault();
                 const instagramInput = document.getElementById('instagram-tr');
