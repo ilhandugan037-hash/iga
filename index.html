@@ -14,6 +14,7 @@
             --kyrosil-color: #3498db;
             --success-color: #27ae60;
             --pullbear-color: #e74c3c;
+            --instagram-color: #E1306C;
         }
         body, html {
             margin: 0;
@@ -89,13 +90,33 @@
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
         }
         .logo-container .pullbear-logo {
-            filter: brightness(0);
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
+            max-height: 40px; /* Pull&Bear logosu için özel boyutlandırma */
         }
         h1 {
             color: var(--primary-color);
             font-size: 1.8em;
             margin-bottom: 10px;
             font-weight: 700;
+        }
+        .lang-toggle-btn {
+            background-color: #7f8c8d;
+            font-size: 0.9em;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: auto;
+            align-self: flex-start;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .lang-toggle-btn:hover {
+            background-color: #616e73;
         }
         p {
             color: #555;
@@ -108,14 +129,13 @@
             color: var(--pullbear-color);
         }
         .deadline {
-            color: var(--primary-color);
             font-weight: 700;
-            font-size: 1em;
-            margin-bottom: 25px;
+            color: var(--primary-color);
             background: rgba(0,0,0,0.05);
             padding: 8px 15px;
             border-radius: 10px;
             display: inline-block;
+            margin: 10px 0;
         }
         .input-group {
             position: relative;
@@ -141,8 +161,9 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-top: 20px;
         }
-        button {
+        .submit-btn {
             width: 100%;
             padding: 15px;
             border: none;
@@ -152,36 +173,34 @@
             cursor: pointer;
             transition: transform 0.3s, background-color 0.3s;
             color: #fff;
-        }
-        button:hover {
-            transform: translateY(-2px);
-        }
-        .submit-btn {
             background-color: var(--kyrosil-color);
         }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
         .instagram-btn {
-            background-color: #e1306c; /* Instagram's classic color */
+            background-color: var(--instagram-color);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            color: #fff;
+            text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            text-decoration: none;
-            color: #fff;
+        }
+        .instagram-btn:hover {
+            transform: translateY(-2px);
+            background-color: #c1285b;
         }
         .instagram-btn img {
             width: 24px;
             height: 24px;
-        }
-        .language-btn {
-            background-color: #7f8c8d;
-            font-size: 0.9em;
-            padding: 10px;
-            margin-bottom: 10px;
-            width: auto;
-            align-self: flex-start;
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            filter: brightness(0) invert(1); /* Logo rengini beyaz yapar */
         }
         .success-icon {
             font-size: 4em;
@@ -203,7 +222,6 @@
         .form-message {
             color: #888;
             font-size: 0.9em;
-            margin-top: 15px;
             line-height: 1.5;
         }
     </style>
@@ -211,10 +229,10 @@
 <body>
     <div class="container">
         <div class="card" id="form-card">
-            <button class="language-btn" id="lang-toggle">Türkçe</button>
+            <button class="lang-toggle-btn" id="lang-toggle">Türkçe</button>
             <div class="logo-container">
                 <img src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil Logo" class="kyrosil-logo">
-                <img src="https://tse1.mm.bing.net/th/id/OIP.DRqWxczhoIlALUAU3O8-kwHaBW?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pull&Bear Logo" class="pullbear-logo">
+                <img src="https://static.vecteezy.com/system/resources/previews/023/871/364/original/pull-and-bear-brand-logo-with-name-black-symbol-clothes-design-icon-abstract-illustration-free-vector.jpg" alt="Pull&Bear Logo" class="pullbear-logo">
             </div>
 
             <div id="en-content">
@@ -232,10 +250,6 @@
                     </div>
                     <div class="button-container">
                         <button type="submit" class="submit-btn" id="submit-btn-en">Get My Voucher!</button>
-                        <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
-                            <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
-                            Follow @kyrosil
-                        </a>
                     </div>
                 </div>
             </div>
@@ -255,13 +269,15 @@
                     </div>
                     <div class="button-container">
                         <button type="submit" class="submit-btn" id="submit-btn-tr">Çekimi Al!</button>
-                        <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
-                            <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
-                            @kyrosil'i Takip Et
-                        </a>
                     </div>
                 </div>
             </div>
+
+            <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
+                <img src="https://i.pinimg.com/originals/6a/39/8e/6a398e2bffd61024b7fa8c6eaf6a4e62.png" alt="Instagram Logo">
+                Follow @kyrosil
+            </a>
+
         </div>
         <div class="success-message-container" id="success-message-en">
             <span class="success-icon">&#10003;</span>
@@ -287,14 +303,10 @@
                 if (isEnglish) {
                     enContent.style.display = 'none';
                     trContent.style.display = 'block';
-                    successEn.style.display = 'none';
-                    successTr.style.display = 'none';
                     langToggleBtn.textContent = 'English';
                 } else {
                     enContent.style.display = 'block';
                     trContent.style.display = 'none';
-                    successEn.style.display = 'none';
-                    successTr.style.display = 'none';
                     langToggleBtn.textContent = 'Türkçe';
                 }
                 isEnglish = !isEnglish;
