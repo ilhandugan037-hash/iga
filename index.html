@@ -1,401 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f3460" />
-  <title>Carrefour Gift Card Promotion</title>
-  <style>
-    :root{
-      --bg1:#1a1a2e; --bg2:#16213e; --bg3:#0f3460;
-      --glass:rgba(255,255,255,.06); --glass2:rgba(255,255,255,.08);
-      --border:rgba(255,255,255,.12);
-      --accent:#e74c3c; --accent2:#c0392b;
-      --success:#2ecc71; --success2:#27ae60;
-      --warn:#f39c12; --text:#ecf0f1;
-      --radius:20px; --shadow:0 20px 40px rgba(0,0,0,.35);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;
-      background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
-      color:#fff;
-      padding:16px;
-      display:grid;
-      place-items:start center;
-    }
-    .container{
-      width:min(960px,100%);
-      margin-inline:auto;
-      background:var(--glass);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:clamp(18px,3vw,32px);
-      box-shadow:var(--shadow);
-    }
-
-    .language-toggle{
-      display:flex; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap
-    }
-    .lang-btn{
-      appearance:none; border:0; cursor:pointer; padding:10px 18px;
-      border-radius:999px; font-weight:700; letter-spacing:.2px;
-      background:linear-gradient(45deg,var(--accent),var(--accent2));
-      color:#fff; transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-      touch-action:manipulation
-    }
-    .lang-btn:hover{transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.35)}
-    .lang-btn.active{background:linear-gradient(45deg,var(--success2),var(--success)); transform:scale(1.03)}
-    .header{text-align:center; margin-bottom:28px}
-    .title{
-      font-size:clamp(28px,4.5vw,40px); font-weight:800;
-      background:linear-gradient(45deg,#f39c12,#e67e22);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      margin:0 0 8px
-    }
-    .subtitle{font-size:clamp(15px,2.5vw,18px); color:var(--text); margin:0 0 10px}
-    .gift-amount{
-      font-size:clamp(36px,6vw,54px); font-weight:900; color:var(--accent);
-      text-shadow:0 0 20px rgba(231,76,60,.45)
-    }
-
-    .logos-section{
-      display:grid; gap:16px; margin:24px 0;
-      grid-template-columns:repeat( auto-fit, minmax(110px,1fr) );
-      align-items:center
-    }
-    .logo{
-      height:54px; max-width:100%; object-fit:contain; display:block; margin-inline:auto;
-      filter:brightness(1.08); transition:transform .2s ease; will-change:transform;
-    }
-    .logo:hover{transform:scale(1.04)}
-    .logo[loading="lazy"]{content-visibility:auto}
-
-    .features{
-      display:grid; gap:16px; margin:22px 0;
-      grid-template-columns:repeat( auto-fit, minmax(220px,1fr) );
-    }
-    .feature{
-      background:var(--glass2); border:1px solid var(--border);
-      padding:18px; border-radius:16px; text-align:center
-    }
-    .feature-icon{font-size:28px; margin-bottom:6px}
-
-    .countdown-section{
-      text-align:center; margin:26px 0; padding:22px;
-      background:rgba(0,0,0,.28); border-radius:16px; border:2px solid rgba(231,76,60,.28)
-    }
-    .countdown-title{font-size:clamp(16px,2.4vw,20px); margin-bottom:14px; color:var(--warn); font-weight:700}
-    .countdown{
-      display:flex; justify-content:center; gap:12px; flex-wrap:wrap
-    }
-    .countdown-item{
-      background:linear-gradient(45deg,var(--accent),var(--accent2));
-      border-radius:14px; padding:16px 18px; min-width:86px;
-      box-shadow:0 10px 28px rgba(231,76,60,.3)
-    }
-    .countdown-number{display:block; font-size:clamp(26px,5vw,36px); font-weight:800; line-height:1}
-    .countdown-label{font-size:12px; opacity:.9; margin-top:4px; letter-spacing:.3px}
-
-    .form-section{
-      margin-top:20px; padding:20px;
-      background:rgba(0,0,0,.22); border-radius:16px; border:1px solid var(--border)
-    }
-    .form-section h2{margin:0 0 14px; font-size:clamp(18px,2.6vw,22px)}
-    .form-group{margin-bottom:14px}
-    .form-group label{display:block; margin-bottom:8px; font-weight:700; color:var(--text)}
-    .form-group input{
-      width:100%; padding:14px 14px; border-radius:12px; border:2px solid transparent;
-      background:rgba(255,255,255,.1); color:#fff; font-size:16px; outline:none;
-      transition:border-color .2s ease, background .2s ease
-    }
-    .form-group input:focus{border-color:var(--accent); background:rgba(255,255,255,.16)}
-    .form-group input::placeholder{color:rgba(255,255,255,.6)}
-    .checkbox-group{display:flex; align-items:flex-start; gap:10px; margin-top:8px}
-    .checkbox-group input[type="checkbox"]{margin-top:3px}
-    .submit-btn{
-      width:100%; padding:16px; margin-top:14px; border:0; cursor:pointer;
-      border-radius:12px; font-size:17px; font-weight:800; letter-spacing:.2px;
-      background:linear-gradient(45deg,var(--success2),var(--success)); color:#fff;
-      transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease
-    }
-    .submit-btn:hover{transform:translateY(-2px); box-shadow:0 15px 28px rgba(39,174,96,.4)}
-    .submit-btn:disabled{background:#7f8c8d; cursor:not-allowed; transform:none; box-shadow:none; opacity:.85}
-
-    .status-message{
-      text-align:center; padding:14px; border-radius:10px; margin-top:14px; display:none
-    }
-    .success{background:rgba(39,174,96,.2); border:1px solid var(--success2); color:var(--success)}
-    .error{background:rgba(231,76,60,.2); border:1px solid var(--accent); color:var(--accent)}
-    .closed{background:rgba(149,165,166,.18); border:1px solid #95a5a6; color:#bdc3c7}
-
-    @media (max-width:480px){
-      body{padding:10px}
-      .container{padding:16px}
-      .logo{height:44px}
-      .countdown-item{min-width:78px; padding:14px 12px}
-    }
-    @media (prefers-reduced-motion: reduce){
-      .lang-btn,.logo{transition:none}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pull&Bear Gift Voucher</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #f39c12;
+            --background-color: #ecf0f1;
+            --card-background: #ffffff;
+            --kyrosil-color: #3498db;
+            --success-color: #27ae60;
+            --pullbear-color: #e74c3c;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .card {
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card.shrink {
+            transform: scale(0.6);
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+            padding: 0;
+            margin: 0;
+        }
+        .success-message-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+        .success-message-container.visible {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        .logo-container img {
+            max-height: 50px;
+        }
+        .logo-container .kyrosil-logo {
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
+        }
+        .logo-container .pullbear-logo {
+            filter: brightness(0);
+        }
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        p {
+            color: #555;
+            font-size: 1em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            font-weight: 600;
+            color: var(--pullbear-color);
+        }
+        .deadline {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1em;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: none;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--kyrosil-color);
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            color: #fff;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .submit-btn {
+            background-color: var(--kyrosil-color);
+        }
+        .instagram-btn {
+            background-color: #e1306c; /* Instagram's classic color */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .instagram-btn img {
+            width: 24px;
+            height: 24px;
+        }
+        .language-btn {
+            background-color: #7f8c8d;
+            font-size: 0.9em;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: auto;
+            align-self: flex-start;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .success-icon {
+            font-size: 4em;
+            color: var(--success-color);
+            animation: bounceIn 0.8s ease-out;
+            margin-bottom: 10px;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .success-text {
+            color: var(--success-color);
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .form-message {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-  <div class="container" role="main" aria-labelledby="title">
-    <div class="language-toggle" role="tablist" aria-label="Language switch">
-      <button class="lang-btn active" onclick="setLanguage('en', this)" aria-selected="true">English</button>
-      <button class="lang-btn" onclick="setLanguage('tr', this)" aria-selected="false">Türkçe</button>
+    <div class="container">
+        <div class="card" id="form-card">
+            <button class="language-btn" id="lang-toggle">Türkçe</button>
+            <div class="logo-container">
+                <img src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil Logo" class="kyrosil-logo">
+                <img src="https://tse1.mm.bing.net/th/id/OIP.DRqWxczhoIlALUAU3O8-kwHaBW?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pull&Bear Logo" class="pullbear-logo">
+            </div>
+
+            <div id="en-content">
+                <h1>Get Your Pull&Bear Gift Voucher!</h1>
+                <p>A special offer for our followers! Follow us on Instagram by <span class="deadline">00:00 CET today</span> to get a <span class="highlight">15 Euro Pull&Bear Gift Voucher</span>, valid for European countries.</p>
+                <div class="form-content">
+                    <p class="form-message">Enter your details below to receive your voucher code by email.</p>
+                    <div class="input-group">
+                        <label for="instagram-en">Instagram Username</label>
+                        <input type="text" id="instagram-en" name="instagram" placeholder="Your Instagram Username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email-en">Email Address</label>
+                        <input type="email" id="email-en" name="email" placeholder="Your Email Address" required>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="submit-btn" id="submit-btn-en">Get My Voucher!</button>
+                        <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
+                            <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
+                            Follow @kyrosil
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tr-content" style="display: none;">
+                <h1>Pull&Bear Hediye Çekini Kap!</h1>
+                <p>Sadece takipçilerimize özel bir kampanya! Instagram'dan bizi <span class="deadline">bugün 00.00 CET'e kadar</span> takip et, <span class="highlight">500 TL değerinde Pull&Bear Hediye Çeki</span> kazan. (Türkiye için geçerlidir)</p>
+                <div class="form-content">
+                    <p class="form-message">Hediye çeki kodunun mail adresinize gönderilmesi için bilgilerinizi girin.</p>
+                    <div class="input-group">
+                        <label for="instagram-tr">Instagram Kullanıcı Adınız</label>
+                        <input type="text" id="instagram-tr" name="instagram" placeholder="Instagram Kullanıcı Adınız" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email-tr">E-posta Adresiniz</label>
+                        <input type="email" id="email-tr" name="email" placeholder="E-posta Adresiniz" required>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="submit-btn" id="submit-btn-tr">Çekimi Al!</button>
+                        <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
+                            <svg aria-label="Instagram" class="_aagv" fill="currentColor" height="24" viewBox="0 0 48 48" width="24"><path d="M34 14.5c0-1.2-1.2-2.2-2.6-2.2H16.6c-1.4 0-2.6 1-2.6 2.2V33.5c0 1.2 1.2 2.2 2.6 2.2h14.8c1.4 0 2.6-1 2.6-2.2zM24 16.5c-4.1 0-7.5 3.4-7.5 7.5S19.9 31.5 24 31.5 31.5 28.1 31.5 24 28.1 16.5 24 16.5zm8 1.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5z"></path></svg>
+                            @kyrosil'i Takip Et
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="success-message-container" id="success-message-en">
+            <span class="success-icon">&#10003;</span>
+            <span class="success-text">Your voucher code will be sent to your email after verification.</span>
+        </div>
+        <div class="success-message-container" id="success-message-tr">
+            <span class="success-icon">&#10003;</span>
+            <span class="success-text">Kontrollerin ardından hediye çeki kodunuz mail adresinize gönderilecektir.</span>
+        </div>
     </div>
 
-    <div class="header">
-      <h1 class="title" id="title">Carrefour Gift Card</h1>
-      <p class="subtitle" id="subtitle">Valid on Coca Cola and Nestlé products • Form opens at 01:00 CET</p>
-      <div class="gift-amount" id="gift-amount">€15</div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggleBtn = document.getElementById('lang-toggle');
+            const enContent = document.getElementById('en-content');
+            const trContent = document.getElementById('tr-content');
+            const successEn = document.getElementById('success-message-en');
+            const successTr = document.getElementById('success-message-tr');
+            const formCard = document.getElementById('form-card');
+            let isEnglish = true;
 
-    <div class="logos-section" aria-label="Partner logos">
-      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil" class="logo">
-      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-17.png" alt="Carrefour" class="logo">
-      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-16.png" alt="CarrefourSA" class="logo">
-      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-3.png" alt="Nestlé" class="logo">
-      <img loading="lazy" src="https://kyrosil.eu/wp-content/uploads/2025/04/image-5.png" alt="Coca Cola" class="logo">
-    </div>
+            function switchLanguage() {
+                if (isEnglish) {
+                    enContent.style.display = 'none';
+                    trContent.style.display = 'block';
+                    successEn.style.display = 'none';
+                    successTr.style.display = 'none';
+                    langToggleBtn.textContent = 'English';
+                } else {
+                    enContent.style.display = 'block';
+                    trContent.style.display = 'none';
+                    successEn.style.display = 'none';
+                    successTr.style.display = 'none';
+                    langToggleBtn.textContent = 'Türkçe';
+                }
+                isEnglish = !isEnglish;
+            }
 
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon" aria-hidden="true">🎯</div>
-        <h3 id="feature1-title">No Minimum Limit</h3>
-        <p id="feature1-desc">Use your gift card without any minimum purchase requirement</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon" aria-hidden="true">⚡</div>
-        <h3 id="feature2-title">Instant Activation</h3>
-        <p id="feature2-desc">Your gift card will be activated instantly through KyrosilRewards Bot</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon" aria-hidden="true">👥</div>
-        <h3 id="feature3-title">No Participant Limit</h3>
-        <p id="feature3-desc">Everyone can participate in this amazing offer</p>
-      </div>
-    </div>
+            langToggleBtn.addEventListener('click', switchLanguage);
 
-    <div class="countdown-section" aria-live="polite" id="countdown-section">
-      <h2 class="countdown-title" id="countdown-title">Form Opens In:</h2>
-      <div class="countdown" id="countdown">
-        <div class="countdown-item">
-          <span class="countdown-number" id="hours">00</span>
-          <span class="countdown-label" id="hours-label">Hours</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="minutes">00</span>
-          <span class="countdown-label" id="minutes-label">Minutes</span>
-        </div>
-        <div class="countdown-item">
-          <span class="countdown-number" id="seconds">00</span>
-          <span class="countdown-label" id="seconds-label">Seconds</span>
-        </div>
-      </div>
-    </div>
+            document.getElementById('submit-btn-en').addEventListener('click', function(event) {
+                event.preventDefault();
+                const instagramInput = document.getElementById('instagram-en');
+                const emailInput = document.getElementById('email-en');
+                if (instagramInput.value.trim() !== '' && emailInput.value.trim() !== '') {
+                    formCard.classList.add('shrink');
+                    setTimeout(() => {
+                        formCard.style.display = 'none';
+                        successEn.classList.add('visible');
+                    }, 500); // Wait for shrink animation
+                } else {
+                    alert('Please fill out both fields.');
+                }
+            });
 
-    <div class="form-section" id="form-section">
-      <h2 id="form-title">Registration Form</h2>
-      <form id="registration-form" novalidate>
-        <div class="form-group">
-          <label for="fullName" id="fullname-label">Full Name:</label>
-          <input type="text" id="fullName" name="fullName" autocomplete="name" required placeholder="Jane Doe" />
-        </div>
-
-        <div class="form-group">
-          <label for="username" id="username-label">EU Portal or Instagram Username:</label>
-          <input type="text" id="username" name="username" required placeholder="@yourhandle" />
-        </div>
-
-        <div class="form-group">
-          <label for="cardNumber" id="card-label">Carrefour Card Number or Registered GSM:</label>
-          <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" required placeholder="XXXX XXXX / 5XXXXXXXXX" />
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="gdprConsent" name="gdprConsent" required />
-          <label for="gdprConsent" id="gdpr-label">I agree to the GDPR terms and conditions for data processing.</label>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submit-btn" disabled>Register Now</button>
-      </form>
-
-      <div class="status-message" id="status-message" role="status" aria-live="polite"></div>
-    </div>
-  </div>
-
-  <script>
-    // Translations
-    const translations = {
-      en: {
-        title: "Carrefour Gift Card",
-        subtitle: "Valid on Coca Cola and Nestlé products • Form opens at 01:00 CET",
-        giftAmount: "€15",
-        feature1Title: "No Minimum Limit",
-        feature1Desc: "Use your gift card without any minimum purchase requirement",
-        feature2Title: "Instant Activation",
-        feature2Desc: "Your gift card will be activated instantly through KyrosilRewards Bot",
-        feature3Title: "No Participant Limit",
-        feature3Desc: "Everyone can participate in this amazing offer",
-        countdownTitle: "Form Opens In:",
-        formTitle: "Registration Form",
-        fullnameLabel: "Full Name:",
-        usernameLabel: "EU Portal or Instagram Username:",
-        cardLabel: "Carrefour Card Number or Registered GSM:",
-        gdprLabel: "I agree to the GDPR terms and conditions for data processing.",
-        submitBtn: "Register Now",
-        hoursLabel: "Hours",
-        minutesLabel: "Minutes",
-        secondsLabel: "Seconds",
-        formOpen: "Form is Open!",
-        formLiveBadge: "Registration is Live!",
-        formNotOpen: "Registration form will open at 01:00 CET",
-        successMessage: "Registration successful! You will receive an SMS confirmation shortly.",
-        smsMessage: "Your Carrefour gift card has been registered successfully. You will receive activation details soon."
-      },
-      tr: {
-        title: "CarrefourSA Hediye Kartı",
-        subtitle: "Coca Cola ve Nestlé ürünlerinde geçerli • Form 01:00 CET’te açılır",
-        giftAmount: "300₺",
-        feature1Title: "Alt Limit Yok",
-        feature1Desc: "Hediye kartınızı minimum alışveriş olmadan kullanabilirsiniz",
-        feature2Title: "Anında Aktivasyon",
-        feature2Desc: "Hediye kartınız KyrosilRewards Bot aracılığıyla anında aktive edilecek",
-        feature3Title: "Kişi Sınırı Yok",
-        feature3Desc: "Bu fırsata herkes katılabilir",
-        countdownTitle: "Form Açılışına:",
-        formTitle: "Kayıt Formu",
-        fullnameLabel: "Ad Soyad:",
-        usernameLabel: "EU Portal veya Instagram Kullanıcı Adı:",
-        cardLabel: "Carrefour Kart Numarası veya Kayıtlı GSM:",
-        gdprLabel: "Kişisel verilerimin işlenmesine dair KVKK şartlarını kabul ediyorum.",
-        submitBtn: "Şimdi Kayıt Ol",
-        hoursLabel: "Saat",
-        minutesLabel: "Dakika",
-        secondsLabel: "Saniye",
-        formOpen: "Form Açık!",
-        formLiveBadge: "Kayıt Başladı!",
-        formNotOpen: "Kayıt formu 01:00 CET’te açılacak",
-        successMessage: "Kayıt başarılı! Kısa süre içinde SMS onayı alacaksınız.",
-        smsMessage: "CarrefourSA hediye kartınız başarıyla kaydedildi. Aktivasyon detaylarını yakında alacaksınız."
-      }
-    };
-
-    let currentLanguage = 'en';
-
-    function setLanguage(lang, btnEl){
-      currentLanguage = lang;
-      document.querySelectorAll('.lang-btn').forEach(b=>{
-        b.classList.toggle('active', b===btnEl);
-        b.setAttribute('aria-selected', b===btnEl ? 'true' : 'false');
-      });
-
-      const t = translations[lang];
-      document.getElementById('title').textContent = t.title;
-      document.getElementById('subtitle').textContent = t.subtitle;
-      document.getElementById('gift-amount').textContent = t.giftAmount;
-      document.getElementById('feature1-title').textContent = t.feature1Title;
-      document.getElementById('feature1-desc').textContent = t.feature1Desc;
-      document.getElementById('feature2-title').textContent = t.feature2Title;
-      document.getElementById('feature2-desc').textContent = t.feature2Desc;
-      document.getElementById('feature3-title').textContent = t.feature3Title;
-      document.getElementById('feature3-desc').textContent = t.feature3Desc;
-      document.getElementById('countdown-title').textContent = t.countdownTitle;
-      document.getElementById('form-title').textContent = t.formTitle;
-      document.getElementById('fullname-label').textContent = t.fullnameLabel;
-      document.getElementById('username-label').textContent = t.usernameLabel;
-      document.getElementById('card-label').textContent = t.cardLabel;
-      document.getElementById('gdpr-label').textContent = t.gdprLabel;
-      document.getElementById('submit-btn').textContent = t.submitBtn;
-      document.getElementById('hours-label').textContent = t.hoursLabel;
-      document.getElementById('minutes-label').textContent = t.minutesLabel;
-      document.getElementById('seconds-label').textContent = t.secondsLabel;
-
-      renderCountdownState(); // dil değişince durumu yeniden çiz
-    }
-
-    function getNowInCET(){
-      const now = new Date();
-      return new Date(now.toLocaleString("en-US",{ timeZone:"Europe/Berlin" }));
-    }
-
-    function getTodayOpenStart(cetNow){
-      const openStart = new Date(cetNow);
-      openStart.setHours(1,0,0,0); // 01:00 CET/CEST
-      return openStart;
-    }
-
-    function renderCountdownState(){
-      const t = translations[currentLanguage];
-      const cetNow = getNowInCET();
-      const openStart = getTodayOpenStart(cetNow);
-      const countdownSection = document.getElementById('countdown-section');
-      const submitBtn = document.getElementById('submit-btn');
-
-      // 01:00 CET öncesi → sayaç + form kilitli
-      if (cetNow < openStart){
-        countdownSection.style.display = '';
-        document.getElementById('countdown-title').textContent = t.countdownTitle;
-
-        const diff = openStart - cetNow;
-        const totalSeconds = Math.max(0, Math.floor(diff/1000));
-        const h = Math.floor(totalSeconds/3600);
-        const m = Math.floor((totalSeconds%3600)/60);
-        const s = totalSeconds%60;
-
-        document.getElementById('hours').textContent = String(h).padStart(2,'0');
-        document.getElementById('minutes').textContent = String(m).padStart(2,'0');
-        document.getElementById('seconds').textContent = String(s).padStart(2,'0');
-        submitBtn.disabled = true;
-        return;
-      }
-
-      // 01:00 CET ve sonrası → form açık, sayaç tamamen gizlenir (kapanma yok)
-      countdownSection.style.display = 'none';
-      submitBtn.disabled = false;
-    }
-
-    function updateCountdown(){ renderCountdownState(); }
-
-    document.getElementById('registration-form').addEventListener('submit', function(e){
-      e.preventDefault();
-
-      // Güvenlik: 01:00 CET öncesi gönderimi engelle
-      const cetNow = getNowInCET();
-      const openStart = getTodayOpenStart(cetNow);
-      if (cetNow < openStart){
-        const status = document.getElementById('status-message');
-        status.className = 'status-message error';
-        status.textContent = translations[currentLanguage].formNotOpen;
-        status.style.display = 'block';
-        return;
-      }
-
-      const status = document.getElementById('status-message');
-      status.className = 'status-message success';
-      status.textContent = translations[currentLanguage].successMessage;
-      status.style.display = 'block';
-
-      setTimeout(()=>{ alert(translations[currentLanguage].smsMessage); }, 1200);
-      this.reset();
-    });
-
-    // İlk çizim + her saniye güncelle
-    renderCountdownState();
-    setInterval(updateCountdown, 1000);
-
-    // Varsayılan dili etkinleştir
-    (function initLang(){
-      const firstBtn = document.querySelector('.lang-btn');
-      setLanguage('en', firstBtn);
-    })();
-  </script>
+            document.getElementById('submit-btn-tr').addEventListener('click', function(event) {
+                event.preventDefault();
+                const instagramInput = document.getElementById('instagram-tr');
+                const emailInput = document.getElementById('email-tr');
+                if (instagramInput.value.trim() !== '' && emailInput.value.trim() !== '') {
+                    formCard.classList.add('shrink');
+                    setTimeout(() => {
+                        formCard.style.display = 'none';
+                        successTr.classList.add('visible');
+                    }, 500); // Wait for shrink animation
+                } else {
+                    alert('Lütfen her iki alanı da doldurunuz.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
