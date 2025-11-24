@@ -3,550 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turkcell SUPREME COMMANDER | İlhan Dugan</title>
+    <title>Turkcell OMNISCIENT V8 | İlhan Dugan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- CORE VARIABLES --- */
+        /* --- RESET & VARIABLES --- */
         :root {
-            --bg-body: #0b0e11;
-            --bg-nav: #161b22;
-            --bg-card: #21262d;
+            --bg-dark: #090c10;
+            --bg-panel: #161b22;
+            --bg-hover: #1f252e;
+            --border: #30363d;
             --tc-blue: #004F9F;
             --tc-yellow: #FFC900;
             --text-main: #c9d1d9;
-            --text-muted: #8b949e;
+            --text-sub: #8b949e;
             --accent-green: #238636;
             --accent-red: #da3633;
             --accent-purple: #a371f7;
-            --border: #30363d;
+            --accent-orange: #d29922;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; outline: none; }
+        body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-size: 13px; }
+
+        /* SCROLLBARS */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--tc-blue); }
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 270px; background: var(--bg-nav); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 100; }
-        .brand { height: 70px; background: white; border-bottom: 3px solid var(--tc-yellow); display: flex; align-items: center; justify-content: center; }
-        .brand img { height: 32px; }
+        /* --- SIDEBAR (SOL MENÜ) --- */
+        .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 50; }
+        .brand { height: 60px; background: white; border-bottom: 3px solid var(--tc-yellow); display: flex; align-items: center; justify-content: center; }
+        .brand img { height: 28px; }
         
-        .user-panel { padding: 20px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
-        .u-name { color: var(--tc-yellow); font-weight: bold; font-size: 1.1rem; letter-spacing: 0.5px; }
-        .u-role { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+        .user-card { padding: 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--tc-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--tc-yellow); }
+        .user-info h4 { color: var(--tc-yellow); font-size: 0.95rem; }
+        .user-info p { color: var(--text-sub); font-size: 0.75rem; }
 
-        .nav-menu { flex: 1; padding: 10px 0; overflow-y: auto; }
-        .nav-header { font-size: 0.75rem; color: #555; padding: 10px 20px 5px 20px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; margin-top: 10px; }
-        .nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 15px; color: var(--text-muted); transition: 0.2s; border-left: 3px solid transparent; }
-        .nav-item:hover, .nav-item.active { background: rgba(0,79,159,0.2); color: white; border-left-color: var(--tc-yellow); }
-        .nav-item i { width: 22px; text-align: center; }
+        .menu-scroll { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .menu-group { font-size: 0.7rem; color: #555; padding: 10px 20px 5px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .menu-item { padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--text-sub); transition: 0.2s; border-left: 3px solid transparent; }
+        .menu-item:hover, .menu-item.active { background: var(--bg-hover); color: white; border-left-color: var(--tc-yellow); }
+        .menu-item i { width: 20px; text-align: center; }
+        .badge { background: var(--accent-red); color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; margin-left: auto; }
 
-        /* --- MAIN AREA --- */
-        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .header { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; background: var(--bg-nav); }
-        .header-title { font-size: 1.2rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
-        .badges { display: flex; gap: 15px; }
-        .badge { padding: 4px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: blink 2s infinite; }
-        
+        /* --- MAIN CONTENT --- */
+        .main { flex: 1; display: flex; flex-direction: column; position: relative; }
+        .top-bar { height: 50px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .view-title { font-weight: 600; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px; }
+        .sys-stats { display: flex; gap: 15px; font-size: 0.8rem; font-family: 'Consolas', monospace; color: var(--text-sub); }
+
         /* --- VIEWS --- */
-        .view { display: none; height: 100%; padding: 20px; flex-direction: column; }
+        .view-container { flex: 1; overflow: hidden; position: relative; }
+        .view { display: none; height: 100%; flex-direction: column; padding: 0; animation: fadeEffect 0.2s; }
         .view.active { display: flex; }
+        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- DASHBOARD --- */
-        .dash-layout { display: flex; height: 100%; gap: 15px; }
-        .list-col { flex: 4; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-        .detail-col { flex: 3; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
-
-        .ticket-item { display: grid; grid-template-columns: 40px 1fr 100px 70px; padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; align-items: center; }
-        .ticket-item:hover { background: rgba(255,255,255,0.03); }
-        .ticket-item.active { background: rgba(0,79,159,0.2); border-left: 3px solid var(--tc-blue); }
-        .t-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        /* --- DASHBOARD GRID --- */
+        .dash-grid { display: grid; grid-template-columns: 350px 1fr 300px; height: 100%; }
         
-        /* --- DETAIL PANEL --- */
-        .tab-header { display: flex; border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2); }
-        .tab-btn { flex: 1; padding: 15px; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; }
-        .tab-btn.active { color: white; border-bottom-color: var(--tc-yellow); background: rgba(255,255,255,0.02); }
-        .tab-content { display: none; padding: 20px; flex: 1; overflow-y: auto; }
-        .tab-content.show { display: block; }
+        /* LEFT: TICKET LIST */
+        .col-list { border-right: 1px solid var(--border); background: var(--bg-dark); display: flex; flex-direction: column; overflow: hidden; }
+        .list-header { padding: 10px 15px; border-bottom: 1px solid var(--border); font-weight: bold; background: var(--bg-panel); display: flex; justify-content: space-between; }
+        .ticket-scroll { flex: 1; overflow-y: auto; }
+        .ticket-card { padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.1s; position: relative; }
+        .ticket-card:hover { background: var(--bg-hover); }
+        .ticket-card.selected { background: rgba(0, 79, 159, 0.15); border-left: 3px solid var(--tc-blue); }
+        .t-top { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.8rem; color: var(--text-sub); }
+        .t-main { font-weight: 600; color: white; margin-bottom: 3px; font-size: 0.95rem; }
+        .t-sub { color: var(--text-sub); font-size: 0.85rem; display: flex; align-items: center; gap: 5px; }
+        .prio-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .info-box { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
-        .lbl { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 3px; }
-        .val { font-size: 0.95rem; color: #fff; font-family: 'Consolas', monospace; }
-
-        .console { background: #000; color: #0f0; font-family: 'Consolas', monospace; padding: 15px; border-radius: 4px; height: 200px; overflow-y: auto; font-size: 0.8rem; border: 1px solid #333; }
-
-        /* --- ABONE SORGU --- */
-        .search-container { max-width: 650px; margin: 40px auto; width: 100%; }
-        .search-inp { width: 100%; padding: 15px 20px; background: #0b0e11; border: 1px solid var(--border); border-radius: 8px; font-size: 1.2rem; color: white; margin-bottom: 15px; }
-        .result-card { display: none; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 30px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .target-found { position: absolute; top: 0; right: 0; background: var(--accent-red); color: white; padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 12px; border-top-right-radius: 12px; font-size: 0.8rem; }
-
-        /* --- NEW PAGES STYLES --- */
-        .staff-table, .roam-table { width: 100%; border-collapse: collapse; }
-        .staff-table th, .staff-table td, .roam-table th, .roam-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
-        .staff-table th { background: rgba(0,0,0,0.2); color: var(--text-muted); }
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        /* CENTER: DETAIL VIEW */
+        .col-detail { display: flex; flex-direction: column; overflow: hidden; background: #0d1117; }
+        .detail-header { padding: 20px; border-bottom: 1px solid var(--border); background: var(--bg-panel); }
+        .dh-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .detail-body { flex: 1; overflow-y: auto; padding: 20px; }
         
-        .map-placeholder { background: #111; height: 300px; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 20px; }
-        .map-dot { width: 10px; height: 10px; border-radius: 50%; position: absolute; box-shadow: 0 0 10px currentColor; animation: blink 2s infinite; }
+        .info-section { margin-bottom: 25px; }
+        .sec-title { font-size: 0.8rem; text-transform: uppercase; color: var(--tc-yellow); font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        
+        .data-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 4px; border: 1px solid var(--border); }
+        .lbl { font-size: 0.7rem; color: var(--text-sub); display: block; margin-bottom: 2px; }
+        .val { font-size: 0.9rem; color: white; font-weight: 500; word-break: break-all; }
+        
+        .user-statement { background: rgba(0,79,159,0.1); padding: 15px; border-left: 3px solid var(--tc-blue); border-radius: 4px; font-style: italic; color: #e0e0e0; margin-bottom: 20px; }
 
-        /* --- ANIMATIONS --- */
-        @keyframes blink { 50% { opacity: 0.4; } }
+        /* RIGHT: ACTIONS & LOGS */
+        .col-actions { border-left: 1px solid var(--border); background: var(--bg-panel); display: flex; flex-direction: column; padding: 0; }
+        .action-pad { padding: 15px; border-bottom: 1px solid var(--border); }
+        .btn { width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; color: white; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-blue { background: var(--tc-blue); } .btn-blue:hover { background: #003d7a; }
+        .btn-green { background: var(--accent-green); } .btn-green:hover { background: #1a6328; }
+        .btn-gray { background: var(--border); } .btn-gray:hover { background: #444; }
 
-        /* --- MODAL --- */
-        .modal-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { width: 500px; background: var(--bg-nav); border: 1px solid var(--border); border-radius: 10px; padding: 25px; box-shadow: 0 20px 60px black; }
+        .log-area { flex: 1; background: black; color: #0f0; font-family: 'Consolas', monospace; font-size: 0.8rem; padding: 15px; overflow-y: auto; }
 
+        /* --- SEARCH PAGE (YASAKLI BÖLGE) --- */
+        .search-wrapper { max-width: 800px; margin: 40px auto; width: 90%; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 30px; }
+        .inp-search { flex: 1; padding: 15px; background: var(--bg-dark); border: 1px solid var(--border); color: white; font-size: 1.2rem; border-radius: 6px; }
+        
+        .result-container { display: none; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .secret-stamp { position: absolute; top: 15px; right: -30px; background: var(--accent-red); color: white; padding: 5px 40px; transform: rotate(45deg); font-weight: bold; font-size: 0.8rem; box-shadow: 0 2px 5px black; }
+
+        /* --- MODALS --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-box { width: 500px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 25px; box-shadow: 0 20px 60px black; }
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
         <div class="brand">
-            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell">
+            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell Logo">
         </div>
-        <div class="user-panel">
-            <div class="u-name">İLHAN DUGAN</div>
-            <div class="u-role">Bilgi İşlem Sorumlusu</div>
-            <div style="font-size:0.7rem; color:var(--accent-green); margin-top:5px;">● Yetki Seviyesi: 5 (Tam)</div>
+        <div class="user-card">
+            <div class="avatar">İD</div>
+            <div class="user-info">
+                <h4>İLHAN DUGAN</h4>
+                <p>NOC Manager (Tier 3)</p>
+            </div>
         </div>
         
-        <div class="nav-menu">
-            <div class="nav-header">Operasyon</div>
-            <div class="nav-item active" onclick="setView('dash', this)"><i class="fas fa-satellite-dish"></i> Canlı Arıza Takip</div>
-            <div class="nav-item" onclick="setView('staff', this)"><i class="fas fa-users-cog"></i> Personel & Vardiya <span style="background:var(--accent-purple); font-size:0.6rem; padding:2px 5px; border-radius:3px; margin-left:auto;">YENİ</span></div>
-            <div class="nav-item" onclick="setView('roam', this)"><i class="fas fa-globe-americas"></i> Küresel Roaming <span style="background:var(--accent-purple); font-size:0.6rem; padding:2px 5px; border-radius:3px; margin-left:auto;">YENİ</span></div>
-            
-            <div class="nav-header">Güvenlik & Log</div>
-            <div class="nav-item" onclick="setView('sorgu', this)"><i class="fas fa-user-secret"></i> Yasaklı Bölge: Sorgu</div>
-            <div class="nav-item" onclick="setView('history', this)"><i class="fas fa-history"></i> Aktarılan İşler</div>
-            <div class="nav-item" onclick="setView('server', this)"><i class="fas fa-server"></i> Sunucu Odası</div>
-            <div class="nav-item" onclick="setView('chat', this)"><i class="fas fa-comments"></i> Saha Ekibi (Chat)</div>
+        <div class="menu-scroll">
+            <div class="menu-group">Operasyon Merkezi</div>
+            <div class="menu-item active" onclick="switchView('dashboard', this)"><i class="fas fa-th-large"></i> Canlı Arıza Paneli</div>
+            <div class="menu-item" onclick="switchView('map', this)"><i class="fas fa-map-marked-alt"></i> Saha & Network Haritası</div>
+            <div class="menu-item" onclick="switchView('history', this)"><i class="fas fa-history"></i> İşlem Tarihçesi <div class="badge" id="hist-count" style="display:none">0</div></div>
+
+            <div class="menu-group">Müşteri İlişkileri</div>
+            <div class="menu-item" onclick="switchView('sorgu', this)"><i class="fas fa-search"></i> Abone İstihbarat (Sorgu)</div>
+            <div class="menu-item"><i class="fas fa-crown"></i> VIP Müşteri Yönetimi</div>
+            <div class="menu-item"><i class="fas fa-briefcase"></i> Kurumsal Çözüm Merkezi</div>
+
+            <div class="menu-group">Teknik & Altyapı</div>
+            <div class="menu-item"><i class="fas fa-server"></i> Sunucu Odası İzleme</div>
+            <div class="menu-item"><i class="fas fa-network-wired"></i> Fiber Altyapı Topolojisi</div>
+            <div class="menu-item"><i class="fas fa-broadcast-tower"></i> Baz İstasyonu Yönetimi</div>
+
+            <div class="menu-group">İdari & Finans</div>
+            <div class="menu-item"><i class="fas fa-users"></i> İK ve Vardiya Takibi</div>
+            <div class="menu-item"><i class="fas fa-file-invoice-dollar"></i> Fatura ve Tahsilat</div>
+            <div class="menu-item"><i class="fas fa-shield-alt"></i> Güvenlik Logları</div>
+        </div>
+        <div style="padding:15px; border-top:1px solid var(--border); font-size:0.7rem; color:#555; text-align:center;">
+            System v8.4.2 (Stable)<br>Uptime: 41d 12h
         </div>
     </nav>
 
     <main class="main">
-        <header class="header">
-            <div class="header-title" id="view-title"><i class="fas fa-satellite-dish"></i> Canlı Arıza Takip</div>
-            <div class="badges">
-                <div class="badge"><div class="dot"></div> Core Network</div>
-                <div class="badge" style="border-color:var(--tc-yellow); color:var(--tc-yellow);">Bekleyen: <span id="stat-pend">14</span></div>
-                <div class="badge" id="clock">12:00:00</div>
+        <header class="top-bar">
+            <div class="view-title" id="page-header"><i class="fas fa-th-large"></i> Canlı Arıza Paneli</div>
+            <div class="sys-stats">
+                <span><i class="fas fa-circle" style="color:var(--accent-green)"></i> CORE: ONLINE</span>
+                <span><i class="fas fa-circle" style="color:var(--accent-green)"></i> CRM: ONLINE</span>
+                <span id="clock">12:00:00</span>
             </div>
         </header>
 
-        <div id="dash" class="view active">
-            <div class="dash-layout">
-                <div class="list-col">
-                    <div style="padding:15px; border-bottom:1px solid var(--border); font-weight:bold; background:rgba(0,0,0,0.2);">Gelen Destek Talepleri</div>
-                    <div id="ticket-list" style="flex:1; overflow-y:auto;">
+        <div class="view-container">
+            
+            <div id="dashboard" class="view active">
+                <div class="dash-grid">
+                    <div class="col-list">
+                        <div class="list-header">
+                            <span>Gelen Talepler</span>
+                            <span id="ticket-count" style="background:var(--tc-blue); padding:0 6px; border-radius:4px; font-size:0.8rem;">0</span>
+                        </div>
+                        <div class="ticket-scroll" id="ticket-list-area">
+                            </div>
+                    </div>
+
+                    <div class="col-detail" id="detail-view">
+                        <div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);">
+                            <i class="fas fa-mouse-pointer" style="font-size:3rem; margin-bottom:20px; opacity:0.3;"></i>
+                            <p>Detayları görüntülemek için listeden bir kayıt seçin.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-actions">
+                         <div style="padding:10px; background:var(--bg-panel); font-weight:bold; font-size:0.8rem; border-bottom:1px solid var(--border);">Sistem Logları & Terminal</div>
+                         <div class="log-area" id="terminal-log">
+                             > System initialized...<br>
+                             > Connecting to Database... [OK]<br>
+                             > Listening for incoming tickets...
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sorgu" class="view">
+                <div class="search-wrapper">
+                    <h2 style="color:var(--tc-yellow); text-align:center; margin-bottom:20px;">ABONE İSTİHBARAT SERVİSİ (YASAKLI BÖLGE)</h2>
+                    <div class="search-bar">
+                        <input type="text" class="inp-search" id="gsm-input" placeholder="GSM Numarası (Örn: 5354653384) veya TCKN">
+                        <button class="btn btn-blue" style="width:150px; font-size:1.1rem;" onclick="performSearch()">SORGULA</button>
+                    </div>
+
+                    <div id="loader" style="display:none; text-align:center; padding:50px;">
+                        <i class="fas fa-satellite-dish fa-spin" style="font-size:3rem; color:var(--tc-blue);"></i>
+                        <p style="margin-top:15px; font-family:'Consolas';">Emniyet Genel Müdürlüğü Veritabanı Taranıyor...</p>
+                    </div>
+
+                    <div id="search-result" class="result-container">
                         </div>
                 </div>
-                <div class="detail-col" id="detail-area">
-                    <div style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--text-muted);">
-                        <i class="fas fa-hand-pointer" style="font-size:3rem; margin-bottom:20px; opacity:0.3;"></i>
-                        <p>Detaylar için soldan seçim yapın.</p>
-                    </div>
-                </div>
             </div>
-        </div>
-
-        <div id="staff" class="view">
-            <div style="display:flex; gap:20px; margin-bottom:20px;">
-                <div style="flex:1; background:var(--bg-card); padding:20px; border-radius:8px; border:1px solid var(--border);">
-                    <h3 style="color:var(--tc-yellow); margin-bottom:15px;">Vardiya Özeti</h3>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Sahadaki Ekip:</span> <span style="color:white; font-weight:bold;">42</span></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Mola:</span> <span style="color:white; font-weight:bold;">8</span></div>
-                    <div style="display:flex; justify-content:space-between;"><span>Araç Durumu:</span> <span style="color:var(--accent-green); font-weight:bold;">Yeterli</span></div>
-                </div>
-                <div style="flex:1; background:var(--bg-card); padding:20px; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center;">
-                    <i class="fas fa-car-side" style="font-size:2.5rem; color:var(--tc-blue); margin-right:20px;"></i>
-                    <div>
-                        <div style="font-size:0.8rem; color:var(--text-muted);">En Yakın Ekip (Şişli)</div>
-                        <div style="font-size:1.2rem; font-weight:bold; color:white;">34 TRK 99 (Ahmet K.)</div>
-                        <div style="font-size:0.8rem; color:var(--accent-green);">Müsait - Görev Bekliyor</div>
-                    </div>
+            
+            <div id="history" class="view">
+                <div style="padding:20px;">
+                    <h2 style="margin-bottom:20px; color:var(--tc-yellow);">Yönlendirilen İşler Tarihçesi</h2>
+                    <table style="width:100%; border-collapse:collapse; color:var(--text-main);">
+                        <thead>
+                            <tr style="background:var(--bg-panel); color:var(--text-sub); text-align:left;">
+                                <th style="padding:10px;">ID</th>
+                                <th style="padding:10px;">Hedef Birim</th>
+                                <th style="padding:10px;">Sorun</th>
+                                <th style="padding:10px;">Abone</th>
+                                <th style="padding:10px;">Zaman</th>
+                                <th style="padding:10px;">Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hist-table-body"></tbody>
+                    </table>
                 </div>
             </div>
 
-            <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; overflow:hidden;">
-                <table class="staff-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Personel Adı</th>
-                            <th>Bölge</th>
-                            <th>Araç Plaka</th>
-                            <th>Son Sinyal</th>
-                            <th>Durum</th>
-                        </tr>
-                    </thead>
-                    <tbody id="staff-body">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="roam" class="view">
-            <div class="map-placeholder" id="world-map">
-                <div style="font-size:3rem; opacity:0.1; font-weight:900;">GLOBAL ROAMING STATUS</div>
+            <div id="map" class="view">
+                <div style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column;">
+                    <i class="fas fa-map-marked-alt" style="font-size:5rem; color:var(--border);"></i>
+                    <h2 style="margin-top:20px; color:var(--text-sub);">Canlı Saha Haritası Yükleniyor...</h2>
                 </div>
-            <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; overflow:hidden;">
-                <table class="roam-table">
-                    <thead>
-                        <tr>
-                            <th>Ülke</th>
-                            <th>Partner Operatör</th>
-                            <th>Bağlantı Tipi</th>
-                            <th>Gecikme (ms)</th>
-                            <th>Durum</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>🇺🇸 ABD</td><td>T-Mobile / AT&T</td><td>5G / LTE</td><td>140ms</td><td><span class="status-badge" style="background:var(--accent-green); color:white;">ONLINE</span></td></tr>
-                        <tr><td>🇩🇪 Almanya</td><td>Telekom.de</td><td>5G</td><td>45ms</td><td><span class="status-badge" style="background:var(--accent-green); color:white;">ONLINE</span></td></tr>
-                        <tr><td>🇬🇧 İngiltere</td><td>Vodafone UK</td><td>LTE+</td><td>52ms</td><td><span class="status-badge" style="background:var(--accent-green); color:white;">ONLINE</span></td></tr>
-                        <tr><td>🇫🇷 Fransa</td><td>Orange F</td><td>LTE</td><td>48ms</td><td><span class="status-badge" style="background:var(--accent-green); color:white;">ONLINE</span></td></tr>
-                        <tr><td>🇷🇺 Rusya</td><td>MTS</td><td>3G/LTE</td><td>88ms</td><td><span class="status-badge" style="background:#d29922; color:black;">Yavaş</span></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="sorgu" class="view">
-            <div class="search-container">
-                <h2 style="text-align:center; color:var(--tc-yellow); margin-bottom:20px;">ABONE İSTİHBARAT SERVİSİ (LEVEL 5)</h2>
-                <input type="text" id="gsmInput" class="search-inp" placeholder="Numara Giriniz (Örn: 535 465 33 84)">
-                <button class="btn-blue" style="width:100%; padding:15px; font-size:1.1rem; border:none; border-radius:8px; cursor:pointer; color:white; background:var(--tc-blue);" onclick="performSearch()">SORGULA</button>
-                
-                <div id="loader" style="display:none; text-align:center; padding:40px;">
-                    <i class="fas fa-radar fa-spin" style="font-size:2.5rem; color:var(--accent-red);"></i>
-                    <p style="margin-top:10px;">Emniyet ve Nüfus Veritabanı Taranıyor...</p>
-                </div>
-
-                <div id="result-card" class="result-card" style="margin-top:20px;">
-                    </div>
-            </div>
-        </div>
-
-        <div id="history" class="view">
-             <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; overflow:hidden;">
-                <div style="padding:15px; font-weight:bold; border-bottom:1px solid var(--border);">İşlem Geçmişi (Routing Logs)</div>
-                <table class="staff-table">
-                    <thead><tr><th>ID</th><th>Birim</th><th>Sorun</th><th>Açıklama</th><th>Zaman</th><th>Durum</th></tr></thead>
-                    <tbody id="hist-body"></tbody>
-                </table>
              </div>
-        </div>
 
-        <div id="server" class="view">
-            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:20px;" id="server-grid"></div>
         </div>
-        <div id="chat" class="view">
-            <div style="flex:1; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; display:flex; flex-direction:column;">
-                <div style="padding:15px; border-bottom:1px solid var(--border);">Saha Destek Chat</div>
-                <div id="chat-area" style="flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px;"></div>
-                <div style="padding:15px; border-top:1px solid var(--border); display:flex; gap:10px;">
-                    <input type="text" id="chat-inp" style="flex:1; padding:10px; background:#0b0e11; border:1px solid var(--border); color:white;" placeholder="Mesaj...">
-                    <button onclick="sendChat()" style="padding:10px 20px; background:var(--tc-blue); border:none; color:white;">Gönder</button>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <div class="modal-wrap" id="modal">
+    <div class="modal-overlay" id="route-modal">
         <div class="modal-box">
-            <h3 style="color:var(--tc-yellow);">Talebi Yönlendir</h3>
-            <p style="color:#888; margin-bottom:15px;" id="m-text"></p>
-            <label style="color:#888; font-size:0.8rem;">HEDEF BİRİM</label>
-            <select id="m-dept" style="width:100%; padding:10px; background:#0b0e11; border:1px solid var(--border); color:white; margin-bottom:15px;">
-                <option>Saha Operasyonları</option>
+            <h3 style="color:var(--tc-yellow); margin-bottom:15px;">Talebi Yönlendir</h3>
+            <p id="modal-desc" style="color:var(--text-sub); margin-bottom:20px;"></p>
+            
+            <label class="lbl" style="font-size:0.9rem;">HEDEF DEPARTMAN</label>
+            <select id="route-dept" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px; border-radius:4px;">
+                <option>Saha Operasyonları (Field Ops)</option>
                 <option>Core Network (Tier 2)</option>
-                <option>Hukuk Departmanı</option>
-                <option>Müşteri İlişkileri</option>
+                <option>Hukuk / Regülasyon</option>
+                <option>Superonline Altyapı</option>
+                <option>Müşteri İlişkileri (Geri Dönüş)</option>
+                <option>Finans / Fatura İtiraz</option>
             </select>
-            <label style="color:#888; font-size:0.8rem;">TEKNİK NOT</label>
-            <textarea style="width:100%; height:80px; padding:10px; background:#0b0e11; border:1px solid var(--border); color:white; margin-bottom:15px;"></textarea>
-            <div style="text-align:right;">
-                <button onclick="closeModal()" style="padding:10px 20px; background:transparent; border:1px solid #555; color:white;">İptal</button>
-                <button onclick="confirmRoute()" style="padding:10px 20px; background:var(--accent-green); border:none; color:white;">Onayla</button>
+            
+            <label class="lbl" style="font-size:0.9rem;">TEKNİK NOTLAR</label>
+            <textarea id="route-note" style="width:100%; height:100px; padding:10px; background:var(--bg-dark); border:1px solid var(--border); color:white; border-radius:4px; margin-bottom:20px;"></textarea>
+            
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                <button class="btn btn-gray" style="width:auto;" onclick="closeModal()">İptal</button>
+                <button class="btn btn-green" style="width:auto;" onclick="confirmRoute()">Onayla ve Aktar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DATA ---
-        let selectedId = null;
-        let tickets = [];
-        let history = [];
-        let idCounter = 15400;
+        // --- DEVASA VERİ HAVUZU (500+ KOMBİNASYON) ---
+        const firstNames = ["Ahmet","Mehmet","Mustafa","Ali","Hüseyin","Hasan","İbrahim","İsmail","Osman","Yusuf","Ömer","Murat","Fatih","Ramazan","Halil","Süleyman","Abdullah","Mahmut","Recep","Hakan","Ayşe","Fatma","Emine","Hatice","Zeynep","Elif","Meryem","Şerife","Zehra","Sultan","Hanife","Merve","Havva","Sakine","Hacer","Özlem","Esra","Selma","Yasemin","Melis","Burak","Can","Cem","Deniz","Ege","Umut","Arda","Kaan","Mert","Emre"];
+        const lastNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Yıldırım","Öztürk","Aydın","Özdemir","Arslan","Doğan","Kılıç","Aslan","Çetin","Kara","Koç","Kurt","Özkan","Şimşek","Polat","Korkmaz","Özcan","Çakır","Erdoğan","Yavuz","Can","Acar","Şen","Aktaş","Güler","Yalçın","Güneş","Bozkurt","Bulut","Keskin","Ünal","Turan","Gül","Avcı"];
+        const districts = ["Kadıköy","Beşiktaş","Şişli","Üsküdar","Maltepe","Kartal","Pendik","Ümraniye","Ataşehir","Sancaktepe","Fatih","Beyoğlu","Bakırköy","Zeytinburnu","Sarıyer","Kağıthane","Esenyurt","Bağcılar","Küçükçekmece","Avcılar","Beylikdüzü","Çankaya (ANK)","Keçiören (ANK)","Mamak (ANK)","Bornova (İZM)","Karşıyaka (İZM)","Buca (İZM)","Konak (İZM)","Nilüfer (BUR)","Osmangazi (BUR)","Muratpaşa (ANT)","Alanya (ANT)","Bodrum (MUĞ)","Çorlu (TEK)","İzmit (KOC)"];
+        const devices = ["iPhone 15 Pro Max","iPhone 14","iPhone 13 Mini","Samsung S24 Ultra","Samsung A54","Xiaomi 13T","Redmi Note 12","Huawei P60 Pro","Oppo Reno 10","General Mobile GM 24","Realme 11","Honor 90","Modem: Huawei HG255s","Modem: ZTE H3600","Modem: Superbox B618"];
 
-        // DYNAMIC ISSUES & DESCRIPTIONS (NO REPETITION)
-        const issueDB = [
-            { t:"Sinyal Yok (Tünel)", d:"Müşteri Avrasya Tüneli girişinde şebekenin tamamen koptuğunu ve çıkana kadar gelmediğini belirtiyor.", cat:"GSM", icon:"fa-signal" },
-            { t:"Fatura Aşımı", d:"Paketim bitmediği halde faturama 450 TL ek ücret yansıtılmış. İtiraz ediyorum.", cat:"BILL", icon:"fa-file-invoice-dollar" },
-            { t:"TV+ Donuyor", d:"Canlı maç yayını sırasında görüntü sürekli geriye sarıyor ve pikselleşiyor. İnternet hızım normal.", cat:"TV", icon:"fa-tv" },
-            { t:"Fiber LOS Işığı", d:"Modemdeki LOS ışığı kırmızı yanıp sönüyor. Kabloyu kontrol ettim, kopukluk yok.", cat:"SOL", icon:"fa-wifi" },
-            { t:"BiP Mesaj Gitmiyor", d:"BiP üzerinden fotoğraf gönderemiyorum, sürekli 'Yükleniyor' hatası alıyorum.", cat:"APP", icon:"fa-comment-dots" },
-            { t:"Yurt Dışı Arama", d:"Almanya'daki oğlumu arayamıyorum, hat düşüyor. Roaming servisim açık.", cat:"GSM", icon:"fa-globe" },
-            { t:"Sim Kart Bloke", d:"Telefonu yeniden başlattım, PUK kodu istedi. Yanlış girdim kart kilitlendi.", cat:"GSM", icon:"fa-sim-card" },
-            { t:"Kurumsal VPN", d:"Şirket merkezinden şubeye VPN tüneli kurulamıyor. IPsec hatası alıyoruz.", cat:"CORP", icon:"fa-building" },
-            { t:"Paycell Hata", d:"Kredi kartımdan para çekildi ama Paycell bakiyeme yüklenmedi.", cat:"FIN", icon:"fa-wallet" }
+        // GELİŞMİŞ SORUN KATMANLARI
+        const scenarios = [
+            { cat:"GSM", sub:"Ses", t:"Arama Yapılamıyor", d:"Numara çevirdiğimde 'Ağ meşgul' hatası alıyorum, hiç çalmıyor.", icon:"fa-phone-slash", c:"var(--tc-blue)" },
+            { cat:"GSM", sub:"Data", t:"4.5G Hız Sorunu", d:"Paketim Platinum olmasına rağmen hızım 3Mbps'i geçmiyor. Video izleyemiyorum.", icon:"fa-tachometer-alt", c:"var(--tc-blue)" },
+            { cat:"GSM", sub:"Sinyal", t:"Kapsama Alanı Yok", d:"Evimin içinde telefon çekmiyor, balkona çıkmak zorunda kalıyorum. Baz istasyonu talebim var.", icon:"fa-signal", c:"var(--tc-blue)" },
+            { cat:"GSM", sub:"Yurt Dışı", t:"Roaming Hatası", d:"İtalya'ya geldim, hattım şebeke bulamıyor. Paketim boşa gidiyor acil destek.", icon:"fa-globe", c:"var(--tc-blue)" },
+            { cat:"FIBER", sub:"Bağlantı", t:"LOS Işığı Kırmızı", d:"İnternetim kesildi, modemdeki LOS ışığı kırmızı yanıp sönüyor. Kabloya dokunmadım.", icon:"fa-wifi", c:"var(--accent-orange)" },
+            { cat:"FIBER", sub:"Hız", t:"Ping Yüksekliği", d:"Valorant oynarken pingim 15ms'den 200ms'e fırlıyor. Paket kaybı yaşıyorum.", icon:"fa-gamepad", c:"var(--accent-orange)" },
+            { cat:"TV+", sub:"Yayın", t:"Görüntü Donması", d:"Canlı yayın izlerken görüntü sürekli donuyor ve ses kayması oluyor.", icon:"fa-tv", c:"var(--accent-green)" },
+            { cat:"TV+", sub:"Donanım", t:"Kutu Açılmıyor", d:"TV+ kutusunun ışığı yanmıyor, adaptörü değiştirdim yine çalışmadı.", icon:"fa-box", c:"var(--accent-green)" },
+            { cat:"BILL", sub:"Fatura", t:"Tutar İtirazı", d:"Paketim bitmediği halde faturama 250 TL ek ücret yansımış. Detay istiyorum.", icon:"fa-file-invoice", c:"#a371f7" },
+            { cat:"APP", sub:"Login", t:"Şifre Sorunu", d:"Hesabım uygulamasına giriş yapamıyorum, SMS kodu gelmiyor.", icon:"fa-mobile-alt", c:"#555" },
+            { cat:"CORP", sub:"VPN", t:"Metro Ethernet Down", d:"Fabrika lokasyonumuzda fiber erişimi koptu. Yedek devre çalışmadı.", icon:"fa-building", c:"var(--accent-red)" }
         ];
 
-        const locs = ["İstanbul/Şişli", "İzmir/Alsancak", "Ankara/Çankaya", "Antalya/Lara", "Bursa/Nilüfer", "Trabzon/Merkez", "İstanbul/Kartal"];
+        // --- GLOBAL STATE ---
+        let tickets = [];
+        let selectedTicket = null;
+        let idCounter = 89900;
+        let historyLog = [];
 
         // --- INIT ---
         window.onload = function() {
-            setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
-            renderStaff();
-            renderMap();
-            renderServer();
-            // Start Flow
-            addTicket(); addTicket(); addTicket();
-            setInterval(addTicket, 4500);
+            startClock();
+            generateBatch(8); // Başlangıçta 8 kayıt
+            setInterval(generateRandomTicket, 5000); // Her 5 saniyede yeni kayıt
+            log("System Ready. Monitoring active...");
         };
 
-        // --- NAVIGATION ---
-        function setView(id, el) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
-            
-            const titles = {'dash':'Canlı Arıza Takip', 'sorgu':'Yasaklı Bölge', 'staff':'Personel & Vardiya', 'roam':'Küresel Roaming', 'history':'Aktarılan İşler', 'server':'Sunucu Odası', 'chat':'Chat'};
-            document.getElementById('view-title').innerText = titles[id] || 'Panel';
-        }
-
-        // --- TICKET SYSTEM ---
-        function addTicket() {
+        // --- CORE FUNCTIONS ---
+        function generateRandomTicket() {
             idCounter++;
-            const tmpl = issueDB[Math.floor(Math.random() * issueDB.length)];
-            const loc = locs[Math.floor(Math.random() * locs.length)];
+            const scn = scenarios[Math.floor(Math.random() * scenarios.length)];
+            const name = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+            const loc = districts[Math.floor(Math.random() * districts.length)];
+            const dev = devices[Math.floor(Math.random() * devices.length)];
             
             const t = {
                 id: idCounter,
-                title: tmpl.t,
-                desc: tmpl.d,
-                cat: tmpl.cat,
-                icon: tmpl.icon,
+                name: name,
                 loc: loc,
-                time: new Date().toLocaleTimeString(),
-                ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.X`,
-                name: "Abone-" + Math.floor(Math.random()*9999)
+                dev: dev,
+                cat: scn.cat,
+                sub: scn.sub,
+                title: scn.t,
+                desc: scn.d,
+                icon: scn.icon,
+                color: scn.c,
+                time: new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}),
+                ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+                gsm: `53${Math.floor(Math.random()*9)} ${Math.floor(Math.random()*899)+100} ${Math.floor(Math.random()*99)} ${Math.floor(Math.random()*99)}`,
+                debt: (Math.random() * 800).toFixed(2)
             };
+            
             tickets.unshift(t);
-            if(tickets.length > 50) tickets.pop();
-            renderTickets();
-            document.getElementById('stat-pend').innerText = tickets.length;
+            if(tickets.length > 100) tickets.pop();
+            renderList();
+            updateCount();
+            
+            // Log to terminal
+            log(`New Ticket: #${t.id} - ${t.title} (${t.cat})`);
         }
 
-        function renderTickets() {
-            const list = document.getElementById('ticket-list');
-            list.innerHTML = "";
+        function generateBatch(count) { for(let i=0; i<count; i++) generateRandomTicket(); }
+
+        function renderList() {
+            const container = document.getElementById('ticket-list-area');
+            container.innerHTML = "";
             tickets.forEach(t => {
                 const div = document.createElement('div');
-                div.className = `ticket-item ${selectedId === t.id ? 'active' : ''}`;
-                div.onclick = () => showDetail(t);
+                div.className = `ticket-card ${selectedTicket && selectedTicket.id === t.id ? 'selected' : ''}`;
+                div.onclick = () => selectTicket(t);
                 div.innerHTML = `
-                    <div class="t-icon" style="background:${t.cat=='GSM'?'rgba(0,79,159,0.2)':'rgba(255,201,0,0.2)'}; color:${t.cat=='GSM'?'#4dabf7':'#ffc900'}"><i class="fas ${t.icon}"></i></div>
-                    <div style="font-family:'Consolas'; font-weight:bold;">#${t.id}</div>
-                    <div>
-                        <div style="font-weight:600; color:#fff;">${t.title}</div>
-                        <div style="font-size:0.8rem; color:#888;">${t.loc}</div>
+                    <div class="t-top">
+                        <span>#TRK-${t.id}</span>
+                        <span>${t.time}</span>
                     </div>
-                    <div style="text-align:right; font-size:0.75rem; color:#888;">${t.time}</div>
+                    <div class="t-main">${t.title}</div>
+                    <div class="t-sub">
+                        <i class="fas ${t.icon}" style="color:${t.color}"></i> ${t.name} • ${t.loc}
+                    </div>
                 `;
-                list.appendChild(div);
+                container.appendChild(div);
             });
         }
 
-        function showDetail(t) {
-            selectedId = t.id;
-            renderTickets();
-            const area = document.getElementById('detail-area');
-            area.innerHTML = `
-                <div style="padding:20px; border-bottom:1px solid var(--border);">
-                    <h2 style="color:var(--tc-yellow);">#TRK-${t.id}</h2>
-                    <h4 style="margin-top:5px;">${t.title}</h4>
-                </div>
-                <div class="tab-header">
-                    <div class="tab-btn active" onclick="switchTab(event, 'tb-info')">Genel</div>
-                    <div class="tab-btn" onclick="switchTab(event, 'tb-tech')">Teknik</div>
-                </div>
-                <div id="tb-info" class="tab-content show">
-                    <div style="padding:15px; background:rgba(255,201,0,0.1); border-left:4px solid var(--tc-yellow); margin-bottom:20px; font-style:italic; color:#e0e0e0;">
-                        "${t.desc}"
-                    </div>
-                    <div class="info-grid">
-                        <div class="info-box"><span class="lbl">Lokasyon</span><span class="val">${t.loc}</span></div>
-                        <div class="info-box"><span class="lbl">Abone</span><span class="val">${t.name}</span></div>
-                        <div class="info-box"><span class="lbl">Hizmet</span><span class="val">${t.cat} Service</span></div>
-                        <div class="info-box"><span class="lbl">Öncelik</span><span class="val" style="color:${Math.random()>0.5?'var(--accent-red)':'var(--accent-green)'}">Normal</span></div>
+        function selectTicket(t) {
+            selectedTicket = t;
+            renderList();
+            
+            const detailView = document.getElementById('detail-view');
+            detailView.innerHTML = `
+                <div class="detail-header">
+                    <div class="dh-top">
+                        <div>
+                            <h2 style="color:white; display:flex; align-items:center; gap:10px;">
+                                <i class="fas ${t.icon}" style="color:${t.color}"></i> ${t.title}
+                            </h2>
+                            <p style="color:var(--text-sub); font-size:0.9rem; margin-top:5px;">${t.sub} Sorunu • ${t.loc}</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'Consolas'; font-size:1.2rem; color:var(--tc-yellow);">#TRK-${t.id}</div>
+                            <div style="font-size:0.8rem; color:var(--accent-green);">Açık</div>
+                        </div>
                     </div>
                 </div>
-                <div id="tb-tech" class="tab-content">
-                    <div class="info-grid" style="margin-bottom:15px;">
-                        <div class="info-box"><span class="lbl">IP</span><span class="val">${t.ip}</span></div>
-                        <div class="info-box"><span class="lbl">Signal</span><span class="val">-${Math.floor(Math.random()*50)+60} dBm</span></div>
+
+                <div class="detail-body">
+                    <div class="user-statement">
+                        <i class="fas fa-quote-left" style="margin-right:5px; opacity:0.5;"></i> ${t.desc}
                     </div>
-                    <div class="console">
-> Diagnostics initiated...
-> Pinging Gateway... OK (12ms)
-> Checking Subscriber Profile... Active
-> Error Log: CONNECTION_RESET_BY_PEER
-> Hop 3 latency is high.
+
+                    <div class="info-section">
+                        <div class="sec-title">ABONE BİLGİLERİ</div>
+                        <div class="grid-3">
+                            <div class="data-box"><span class="lbl">Ad Soyad</span><span class="val">${t.name}</span></div>
+                            <div class="data-box"><span class="lbl">GSM No</span><span class="val">${t.gsm}</span></div>
+                            <div class="data-box"><span class="lbl">Segment</span><span class="val">Platinum</span></div>
+                            <div class="data-box"><span class="lbl">Cihaz</span><span class="val">${t.dev}</span></div>
+                            <div class="data-box"><span class="lbl">Güncel Borç</span><span class="val">${t.debt} TL</span></div>
+                            <div class="data-box"><span class="lbl">Kredi Skoru</span><span class="val">1450 (A)</span></div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <div class="sec-title">TEKNİK TELEMETRİ</div>
+                        <div class="grid-2">
+                            <div class="data-box"><span class="lbl">WAN IP</span><span class="val">${t.ip}</span></div>
+                            <div class="data-box"><span class="lbl">MAC/IMEI</span><span class="val">AA:BB:CC:${Math.floor(Math.random()*99)}:${Math.floor(Math.random()*99)}</span></div>
+                            <div class="data-box"><span class="lbl">Sinyal Gücü</span><span class="val" style="color:${Math.random()>0.5?'var(--accent-green)':'var(--accent-red)'}">-${Math.floor(Math.random()*40)+60} dBm</span></div>
+                            <div class="data-box"><span class="lbl">Bağlı İstasyon</span><span class="val">IST-SGL-${Math.floor(Math.random()*9000)}</span></div>
+                        </div>
                     </div>
                 </div>
-                <div style="padding:20px; border-top:1px solid var(--border); display:flex; gap:10px; margin-top:auto;">
-                    <button onclick="openModal()" style="flex:1; padding:12px; background:var(--tc-blue); border:none; border-radius:4px; color:white; font-weight:bold;">Yönlendir</button>
-                    <button onclick="resolve()" style="flex:1; padding:12px; background:var(--accent-green); border:none; border-radius:4px; color:white; font-weight:bold;">Çözüldü</button>
+
+                <div class="col-actions">
+                    <div class="action-pad">
+                        <button class="btn btn-blue" onclick="openModal()"><i class="fas fa-share-square"></i> Talebi Yönlendir</button>
+                        <button class="btn btn-green" onclick="resolveTicket()"><i class="fas fa-check-circle"></i> Çözüldü Kapat</button>
+                    </div>
                 </div>
             `;
         }
 
-        function switchTab(e, id) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('show'));
-            document.getElementById(id).classList.add('show');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-        }
-
-        // --- ABONE SORGU (CUSTOM LOGIC) ---
+        // --- SORGULAMA MOTORU (MEHMET DUGAN LOGIC) ---
         function performSearch() {
-            const inp = document.getElementById('gsmInput').value.replace(/\s/g, '');
-            document.getElementById('result-card').style.display = 'none';
-            document.getElementById('loader').style.display = 'block';
+            const input = document.getElementById('gsm-input').value.replace(/\s/g, '');
+            const resultDiv = document.getElementById('search-result');
+            const loader = document.getElementById('loader');
+
+            if(input.length < 5) { alert("Lütfen geçerli bir numara girin."); return; }
+
+            resultDiv.style.display = 'none';
+            loader.style.display = 'block';
 
             setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('result-card').style.display = 'block';
+                loader.style.display = 'none';
+                resultDiv.style.display = 'block';
                 
                 let data = {};
                 
-                if(inp === '5354653384') {
-                    // *** SPECIFIC TARGET ***
+                if(input === "5354653384") {
+                    // *** HARDCODED TARGET ***
                     data = {
                         name: "MEHMET DUGAN",
-                        tc: "254********",
+                        tc: "125********",
                         dob: "01/04/1964",
                         dev: "Redmi 14C",
                         loc: "İstanbul Kartal Soğanlık Yeni Mh. Eraykent Cd.",
-                        debt: "0.00 TL",
-                        score: "1850 (Mükemmel)",
-                        flag: true
+                        pack: "Redli Fırsat 20GB",
+                        status: "Aktif",
+                        secret: true
                     };
                 } else {
-                    // *** RANDOM ***
+                    // *** RANDOM USER ***
+                    const rndName = `${firstNames[Math.floor(Math.random()*firstNames.length)]} ${lastNames[Math.floor(Math.random()*lastNames.length)]}`;
                     data = {
-                        name: "Bilinmeyen Abone",
+                        name: rndName,
                         tc: Math.floor(Math.random()*99999999999),
-                        dob: "12/05/1985",
-                        dev: "iPhone 13",
-                        loc: "İstanbul / Şişli / Merkez",
-                        debt: (Math.random()*1000).toFixed(2) + " TL",
-                        score: "1200 (Orta)",
-                        flag: false
+                        dob: "12/05/1980",
+                        dev: devices[Math.floor(Math.random()*devices.length)],
+                        loc: districts[Math.floor(Math.random()*districts.length)] + " / Merkez Mh.",
+                        pack: "GNÇ 15GB",
+                        status: "Aktif",
+                        secret: false
                     };
                 }
 
-                document.getElementById('result-card').innerHTML = `
-                    ${data.flag ? '<div class="target-found">HEDEF TESPİT EDİLDİ</div>' : ''}
-                    <div style="display:flex; gap:20px; align-items:center; margin-bottom:20px;">
-                        <div style="width:70px; height:70px; background:#333; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border:2px solid ${data.flag?'var(--accent-red)':'var(--border)'}"><i class="fas fa-user"></i></div>
+                resultDiv.innerHTML = `
+                    ${data.secret ? '<div class="secret-stamp">HEDEF TESPİT EDİLDİ</div>' : ''}
+                    <div style="padding:25px; border-bottom:1px solid var(--border); display:flex; gap:20px; align-items:center;">
+                        <div style="width:80px; height:80px; border-radius:50%; background:#222; border:2px solid ${data.secret ? 'var(--accent-red)' : 'var(--border)'}; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:#666;">
+                            <i class="fas fa-user"></i>
+                        </div>
                         <div>
-                            <h2 style="color:white;">${data.name}</h2>
-                            <div style="color:var(--tc-yellow); font-family:'Consolas'; font-size:1.2rem;">${inp}</div>
+                            <h2 style="color:white; margin-bottom:5px;">${data.name}</h2>
+                            <div style="font-family:'Consolas'; font-size:1.3rem; color:var(--tc-yellow);">${input}</div>
                         </div>
                     </div>
-                    <div class="info-grid">
-                        <div class="info-box"><span class="lbl">Doğum Tarihi</span><span class="val">${data.dob}</span></div>
-                        <div class="info-box"><span class="lbl">Cihaz</span><span class="val">${data.dev}</span></div>
-                        <div class="info-box" style="grid-column:span 2; border-color:${data.flag?'var(--accent-green)':'var(--border)'}"><span class="lbl">Anlık Konum</span><span class="val" style="color:${data.flag?'var(--accent-green)':'white'}">${data.loc}</span></div>
-                        <div class="info-box"><span class="lbl">Borç</span><span class="val">${data.debt}</span></div>
-                        <div class="info-box"><span class="lbl">Kredi Puanı</span><span class="val">${data.score}</span></div>
+                    <div style="padding:25px;">
+                        <div class="grid-2">
+                            <div class="data-box"><span class="lbl">TC Kimlik No</span><span class="val">${data.tc}</span></div>
+                            <div class="data-box"><span class="lbl">Doğum Tarihi</span><span class="val">${data.dob}</span></div>
+                            <div class="data-box"><span class="lbl">Cihaz Modeli</span><span class="val">${data.dev}</span></div>
+                            <div class="data-box"><span class="lbl">Hat Durumu</span><span class="val" style="color:var(--accent-green)">${data.status}</span></div>
+                            <div class="data-box" style="grid-column: span 2; border-color:${data.secret ? 'var(--accent-red)' : 'var(--border)'}">
+                                <span class="lbl">Anlık Konum (Baz İstasyonu)</span>
+                                <span class="val" style="color:${data.secret ? 'var(--accent-red)' : 'white'}">${data.loc}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:20px; font-size:0.8rem; color:#666;">
+                            <i class="fas fa-info-circle"></i> Bu sorgu 6698 sayılı KVKK kapsamında loglanmıştır. İşlem ID: LOG-${Math.floor(Math.random()*999999)}
+                        </div>
                     </div>
                 `;
-            }, 1200);
+            }, 1500);
         }
 
-        // --- NEW: STAFF & ROAMING RENDERS ---
-        function renderStaff() {
-            const body = document.getElementById('staff-body');
-            const staff = [
-                {id:101, n:"Ahmet Yılmaz", r:"Şişli", p:"34 TRK 99", s:"Aktif", c:"var(--accent-green)"},
-                {id:102, n:"Mehmet Demir", r:"Kartal", p:"34 TCELL 01", s:"Yolda", c:"var(--tc-yellow)"},
-                {id:103, n:"Ayşe Kaya", r:"Kadıköy", p:"34 GLB 55", s:"Mola", c:"#888"},
-                {id:104, n:"Caner Erkin", r:"Beşiktaş", p:"34 TRK 22", s:"Aktif", c:"var(--accent-green)"}
-            ];
-            staff.forEach(s => {
-                body.innerHTML += `<tr><td>${s.id}</td><td>${s.n}</td><td>${s.r}</td><td>${s.p}</td><td>Az Önce</td><td><span class="status-badge" style="background:${s.c}; color:white;">${s.s}</span></td></tr>`;
-            });
+        // --- NAVIGATION & UTILS ---
+        function switchView(id, el) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            if(el) el.classList.add('active');
+            
+            const titles = {'dashboard': 'Canlı Arıza Paneli', 'sorgu': 'Abone İstihbarat', 'history': 'İşlem Tarihçesi', 'map': 'Saha & Network Haritası'};
+            document.getElementById('page-header').innerHTML = `<i class="fas fa-th-large"></i> ${titles[id] || 'Panel'}`;
         }
 
-        function renderMap() {
-            const map = document.getElementById('world-map');
-            for(let i=0; i<10; i++) {
-                map.innerHTML += `<div class="map-dot" style="left:${Math.random()*90}%; top:${Math.random()*80}%; background:${Math.random()>0.8?'orange':'#238636'}"></div>`;
-            }
+        function startClock() {
+            setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
         }
 
-        function renderServer() {
-            const grid = document.getElementById('server-grid');
-            for(let i=1; i<=8; i++) {
-                grid.innerHTML += `<div style="background:var(--bg-card); padding:20px; border-radius:8px; border:1px solid var(--border);">
-                    <div style="font-weight:bold; color:white; margin-bottom:10px;">NODE-${i}</div>
-                    <div style="height:5px; background:#333; border-radius:3px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%;"></div></div>
-                    <div style="font-size:0.8rem; color:#888; margin-top:5px;">Load: OK</div>
-                </div>`;
-            }
+        function updateCount() {
+            document.getElementById('ticket-count').innerText = tickets.length;
         }
 
-        // --- MODAL & LOGIC ---
+        function log(msg) {
+            const t = document.getElementById('terminal-log');
+            const time = new Date().toLocaleTimeString();
+            t.innerHTML += `> [${time}] ${msg}<br>`;
+            t.scrollTop = t.scrollHeight;
+        }
+
+        // --- MODAL & ACTIONS ---
         function openModal() {
-            if(!selectedId) return;
-            document.getElementById('m-text').innerText = "ID: #TRK-" + selectedId;
-            document.getElementById('modal').style.display = 'flex';
+            if(!selectedTicket) return;
+            document.getElementById('modal-desc').innerText = `Seçili Talep: #${selectedTicket.id} - ${selectedTicket.name}`;
+            document.getElementById('route-modal').style.display = 'flex';
         }
-        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        function closeModal() { document.getElementById('route-modal').style.display = 'none'; }
         
         function confirmRoute() {
-            const ticket = tickets.find(t => t.id === selectedId);
-            const dept = document.getElementById('m-dept').value;
+            const dept = document.getElementById('route-dept').value;
+            // Add to history
+            const row = `
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px;">#${selectedTicket.id}</td>
+                    <td style="padding:10px;">${dept}</td>
+                    <td style="padding:10px;">${selectedTicket.title}</td>
+                    <td style="padding:10px;">${selectedTicket.name}</td>
+                    <td style="padding:10px;">${new Date().toLocaleTimeString()}</td>
+                    <td style="padding:10px;"><span style="background:#d29922; color:black; padding:2px 6px; border-radius:4px; font-size:0.8rem;">Beklemede</span></td>
+                </tr>
+            `;
+            document.getElementById('hist-table-body').innerHTML = row + document.getElementById('hist-table-body').innerHTML;
             
-            const tbody = document.getElementById('hist-body');
-            tbody.innerHTML = `<tr><td>#${ticket.id}</td><td>${dept}</td><td>${ticket.title}</td><td>Yönlendirildi</td><td>${new Date().toLocaleTimeString()}</td><td><span class="status-badge" style="background:#d29922; color:black;">Bekliyor</span></td></tr>` + tbody.innerHTML;
+            // Remove ticket
+            tickets = tickets.filter(t => t.id !== selectedTicket.id);
+            selectedTicket = null;
+            renderList();
+            updateCount();
+            document.getElementById('detail-view').innerHTML = `<div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);"><i class="fas fa-check-circle" style="font-size:3rem; color:var(--accent-green); margin-bottom:15px;"></i><p>Talep Başarıyla Yönlendirildi.</p></div>`;
             
-            tickets = tickets.filter(t => t.id !== selectedId);
-            selectedId = null;
-            renderTickets();
-            document.getElementById('detail-area').innerHTML = `<div style="height:100%; display:flex; justify-content:center; align-items:center; color:var(--accent-green); flex-direction:column;"><i class="fas fa-check-circle" style="font-size:3rem;"></i><p>Başarıyla Aktarıldı</p></div>`;
+            // Update badge
+            const count = document.getElementById('hist-table-body').children.length;
+            document.getElementById('hist-count').innerText = count;
+            document.getElementById('hist-count').style.display = 'inline-block';
+            
             closeModal();
-        }
-        
-        function resolve() {
-            if(!selectedId) return;
-            alert('Talep Çözüldü olarak kapatıldı.');
-            tickets = tickets.filter(t => t.id !== selectedId);
-            selectedId = null;
-            renderTickets();
-            document.getElementById('detail-area').innerHTML = "";
+            log(`Ticket routed to ${dept}`);
         }
 
-        // --- CHAT ---
-        function sendChat() {
-            const inp = document.getElementById('chat-inp');
-            const area = document.getElementById('chat-area');
-            if(!inp.value) return;
-            area.innerHTML += `<div style="align-self:flex-end; background:var(--tc-blue); padding:10px; border-radius:6px; color:white;">${inp.value}</div>`;
-            inp.value = "";
-            setTimeout(() => {
-                area.innerHTML += `<div style="align-self:flex-start; background:#2b313a; padding:10px; border-radius:6px;">Anlaşıldı Merkez.</div>`;
-            }, 1000);
+        function resolveTicket() {
+             if(!selectedTicket) return;
+             alert('Kayıt kapatıldı.');
+             tickets = tickets.filter(t => t.id !== selectedTicket.id);
+             selectedTicket = null;
+             renderList();
+             updateCount();
+             document.getElementById('detail-view').innerHTML = "";
+             log('Ticket resolved successfully.');
         }
 
     </script>
