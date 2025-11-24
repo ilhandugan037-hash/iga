@@ -1,352 +1,397 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pull&Bear Gift Voucher</title>
+    <title>Turkcell NOC Dashboard v2.0 - İlhan Dugan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #f39c12;
-            --background-color: #ecf0f1;
-            --card-background: #ffffff;
-            --kyrosil-color: #3498db;
-            --success-color: #27ae60;
-            --pullbear-color: #e74c3c;
-            --instagram-color: #E1306C;
+            --bg-dark: #121417;
+            --bg-panel: #1e2229;
+            --tc-blue: #004F9F; /* Turkcell Blue */
+            --tc-yellow: #FFC900; /* Turkcell Yellow */
+            --sol-orange: #ff7f00; /* Superonline Orange hint */
+            --text-main: #e0e0e0;
+            --text-muted: #8b949e;
+            --border: #30363d;
+            --success: #2ea043;
+            --danger: #da3633;
+            --warning: #d29922;
         }
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        .card {
-            background-color: var(--card-background);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .card.shrink {
-            transform: scale(0.6);
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-            padding: 0;
-            margin: 0;
-        }
-        .success-message-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            transition: all 0.5s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            pointer-events: none;
-        }
-        .success-message-container.visible {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 20px;
-        }
-        .logo-container img {
-            max-height: 50px;
-        }
-        .logo-container .kyrosil-logo {
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
-        }
-        .logo-container .pullbear-logo {
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
-            max-height: 40px;
-        }
-        h1 {
-            color: var(--primary-color);
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        .lang-toggle-btn {
-            background-color: #7f8c8d;
-            font-size: 0.9em;
-            padding: 10px;
-            margin-bottom: 10px;
-            width: auto;
-            align-self: flex-start;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .lang-toggle-btn:hover {
-            background-color: #616e73;
-        }
-        p {
-            color: #555;
-            font-size: 1em;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        .highlight {
-            font-weight: 600;
-            color: var(--pullbear-color);
-        }
-        .deadline {
-            font-weight: 700;
-            color: var(--primary-color);
-            background: rgba(0,0,0,0.05);
-            padding: 8px 15px;
-            border-radius: 10px;
-            display: inline-block;
-            margin: 10px 0;
-        }
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        .input-group label {
-            display: none;
-        }
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            font-size: 1em;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--kyrosil-color);
-        }
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-            color: #fff;
-            background-color: var(--kyrosil-color);
-        }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-        }
-        .instagram-btn {
-            background-color: var(--instagram-color);
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s;
-            color: #fff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px; /* Buton ile form içeriği arasına boşluk */
-        }
-        .instagram-btn:hover {
-            transform: translateY(-2px);
-            background-color: #c1285b;
-        }
-        .instagram-btn .instagram-logo { /* SVG yerine img kullanıldığı için */
-            width: 24px;
-            height: 24px;
-            vertical-align: middle;
-        }
-        .success-icon {
-            font-size: 4em;
-            color: var(--success-color);
-            animation: bounceIn 0.8s ease-out;
-            margin-bottom: 10px;
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); }
-        }
-        .success-text {
-            color: var(--success-color);
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-        .form-message {
-            color: #888;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; }
+        
+        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+
+        /* SIDEBAR */
+        .sidebar { width: 250px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 10; }
+        .logo-area { padding: 20px; text-align: center; border-bottom: 2px solid var(--tc-yellow); background: white; }
+        .logo-area img { height: 40px; }
+        
+        .user-card { padding: 20px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border); }
+        .user-name { font-weight: 700; color: var(--tc-yellow); letter-spacing: 0.5px; }
+        .user-title { font-size: 0.8rem; color: var(--text-muted); }
+
+        .menu { flex: 1; padding: 10px 0; overflow-y: auto; }
+        .menu-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; color: var(--text-muted); transition: 0.2s; }
+        .menu-item:hover, .menu-item.active { background: rgba(0,79,159, 0.2); color: white; border-left: 3px solid var(--tc-yellow); }
+        .menu-item i { width: 30px; }
+
+        /* MAIN LAYOUT */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; }
+        
+        /* TOP HEADER */
+        .top-bar { height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .kpi-group { display: flex; gap: 20px; }
+        .kpi-box { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .kpi-val { font-size: 1.2rem; font-weight: bold; color: white; }
+        .kpi-label { font-size: 0.7rem; color: var(--text-muted); }
+
+        /* DASHBOARD GRID */
+        .dashboard-grid { flex: 1; display: grid; grid-template-columns: 3fr 1.5fr; gap: 1px; overflow: hidden; }
+        
+        /* LEFT: TICKET STREAM */
+        .stream-panel { background: var(--bg-dark); display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+        .panel-header { padding: 15px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .panel-title { font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        
+        .controls button { background: var(--border); border: none; color: white; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .controls button:hover { background: var(--tc-blue); }
+        .controls button.active { background: var(--success); }
+
+        .ticket-list { flex: 1; overflow-y: auto; }
+        
+        .ticket-row { display: grid; grid-template-columns: 50px 100px 1.5fr 1fr 100px 80px; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .ticket-row:hover { background: rgba(255,255,255,0.03); }
+        .ticket-row.selected { background: rgba(0,79,159, 0.15); border-left: 3px solid var(--tc-blue); }
+        
+        .type-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        .type-gsm { background: rgba(0,79,159, 0.2); color: #4dabf7; }
+        .type-sol { background: rgba(255, 127, 0, 0.2); color: var(--sol-orange); }
+
+        .priority-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: bold; text-align: center;}
+        .p-high { background: rgba(218, 54, 51, 0.2); color: #ff6b6b; }
+        .p-med { background: rgba(210, 153, 34, 0.2); color: #f1e05a; }
+        .p-low { background: rgba(46, 160, 67, 0.2); color: #7ee787; }
+
+        .btn-action { background: var(--tc-blue); color: white; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
+        .btn-action:hover { background: #003d7a; }
+
+        /* RIGHT: DETAIL VIEW */
+        .detail-panel { background: var(--bg-panel); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .detail-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 20px; }
+        .detail-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+        .info-label { color: var(--text-muted); }
+        .info-val { font-family: 'Courier New', monospace; color: white; }
+
+        .terminal-box { background: #0d1117; padding: 10px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #7ee787; height: 150px; overflow-y: auto; }
+        
+        /* MODAL (YÖNLENDİRME) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; }
+        .modal { background: var(--bg-panel); width: 400px; padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .modal h3 { margin-bottom: 15px; color: white; }
+        .modal select { width: 100%; padding: 10px; background: var(--bg-dark); color: white; border: 1px solid var(--border); margin-bottom: 15px; border-radius: 4px; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+
+        /* ANIMATIONS */
+        @keyframes flashIn { from { background-color: rgba(255, 201, 0, 0.3); } to { background-color: transparent; } }
+        .flash { animation: flashIn 1.5s; }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card" id="form-card">
-            <button class="lang-toggle-btn" id="lang-toggle">Türkçe</button>
-            <div class="logo-container">
-                <img src="https://kyrosil.eu/wp-content/uploads/2025/04/adsiz-tasarim.png" alt="Kyrosil Logo" class="kyrosil-logo">
-                <img src="https://static.vecteezy.com/system/resources/previews/023/871/364/original/pull-and-bear-brand-logo-with-name-black-symbol-clothes-design-icon-abstract-illustration-free-vector.jpg" alt="Pull&Bear Logo" class="pullbear-logo">
+
+    <nav class="sidebar">
+        <div class="logo-area">
+            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell">
+        </div>
+        <div class="user-card">
+            <div class="user-name">İLHAN DUGAN</div>
+            <div class="user-title">Kıdemli Bilgi İşlem Sorumlusu</div>
+            <div style="margin-top: 5px; font-size: 0.75rem; color: var(--success);"><i class="fas fa-circle"></i> VPN Secured</div>
+        </div>
+        <div class="menu">
+            <div class="menu-item active"><i class="fas fa-satellite-dish"></i> NOC Canlı İzleme</div>
+            <div class="menu-item"><i class="fas fa-network-wired"></i> Altyapı (Fiber/DSL)</div>
+            <div class="menu-item"><i class="fas fa-mobile-alt"></i> GSM Baz İstasyonları</div>
+            <div class="menu-item"><i class="fas fa-users-cog"></i> Müşteri Hizmetleri</div>
+            <div class="menu-item"><i class="fas fa-server"></i> Veri Merkezi</div>
+            <div class="menu-item"><i class="fas fa-chart-line"></i> Performans Raporları</div>
+        </div>
+        <div style="padding: 20px; font-size: 0.7rem; color: #555; text-align: center;">
+            System v5.2.1<br>Uptime: 14d 2h
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        <div class="top-bar">
+            <div style="font-weight: 600; color: white;">IT Service Management Dashboard</div>
+            <div class="kpi-group">
+                <div class="kpi-box">
+                    <div class="kpi-val" id="kpi-total">1,204</div>
+                    <div class="kpi-label">Günlük Talep</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-val" id="kpi-pending" style="color: var(--tc-yellow)">42</div>
+                    <div class="kpi-label">Bekleyen</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-val" id="kpi-critical" style="color: var(--danger)">5</div>
+                    <div class="kpi-label">Kritik</div>
+                </div>
+                <div class="kpi-box">
+                    <div class="kpi-val" id="clock">12:00</div>
+                    <div class="kpi-label">Yerel Saat</div>
+                </div>
             </div>
+        </div>
+
+        <div class="dashboard-grid">
             
-            <a href="https://www.instagram.com/kyrosil" class="instagram-btn" target="_blank">
-                <img src="https://i.pinimg.com/originals/6a/39/8e/6a398e2bffd61024b7fa8c6eaf6a4e62.png" alt="Instagram Logo" class="instagram-logo">
-                @kyrosil'i Instagram'da Takip Et
-            </a>
-
-            <div id="en-content">
-                <h1>Get Your Pull&Bear Gift Voucher!</h1>
-                <p>A special offer for our followers! Follow us on Instagram by <span class="deadline">00:00 CET today</span> to get a <span class="highlight">15 Euro Pull&Bear Gift Voucher</span>, valid for European countries.</p>
-                <div class="form-content">
-                    <p class="form-message">Enter your details below to receive your voucher code by email.</p>
-                    <div class="input-group">
-                        <label for="instagram-en">Instagram Username</label>
-                        <input type="text" id="instagram-en" name="instagram" placeholder="Your Instagram Username" required>
+            <div class="stream-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i class="fas fa-list-ul"></i> Gelen Talepler (GSM & Superonline)
                     </div>
-                    <div class="input-group">
-                        <label for="email-en">Email Address</label>
-                        <input type="email" id="email-en" name="email" placeholder="Your Email Address" required>
-                    </div>
-                    <div class="button-container">
-                        <button type="submit" class="submit-btn" id="submit-btn-en">Get My Voucher!</button>
+                    <div class="controls">
+                        <button id="btnPause" onclick="toggleFlow()"><i class="fas fa-pause"></i> Akışı Durdur</button>
+                        <button onclick="clearCompleted()"><i class="fas fa-broom"></i> Temizle</button>
                     </div>
                 </div>
-            </div>
-
-            <div id="tr-content" style="display: none;">
-                <h1>Pull&Bear Hediye Çekini Kap!</h1>
-                <p>Sadece takipçilerimize özel bir kampanya! Instagram'dan bizi <span class="deadline">bugün 00.00 CET'e kadar</span> takip et, <span class="highlight">500 TL değerinde Pull&Bear Hediye Çeki</span> kazan. (Türkiye için geçerlidir)</p>
-                <div class="form-content">
-                    <p class="form-message">Hediye çeki kodunun mail adresinize gönderilmesi için bilgilerinizi girin.</p>
-                    <div class="input-group">
-                        <label for="instagram-tr">Instagram Kullanıcı Adınız</label>
-                        <input type="text" id="instagram-tr" name="instagram" placeholder="Instagram Kullanıcı Adınız" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="email-tr">E-posta Adresiniz</label>
-                        <input type="email" id="email-tr" name="email" placeholder="E-posta Adresiniz" required>
-                    </div>
-                    <div class="button-container">
-                        <button type="submit" class="submit-btn" id="submit-btn-tr">Çekimi Al!</button>
-                    </div>
+                
+                <div class="ticket-row" style="background: var(--bg-panel); color: var(--text-muted); font-weight: 600; cursor: default;">
+                    <div>Tür</div>
+                    <div>Talep ID</div>
+                    <div>Lokasyon / Abone</div>
+                    <div>Sorun Özeti</div>
+                    <div>Öncelik</div>
+                    <div>İşlem</div>
                 </div>
-            </div>
-        </div>
 
-        <div class="success-message-container" id="success-message-en">
-            <span class="success-icon">&#10003;</span>
-            <span class="success-text">Your voucher code will be sent to your email after verification.</span>
+                <div class="ticket-list" id="ticketContainer">
+                    </div>
+            </div>
+
+            <div class="detail-panel" id="detailPanel">
+                <div style="text-align: center; color: var(--text-muted); margin-top: 100px;">
+                    <i class="fas fa-mouse-pointer" style="font-size: 3rem; margin-bottom: 20px;"></i><br>
+                    Detayları görmek için listeden bir talebe tıklayın.
+                </div>
+                </div>
+
         </div>
-        <div class="success-message-container" id="success-message-tr">
-            <span class="success-icon">&#10003;</span>
-            <span class="success-text">Kontrollerin ardından hediye çeki kodunuz mail adresinize gönderilecektir.</span>
+    </div>
+
+    <div class="modal-overlay" id="routeModal">
+        <div class="modal">
+            <h3><i class="fas fa-random"></i> Talebi Yönlendir</h3>
+            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 10px;">Talep ID: <span id="modalTicketId" style="color:white;"></span></p>
+            
+            <label style="font-size: 0.8rem; color: #aaa;">Hedef Departman:</label>
+            <select id="routeSelect">
+                <option value="saha">Saha Operasyonları (Field Ops)</option>
+                <option value="network">Core Network Mühendisliği</option>
+                <option value="yazilim">Yazılım Destek (CRM)</option>
+                <option value="superonline">Superonline Fiber Altyapı</option>
+                <option value="musteri">Müşteri İlişkileri (Geri Dönüş)</option>
+            </select>
+            
+            <label style="font-size: 0.8rem; color: #aaa;">Not Ekle:</label>
+            <textarea style="width:100%; background:var(--bg-dark); color:white; border:1px solid var(--border); border-radius:4px; padding:5px; margin-bottom:15px;"></textarea>
+
+            <div class="modal-buttons">
+                <button onclick="closeModal()" style="padding: 8px 15px; background: transparent; border: 1px solid var(--border); color: white; border-radius: 4px; cursor: pointer;">İptal</button>
+                <button onclick="confirmRoute()" style="padding: 8px 15px; background: var(--success); border: none; color: white; border-radius: 4px; cursor: pointer;">Onayla ve Gönder</button>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const langToggleBtn = document.getElementById('lang-toggle');
-            const enContent = document.getElementById('en-content');
-            const trContent = document.getElementById('tr-content');
-            const successEn = document.getElementById('success-message-en');
-            const successTr = document.getElementById('success-message-tr');
-            const formCard = document.getElementById('form-card');
-            let isEnglish = true;
+        // --- CONFIG ---
+        let isFlowing = true;
+        let selectedTicketId = null;
+        let ticketCounter = 1000;
 
-            function switchLanguage() {
-                if (isEnglish) {
-                    enContent.style.display = 'none';
-                    trContent.style.display = 'block';
-                    langToggleBtn.textContent = 'English';
-                } else {
-                    enContent.style.display = 'block';
-                    trContent.style.display = 'none';
-                    langToggleBtn.textContent = 'Türkçe';
-                }
-                isEnglish = !isEnglish;
+        // --- DATA POOLS ---
+        const locations = ["İstanbul / Şişli", "Ankara / Çankaya", "İzmir / Bornova", "Antalya / Muratpaşa", "Trabzon / Merkez", "Diyarbakır / Kayapınar", "Bursa / Nilüfer"];
+        const gsmIssues = ["4.5G Hız Düşüklüğü", "Sinyal Yok (No Service)", "Baz İstasyonu Alarmı", "Roaming Bağlanmıyor", "Sim Kart Bloke", "Arama Düşmesi (Drop)"];
+        const solIssues = ["Fiber LOS Işığı Yanıyor", "Modem IP Almıyor", "Paket Hız Uyuşmazlığı", "DSL Kopmaları", "Statik IP Tanımlama", "TV+ Görüntü Yok"];
+        
+        // --- HELPERS ---
+        function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function rndNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        // --- CLOCK ---
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+        }, 1000);
+
+        // --- CORE FUNCTIONS ---
+        
+        // 1. Generate Ticket
+        function addTicket() {
+            if(!isFlowing) return;
+
+            ticketCounter++;
+            const isGsm = Math.random() > 0.4; // %60 GSM, %40 SOL
+            const typeClass = isGsm ? 'type-gsm' : 'type-sol';
+            const icon = isGsm ? '<i class="fas fa-signal"></i>' : '<i class="fas fa-wifi"></i>';
+            const issue = isGsm ? rnd(gsmIssues) : rnd(solIssues);
+            const loc = rnd(locations);
+            const priorityVal = Math.random();
+            let priority = "Normal", pClass = "p-low";
+            
+            if(priorityVal > 0.7) { priority = "Yüksek"; pClass = "p-med"; }
+            if(priorityVal > 0.9) { priority = "KRİTİK"; pClass = "p-high"; }
+
+            const container = document.getElementById('ticketContainer');
+            const row = document.createElement('div');
+            row.className = "ticket-row flash";
+            row.id = `ticket-${ticketCounter}`;
+            row.onclick = function(e) { 
+                if(!e.target.classList.contains('btn-action')) selectTicket(this, ticketCounter, isGsm, issue, loc); 
+            };
+
+            row.innerHTML = `
+                <div><div class="type-icon ${typeClass}">${icon}</div></div>
+                <div style="font-family:'Courier New';">#TRK-${ticketCounter}</div>
+                <div>${loc}<br><span style="font-size:0.75rem; color:#888;">Müşteri Hizm. Aktarımı</span></div>
+                <div style="color:white;">${issue}</div>
+                <div><span class="priority-badge ${pClass}">${priority}</span></div>
+                <div><button class="btn-action" onclick="openRouteModal(${ticketCounter})">Yönlendir</button></div>
+            `;
+
+            container.insertBefore(row, container.firstChild);
+
+            // Keep list clean (max 50 items)
+            if(container.children.length > 50) container.removeChild(container.lastChild);
+
+            // Update stats
+            updateStats();
+        }
+
+        // 2. Select Ticket & Show Details
+        function selectTicket(el, id, isGsm, issue, loc) {
+            // UI Selection highlight
+            document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('selected'));
+            el.classList.add('selected');
+
+            // Generate Fake Tech Data
+            const panel = document.getElementById('detailPanel');
+            const ip = `10.${rndNum(10,99)}.${rndNum(0,255)}.${rndNum(1,254)}`;
+            const mac = isGsm ? `IMEI: 354${rndNum(100000000, 999999999)}` : `MAC: 00:1A:2B:${rndNum(10,99)}:${rndNum(10,99)}:${rndNum(10,99)}`;
+            const signal = isGsm ? `-${rndNum(60, 110)} dBm (LTE Band 3)` : `Rx: -${rndNum(15, 30)} dBm (Fiber)`;
+            
+            let extraData = "";
+            if(isGsm) {
+                extraData = `
+                    <div class="info-row"><span class="info-label">Abone MSISDN:</span> <span class="info-val">532 *** ** 98</span></div>
+                    <div class="info-row"><span class="info-label">Baz İstasyonu ID:</span> <span class="info-val">IST-${rndNum(1000,9999)}</span></div>
+                    <div class="info-row"><span class="info-label">Hücre Yükü:</span> <span class="info-val">%${rndNum(20,95)}</span></div>
+                `;
+            } else {
+                extraData = `
+                    <div class="info-row"><span class="info-label">Abone No:</span> <span class="info-val">520${rndNum(10000,99999)}</span></div>
+                    <div class="info-row"><span class="info-label">Santral:</span> <span class="info-val">POP-${rndNum(1,50)}</span></div>
+                    <div class="info-row"><span class="info-label">Paket Kaybı:</span> <span class="info-val">%${rndNum(0,5)}</span></div>
+                `;
             }
 
-            langToggleBtn.addEventListener('click', switchLanguage);
+            panel.innerHTML = `
+                <div class="detail-card">
+                    <div class="detail-title"><i class="fas fa-info-circle"></i> Talep Detayları (#TRK-${id})</div>
+                    <div style="font-size:1.1rem; color:var(--tc-yellow); margin-bottom:10px;">${issue}</div>
+                    <div style="color:white; margin-bottom:5px;">${loc}</div>
+                    <div style="font-size:0.8rem; color:#888;">Oluşturan: Müşteri Hizmetleri Tier-1</div>
+                </div>
 
-            // Form Submit Logic for English
-            document.getElementById('submit-btn-en').addEventListener('click', function(event) {
-                event.preventDefault();
-                const instagramInput = document.getElementById('instagram-en');
-                const emailInput = document.getElementById('email-en');
-                if (instagramInput.value.trim() !== '' && emailInput.value.trim() !== '') {
-                    formCard.classList.add('shrink');
-                    setTimeout(() => {
-                        formCard.style.display = 'none';
-                        successEn.classList.add('visible');
-                    }, 500);
-                } else {
-                    alert('Please fill out both fields.');
-                }
-            });
+                <div class="detail-card">
+                    <div class="detail-title"><i class="fas fa-microchip"></i> Teknik Metrikler</div>
+                    <div class="info-row"><span class="info-label">Cihaz / ID:</span> <span class="info-val">${mac}</span></div>
+                    <div class="info-row"><span class="info-label">IP Adresi:</span> <span class="info-val">${ip}</span></div>
+                    <div class="info-row"><span class="info-label">Sinyal Seviyesi:</span> <span class="info-val" style="color:${rndNum(0,1)>0.5?'#7ee787':'#ff6b6b'}">${signal}</span></div>
+                    ${extraData}
+                </div>
 
-            // Form Submit Logic for Turkish
-            document.getElementById('submit-btn-tr').addEventListener('click', function(event) {
-                event.preventDefault();
-                const instagramInput = document.getElementById('instagram-tr');
-                const emailInput = document.getElementById('email-tr');
-                if (instagramInput.value.trim() !== '' && emailInput.value.trim() !== '') {
-                    formCard.classList.add('shrink');
-                    setTimeout(() => {
-                        formCard.style.display = 'none';
-                        successTr.classList.add('visible');
-                    }, 500);
-                } else {
-                    alert('Lütfen her iki alanı da doldurunuz.');
-                }
-            });
-        });
+                <div class="detail-card">
+                    <div class="detail-title"><i class="fas fa-terminal"></i> Canlı Loglar</div>
+                    <div class="terminal-box" id="term-${id}">
+                        > Pinging Device... <br>
+                        > Reply from ${ip}: time=${rndNum(5,40)}ms<br>
+                        > Checking Auth Status... [OK]<br>
+                        > Querying Profile... [OK]<br>
+                        > Last Error: TIMEOUT_WAITING_FOR_ACK<br>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:10px;">
+                    <button onclick="openRouteModal(${id})" style="flex:1; padding:10px; background:var(--tc-blue); color:white; border:none; border-radius:4px; cursor:pointer;">Yönlendir</button>
+                    <button onclick="alert('Talep çözüldü olarak işaretlendi.')" style="flex:1; padding:10px; background:var(--success); color:white; border:none; border-radius:4px; cursor:pointer;">Çözüldü</button>
+                </div>
+            `;
+        }
+
+        // 3. Routing System (Modal)
+        function openRouteModal(id) {
+            selectedTicketId = id;
+            document.getElementById('modalTicketId').innerText = `#TRK-${id}`;
+            document.getElementById('routeModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('routeModal').style.display = 'none';
+        }
+
+        function confirmRoute() {
+            const department = document.getElementById('routeSelect').options[document.getElementById('routeSelect').selectedIndex].text;
+            
+            // UI Update
+            const row = document.getElementById(`ticket-${selectedTicketId}`);
+            if(row) {
+                row.style.opacity = '0.5';
+                row.innerHTML = `<div colspan="6" style="padding:10px; text-align:center; color:#7ee787;"><i class="fas fa-check"></i> ${department} birimine yönlendirildi.</div>`;
+                setTimeout(() => row.remove(), 2000);
+            }
+            
+            closeModal();
+            updateStats(-1); // Decrease pending count
+        }
+
+        // 4. Update Stats (Top Bar)
+        function updateStats(delta = 1) {
+            const pending = document.getElementById('kpi-pending');
+            const total = document.getElementById('kpi-total');
+            
+            pending.innerText = parseInt(pending.innerText) + delta;
+            if(delta > 0) total.innerText = parseInt(total.innerText) + 1;
+        }
+
+        // 5. Flow Control
+        function toggleFlow() {
+            isFlowing = !isFlowing;
+            const btn = document.getElementById('btnPause');
+            if(isFlowing) {
+                btn.innerHTML = '<i class="fas fa-pause"></i> Akışı Durdur';
+                btn.classList.remove('active');
+            } else {
+                btn.innerHTML = '<i class="fas fa-play"></i> Akışı Başlat';
+                btn.classList.add('active');
+            }
+        }
+
+        // --- INIT ---
+        // Start generating tickets regularly
+        setInterval(addTicket, 3500); // Her 3.5 saniyede bir yeni talep
+        addTicket(); addTicket(); addTicket(); // Başlangıçta 3 tane olsun
+
     </script>
 </body>
 </html>
