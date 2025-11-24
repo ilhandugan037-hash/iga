@@ -3,394 +3,551 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turkcell NOC Dashboard v2.0 - İlhan Dugan</title>
+    <title>Turkcell ITSM Enterprise - İlhan Dugan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #121417;
-            --bg-panel: #1e2229;
-            --tc-blue: #004F9F; /* Turkcell Blue */
-            --tc-yellow: #FFC900; /* Turkcell Yellow */
-            --sol-orange: #ff7f00; /* Superonline Orange hint */
-            --text-main: #e0e0e0;
-            --text-muted: #8b949e;
+            --bg-dark: #0f1115;
+            --bg-panel: #161b22;
+            --bg-secondary: #21262d;
+            --tc-blue: #004F9F;
+            --tc-dark-blue: #002c59;
+            --tc-yellow: #FFC900;
+            --text-main: #c9d1d9;
+            --text-header: #f0f6fc;
             --border: #30363d;
-            --success: #2ea043;
+            --success: #238636;
             --danger: #da3633;
             --warning: #d29922;
+            --info: #388bfd;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; }
-        
-        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
+        body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; font-size: 14px; }
 
         /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 
-        /* SIDEBAR */
-        .sidebar { width: 250px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 10; }
-        .logo-area { padding: 20px; text-align: center; border-bottom: 2px solid var(--tc-yellow); background: white; }
-        .logo-area img { height: 40px; }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 100; }
+        .brand { height: 60px; display: flex; align-items: center; justify-content: center; background: white; border-bottom: 3px solid var(--tc-yellow); }
+        .brand img { max-height: 35px; }
         
-        .user-card { padding: 20px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border); }
-        .user-name { font-weight: 700; color: var(--tc-yellow); letter-spacing: 0.5px; }
-        .user-title { font-size: 0.8rem; color: var(--text-muted); }
+        .user-profile { padding: 20px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03); }
+        .user-name { font-size: 1.1rem; font-weight: 700; color: var(--tc-yellow); }
+        .user-role { font-size: 0.85rem; color: #8b949e; margin-top: 4px; }
 
-        .menu { flex: 1; padding: 10px 0; overflow-y: auto; }
-        .menu-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; color: var(--text-muted); transition: 0.2s; }
-        .menu-item:hover, .menu-item.active { background: rgba(0,79,159, 0.2); color: white; border-left: 3px solid var(--tc-yellow); }
-        .menu-item i { width: 30px; }
+        .nav-menu { flex: 1; padding: 10px 0; overflow-y: auto; }
+        .nav-item { padding: 12px 24px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s; color: #8b949e; }
+        .nav-item:hover, .nav-item.active { background: var(--tc-blue); color: white; }
+        .nav-item i { width: 20px; text-align: center; }
 
-        /* MAIN LAYOUT */
-        .main-wrapper { flex: 1; display: flex; flex-direction: column; }
+        /* --- MAIN AREA --- */
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
         
-        /* TOP HEADER */
-        .top-bar { height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .kpi-group { display: flex; gap: 20px; }
-        .kpi-box { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .kpi-val { font-size: 1.2rem; font-weight: bold; color: white; }
-        .kpi-label { font-size: 0.7rem; color: var(--text-muted); }
-
-        /* DASHBOARD GRID */
-        .dashboard-grid { flex: 1; display: grid; grid-template-columns: 3fr 1.5fr; gap: 1px; overflow: hidden; }
+        .top-header { height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+        .header-title { font-size: 1.2rem; font-weight: 600; color: var(--text-header); }
+        .sys-stats { display: flex; gap: 20px; font-size: 0.9rem; }
+        .stat-badge { padding: 4px 10px; border-radius: 20px; background: var(--bg-secondary); border: 1px solid var(--border); }
         
-        /* LEFT: TICKET STREAM */
-        .stream-panel { background: var(--bg-dark); display: flex; flex-direction: column; border-right: 1px solid var(--border); }
-        .panel-header { padding: 15px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .panel-title { font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        /* --- VIEWS (PAGES) --- */
+        .view-section { display: none; flex: 1; overflow: hidden; padding: 20px; height: calc(100vh - 60px); }
+        .view-section.active-view { display: flex; gap: 20px; }
+
+        /* --- DASHBOARD VIEW --- */
+        .ticket-list-panel { flex: 2; display: flex; flex-direction: column; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+        .panel-head { padding: 15px; background: var(--bg-secondary); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
         
-        .controls button { background: var(--border); border: none; color: white; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
-        .controls button:hover { background: var(--tc-blue); }
-        .controls button.active { background: var(--success); }
-
-        .ticket-list { flex: 1; overflow-y: auto; }
+        .ticket-table-container { flex: 1; overflow-y: auto; }
+        .ticket-row { display: grid; grid-template-columns: 50px 100px 1fr 120px 100px; padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; align-items: center; transition: 0.1s; }
+        .ticket-row:hover { background: rgba(255,255,255,0.05); }
+        .ticket-row.selected { background: rgba(0, 79, 159, 0.2); border-left: 3px solid var(--tc-blue); }
         
-        .ticket-row { display: grid; grid-template-columns: 50px 100px 1.5fr 1fr 100px 80px; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .ticket-row:hover { background: rgba(255,255,255,0.03); }
-        .ticket-row.selected { background: rgba(0,79,159, 0.15); border-left: 3px solid var(--tc-blue); }
+        .t-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .bg-gsm { background: rgba(56, 139, 253, 0.2); color: #58a6ff; }
+        .bg-fiber { background: rgba(235, 120, 25, 0.2); color: #f7a66b; }
+        .bg-corp { background: rgba(163, 113, 247, 0.2); color: #d2a8ff; }
+
+        /* --- DETAIL PANE --- */
+        .detail-panel { flex: 1.2; display: flex; flex-direction: column; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
         
-        .type-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
-        .type-gsm { background: rgba(0,79,159, 0.2); color: #4dabf7; }
-        .type-sol { background: rgba(255, 127, 0, 0.2); color: var(--sol-orange); }
+        .tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg-secondary); }
+        .tab { flex: 1; padding: 12px; text-align: center; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; }
+        .tab:hover { background: rgba(255,255,255,0.05); }
+        .tab.active { border-bottom-color: var(--tc-yellow); color: var(--text-header); font-weight: 600; background: var(--bg-panel); }
 
-        .priority-badge { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: bold; text-align: center;}
-        .p-high { background: rgba(218, 54, 51, 0.2); color: #ff6b6b; }
-        .p-med { background: rgba(210, 153, 34, 0.2); color: #f1e05a; }
-        .p-low { background: rgba(46, 160, 67, 0.2); color: #7ee787; }
+        .tab-content { padding: 20px; overflow-y: auto; flex: 1; display: none; }
+        .tab-content.active { display: block; }
 
-        .btn-action { background: var(--tc-blue); color: white; border: none; padding: 4px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
-        .btn-action:hover { background: #003d7a; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .info-item label { display: block; font-size: 0.75rem; color: #8b949e; margin-bottom: 4px; }
+        .info-item div { font-family: 'Courier New', monospace; font-size: 0.95rem; color: var(--text-header); }
 
-        /* RIGHT: DETAIL VIEW */
-        .detail-panel { background: var(--bg-panel); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .detail-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 20px; }
-        .detail-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .log-terminal { background: #000; padding: 15px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.85rem; color: #7ee787; height: 200px; overflow-y: auto; border: 1px solid #333; }
+
+        .action-bar { padding: 15px; border-top: 1px solid var(--border); background: var(--bg-secondary); display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-primary { background: var(--tc-blue); color: white; }
+        .btn-primary:hover { background: #003d7a; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+
+        /* --- TRANSFERRED PAGE STYLES --- */
+        .full-table { width: 100%; border-collapse: collapse; }
+        .full-table th, .full-table td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
+        .full-table th { background: var(--bg-secondary); color: #8b949e; }
         
-        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
-        .info-label { color: var(--text-muted); }
-        .info-val { font-family: 'Courier New', monospace; color: white; }
+        /* --- MAP PAGE STYLES --- */
+        .map-container { position: relative; width: 100%; height: 100%; background: #0d1117; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .map-overlay { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 8px; border: 1px solid var(--border); width: 200px; }
+        .city-dot { width: 12px; height: 12px; border-radius: 50%; position: absolute; box-shadow: 0 0 10px currentColor; transition: 0.5s; }
 
-        .terminal-box { background: #0d1117; padding: 10px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.8rem; color: #7ee787; height: 150px; overflow-y: auto; }
-        
-        /* MODAL (YÖNLENDİRME) */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; }
-        .modal { background: var(--bg-panel); width: 400px; padding: 20px; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .modal h3 { margin-bottom: 15px; color: white; }
-        .modal select { width: 100%; padding: 10px; background: var(--bg-dark); color: white; border: 1px solid var(--border); margin-bottom: 15px; border-radius: 4px; }
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+        /* --- MODAL --- */
+        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+        .modal-box { width: 450px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); padding: 25px; }
+        .modal-header { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--text-header); display: flex; justify-content: space-between; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #8b949e; }
+        .form-control { width: 100%; padding: 10px; background: var(--bg-dark); border: 1px solid var(--border); color: white; border-radius: 4px; }
 
-        /* ANIMATIONS */
-        @keyframes flashIn { from { background-color: rgba(255, 201, 0, 0.3); } to { background-color: transparent; } }
-        .flash { animation: flashIn 1.5s; }
+        /* ANIMATION */
+        @keyframes blink { 50% { opacity: 0.4; } }
+        .live-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block; animation: blink 1s infinite; margin-right: 5px; }
 
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
-        <div class="logo-area">
-            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell">
+        <div class="brand">
+            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell Logo">
         </div>
-        <div class="user-card">
+        <div class="user-profile">
             <div class="user-name">İLHAN DUGAN</div>
-            <div class="user-title">Kıdemli Bilgi İşlem Sorumlusu</div>
-            <div style="margin-top: 5px; font-size: 0.75rem; color: var(--success);"><i class="fas fa-circle"></i> VPN Secured</div>
+            <div class="user-role">Kıdemli Sistem Yöneticisi</div>
+            <div style="margin-top: 8px; font-size: 0.75rem; color: var(--success);"><i class="fas fa-shield-alt"></i> Admin Yetkisi: Aktif</div>
         </div>
-        <div class="menu">
-            <div class="menu-item active"><i class="fas fa-satellite-dish"></i> NOC Canlı İzleme</div>
-            <div class="menu-item"><i class="fas fa-network-wired"></i> Altyapı (Fiber/DSL)</div>
-            <div class="menu-item"><i class="fas fa-mobile-alt"></i> GSM Baz İstasyonları</div>
-            <div class="menu-item"><i class="fas fa-users-cog"></i> Müşteri Hizmetleri</div>
-            <div class="menu-item"><i class="fas fa-server"></i> Veri Merkezi</div>
-            <div class="menu-item"><i class="fas fa-chart-line"></i> Performans Raporları</div>
-        </div>
-        <div style="padding: 20px; font-size: 0.7rem; color: #555; text-align: center;">
-            System v5.2.1<br>Uptime: 14d 2h
+        <div class="nav-menu">
+            <div class="nav-item active" onclick="switchView('dashboard', this)">
+                <i class="fas fa-stream"></i> Canlı Arıza Akışı
+            </div>
+            <div class="nav-item" onclick="switchView('transferred', this)">
+                <i class="fas fa-share-square"></i> Aktarılan İşler
+            </div>
+            <div class="nav-item" onclick="switchView('network', this)">
+                <i class="fas fa-map-marked-alt"></i> Canlı Şebeke Haritası
+            </div>
+            <div class="nav-item" onclick="alert('Rapor modülü hazırlanıyor...')">
+                <i class="fas fa-chart-pie"></i> Performans Raporları
+            </div>
+            <div class="nav-item" onclick="alert('Ayarlar kilitli.')">
+                <i class="fas fa-cog"></i> Sistem Ayarları
+            </div>
         </div>
     </nav>
 
-    <div class="main-wrapper">
-        <div class="top-bar">
-            <div style="font-weight: 600; color: white;">IT Service Management Dashboard</div>
-            <div class="kpi-group">
-                <div class="kpi-box">
-                    <div class="kpi-val" id="kpi-total">1,204</div>
-                    <div class="kpi-label">Günlük Talep</div>
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-title" id="page-title">Operasyon Merkezi (NOC)</div>
+            <div class="sys-stats">
+                <div class="stat-badge"><span class="live-dot"></span>Core Network: ONLINE</div>
+                <div class="stat-badge" style="border-color: var(--tc-yellow); color: var(--tc-yellow);">Bekleyen: <span id="stat-pending">0</span></div>
+                <div class="stat-badge" style="border-color: var(--info); color: var(--info);">Aktarılan: <span id="stat-transferred">0</span></div>
+                <div class="stat-badge"><i class="far fa-clock"></i> <span id="clock">12:00:00</span></div>
+            </div>
+        </header>
+
+        <div id="view-dashboard" class="view-section active-view">
+            <div class="ticket-list-panel">
+                <div class="panel-head">
+                    <span><i class="fas fa-inbox"></i> Gelen Talepler</span>
+                    <button onclick="toggleFlow()" id="flowBtn" style="font-size:0.8rem; background:transparent; border:1px solid #555; color:#aaa; padding:5px 10px; cursor:pointer;">Akışı Durdur</button>
                 </div>
-                <div class="kpi-box">
-                    <div class="kpi-val" id="kpi-pending" style="color: var(--tc-yellow)">42</div>
-                    <div class="kpi-label">Bekleyen</div>
+                <div class="ticket-table-container">
+                    <div id="ticket-stream">
+                        </div>
                 </div>
-                <div class="kpi-box">
-                    <div class="kpi-val" id="kpi-critical" style="color: var(--danger)">5</div>
-                    <div class="kpi-label">Kritik</div>
-                </div>
-                <div class="kpi-box">
-                    <div class="kpi-val" id="clock">12:00</div>
-                    <div class="kpi-label">Yerel Saat</div>
+            </div>
+
+            <div class="detail-panel" id="detail-pane">
+                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555; flex-direction:column;">
+                    <i class="fas fa-mouse-pointer" style="font-size:3rem; margin-bottom:20px;"></i>
+                    <p>Detayları görüntülemek için bir talebe tıklayın.</p>
                 </div>
             </div>
         </div>
 
-        <div class="dashboard-grid">
-            
-            <div class="stream-panel">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <i class="fas fa-list-ul"></i> Gelen Talepler (GSM & Superonline)
-                    </div>
-                    <div class="controls">
-                        <button id="btnPause" onclick="toggleFlow()"><i class="fas fa-pause"></i> Akışı Durdur</button>
-                        <button onclick="clearCompleted()"><i class="fas fa-broom"></i> Temizle</button>
-                    </div>
+        <div id="view-transferred" class="view-section">
+            <div style="width:100%; background: var(--bg-panel); border: 1px solid var(--border); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+                <div class="panel-head">
+                    <i class="fas fa-history"></i> Diğer Birimlere Aktarılan İşler Takibi
                 </div>
-                
-                <div class="ticket-row" style="background: var(--bg-panel); color: var(--text-muted); font-weight: 600; cursor: default;">
-                    <div>Tür</div>
-                    <div>Talep ID</div>
-                    <div>Lokasyon / Abone</div>
-                    <div>Sorun Özeti</div>
-                    <div>Öncelik</div>
-                    <div>İşlem</div>
+                <div style="overflow-y: auto; flex:1;">
+                    <table class="full-table">
+                        <thead>
+                            <tr>
+                                <th>Talep ID</th>
+                                <th>Birim</th>
+                                <th>Sorun Tipi</th>
+                                <th>Aktarım Zamanı</th>
+                                <th>Notunuz</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transferred-body">
+                            </tbody>
+                    </table>
                 </div>
-
-                <div class="ticket-list" id="ticketContainer">
-                    </div>
             </div>
-
-            <div class="detail-panel" id="detailPanel">
-                <div style="text-align: center; color: var(--text-muted); margin-top: 100px;">
-                    <i class="fas fa-mouse-pointer" style="font-size: 3rem; margin-bottom: 20px;"></i><br>
-                    Detayları görmek için listeden bir talebe tıklayın.
-                </div>
-                </div>
-
         </div>
-    </div>
 
-    <div class="modal-overlay" id="routeModal">
-        <div class="modal">
-            <h3><i class="fas fa-random"></i> Talebi Yönlendir</h3>
-            <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 10px;">Talep ID: <span id="modalTicketId" style="color:white;"></span></p>
-            
-            <label style="font-size: 0.8rem; color: #aaa;">Hedef Departman:</label>
-            <select id="routeSelect">
-                <option value="saha">Saha Operasyonları (Field Ops)</option>
-                <option value="network">Core Network Mühendisliği</option>
-                <option value="yazilim">Yazılım Destek (CRM)</option>
-                <option value="superonline">Superonline Fiber Altyapı</option>
-                <option value="musteri">Müşteri İlişkileri (Geri Dönüş)</option>
-            </select>
-            
-            <label style="font-size: 0.8rem; color: #aaa;">Not Ekle:</label>
-            <textarea style="width:100%; background:var(--bg-dark); color:white; border:1px solid var(--border); border-radius:4px; padding:5px; margin-bottom:15px;"></textarea>
+        <div id="view-network" class="view-section">
+            <div class="map-container" id="map-area">
+                <div style="font-size:2rem; opacity:0.1; font-weight:900;">TÜRKİYE NETWORK TOPOLOJİSİ</div>
+                <div class="map-overlay">
+                    <h4 style="margin-bottom:10px; color:white;">Bölgesel Durum</h4>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>İstanbul (Avr)</span> <span style="color:#7ee787">Normal</span></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>İstanbul (And)</span> <span style="color:#7ee787">Normal</span></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>Ankara</span> <span style="color:#d29922">Yük Altında</span></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>İzmir</span> <span style="color:#7ee787">Normal</span></div>
+                    <div style="display:flex; justify-content:space-between;"><span>Diyarbakır</span> <span style="color:#7ee787">Normal</span></div>
+                </div>
+            </div>
+        </div>
 
-            <div class="modal-buttons">
-                <button onclick="closeModal()" style="padding: 8px 15px; background: transparent; border: 1px solid var(--border); color: white; border-radius: 4px; cursor: pointer;">İptal</button>
-                <button onclick="confirmRoute()" style="padding: 8px 15px; background: var(--success); border: none; color: white; border-radius: 4px; cursor: pointer;">Onayla ve Gönder</button>
+    </main>
+
+    <div class="modal-bg" id="transferModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span>Talebi Yönlendir</span>
+                <i class="fas fa-times" style="cursor:pointer;" onclick="closeModal()"></i>
+            </div>
+            <div class="form-group">
+                <label>Hedef Departman</label>
+                <select class="form-control" id="targetDept">
+                    <option value="Saha Operasyonları (Field)">Saha Operasyonları (Field Ops)</option>
+                    <option value="Core Network">Core Network / Backbone</option>
+                    <option value="Yazılım Destek">Yazılım / CRM Destek</option>
+                    <option value="Kurumsal Müşteri">Kurumsal Müşteri Yönetimi</option>
+                    <option value="Hukuk">Hukuk / Regülasyon</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Teknik Notunuz</label>
+                <textarea class="form-control" rows="4" id="transferNote" placeholder="Lütfen teknik bulguları ve yönlendirme sebebini yazınız..."></textarea>
+            </div>
+            <div style="text-align:right;">
+                <button class="btn btn-primary" onclick="confirmTransfer()">Onayla ve Gönder</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CONFIG ---
+        // --- DATA GENERATORS ---
+        const firstNames = ["Ahmet", "Mehmet", "Ayşe", "Fatma", "Can", "Burak", "Selin", "Zeynep", "Murat", "Elif"];
+        const lastNames = ["Yılmaz", "Kaya", "Demir", "Çelik", "Şahin", "Öztürk", "Arslan", "Doğan"];
+        const cities = ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Adana", "Gaziantep", "Trabzon"];
+        
+        const issues = {
+            gsm: [
+                { title: "Sinyal Yok (No Service)", desc: "Müşteri tünele girmediği halde şebekenin tamamen koptuğunu belirtiyor. Cihazı kapatıp açmış düzelmemiş." },
+                { title: "4.5G Hız Düşüklüğü", desc: "Speedtest sonucunun 1Mbps altında olduğunu, video izleyemediğini iletiyor. Paket değişikliği sonrası başlamış." },
+                { title: "Arama Sonlanıyor (Drop)", desc: "Konuşmanın 10. saniyesinde hat düşüyor. Farklı lokasyonlarda da aynı sorun var." },
+                { title: "Roaming Bağlantı Hatası", desc: "Yurt dışına çıkan abone anlaşmalı operatöre bağlanamıyor. Manuel seçim hatası alıyor." }
+            ],
+            fiber: [
+                { title: "LOS Işığı Yanıp Sönüyor", desc: "Modem üzerindeki kırmızı LOS ışığı yanıyor. Kablo kontrolü yaptırıldı, fiziksel hasar şüphesi." },
+                { title: "Wifi Kopma Sorunu", desc: "Modem ışıkları yeşil ama Wifi cihazları sürekli ağdan düşüyor. Kanal ayarı istendi." },
+                { title: "TV+ Görüntü Donuyor", desc: "Canlı yayında pikselleşme ve donma var. İnternet hızı normal görünüyor." },
+                { title: "Statik IP Tanımlama", desc: "Müşteri kamera sistemi için statik IP talep etti ancak modem IP almıyor." }
+            ],
+            corp: [
+                { title: "VPN Tünel Hatası", desc: "Şirket merkezinden şube bağlantısı koptu. IPsec tüneli 'down' görünüyor." },
+                { title: "Toplu SMS Gitmiyor", desc: "Kurumsal panelden atılan 50.000 SMS beklemede kaldı. Acil inceleme istendi." },
+                { title: "Metro Ethernet Kesintisi", desc: "Fabrika hattında fiber kesintisi alarmı. Yedek radyolink devreye girmedi." }
+            ]
+        };
+
+        // --- STATE ---
+        let tickets = []; // Active tickets
+        let transferredTickets = []; // History
         let isFlowing = true;
-        let selectedTicketId = null;
-        let ticketCounter = 1000;
+        let selectedTicket = null;
+        let idCounter = 10240;
 
-        // --- DATA POOLS ---
-        const locations = ["İstanbul / Şişli", "Ankara / Çankaya", "İzmir / Bornova", "Antalya / Muratpaşa", "Trabzon / Merkez", "Diyarbakır / Kayapınar", "Bursa / Nilüfer"];
-        const gsmIssues = ["4.5G Hız Düşüklüğü", "Sinyal Yok (No Service)", "Baz İstasyonu Alarmı", "Roaming Bağlanmıyor", "Sim Kart Bloke", "Arama Düşmesi (Drop)"];
-        const solIssues = ["Fiber LOS Işığı Yanıyor", "Modem IP Almıyor", "Paket Hız Uyuşmazlığı", "DSL Kopmaları", "Statik IP Tanımlama", "TV+ Görüntü Yok"];
-        
-        // --- HELPERS ---
-        function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-        function rndNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        // --- INIT ---
+        window.onload = function() {
+            startClock();
+            generateInitialTickets(5);
+            setInterval(autoGenerateTicket, 4000); // Her 4 sn yeni iş
+            renderMap();
+        };
 
-        // --- CLOCK ---
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
-        }, 1000);
-
-        // --- CORE FUNCTIONS ---
-        
-        // 1. Generate Ticket
-        function addTicket() {
-            if(!isFlowing) return;
-
-            ticketCounter++;
-            const isGsm = Math.random() > 0.4; // %60 GSM, %40 SOL
-            const typeClass = isGsm ? 'type-gsm' : 'type-sol';
-            const icon = isGsm ? '<i class="fas fa-signal"></i>' : '<i class="fas fa-wifi"></i>';
-            const issue = isGsm ? rnd(gsmIssues) : rnd(solIssues);
-            const loc = rnd(locations);
-            const priorityVal = Math.random();
-            let priority = "Normal", pClass = "p-low";
+        // --- VIEW MANAGEMENT ---
+        function switchView(viewId, btnElement) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+            // Show target
+            document.getElementById('view-' + viewId).classList.add('active-view');
             
-            if(priorityVal > 0.7) { priority = "Yüksek"; pClass = "p-med"; }
-            if(priorityVal > 0.9) { priority = "KRİTİK"; pClass = "p-high"; }
+            // Update menu active state
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
 
-            const container = document.getElementById('ticketContainer');
-            const row = document.createElement('div');
-            row.className = "ticket-row flash";
-            row.id = `ticket-${ticketCounter}`;
-            row.onclick = function(e) { 
-                if(!e.target.classList.contains('btn-action')) selectTicket(this, ticketCounter, isGsm, issue, loc); 
+            // Update Header Title
+            const titles = {
+                'dashboard': 'Operasyon Merkezi (NOC)',
+                'transferred': 'İş Takip ve Tarihçe',
+                'network': 'Canlı Şebeke Topolojisi'
             };
+            document.getElementById('page-title').innerText = titles[viewId];
+        }
 
-            row.innerHTML = `
-                <div><div class="type-icon ${typeClass}">${icon}</div></div>
-                <div style="font-family:'Courier New';">#TRK-${ticketCounter}</div>
-                <div>${loc}<br><span style="font-size:0.75rem; color:#888;">Müşteri Hizm. Aktarımı</span></div>
-                <div style="color:white;">${issue}</div>
-                <div><span class="priority-badge ${pClass}">${priority}</span></div>
-                <div><button class="btn-action" onclick="openRouteModal(${ticketCounter})">Yönlendir</button></div>
-            `;
+        // --- TICKET LOGIC ---
+        function generateTicket() {
+            idCounter++;
+            const typeKey = Math.random() < 0.5 ? 'gsm' : (Math.random() < 0.5 ? 'fiber' : 'corp');
+            const issueObj = issues[typeKey][Math.floor(Math.random() * issues[typeKey].length)];
+            const name = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)];
+            const city = cities[Math.floor(Math.random() * cities.length)];
+            
+            let icon, colorClass, source;
+            if(typeKey === 'gsm') { icon = 'fa-mobile-alt'; colorClass = 'bg-gsm'; source = 'Mobil Şebeke'; }
+            else if(typeKey === 'fiber') { icon = 'fa-wifi'; colorClass = 'bg-fiber'; source = 'Superonline'; }
+            else { icon = 'fa-building'; colorClass = 'bg-corp'; source = 'Kurumsal'; }
 
-            container.insertBefore(row, container.firstChild);
-
-            // Keep list clean (max 50 items)
-            if(container.children.length > 50) container.removeChild(container.lastChild);
-
-            // Update stats
+            const ticket = {
+                id: idCounter,
+                type: typeKey,
+                icon: icon,
+                colorClass: colorClass,
+                source: source,
+                customer: name,
+                location: city,
+                issue: issueObj.title,
+                desc: issueObj.desc,
+                time: new Date().toLocaleTimeString(),
+                ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
+            };
+            
+            tickets.unshift(ticket);
+            if(tickets.length > 50) tickets.pop(); // Max 50 items memory
+            renderTicketList();
             updateStats();
         }
 
-        // 2. Select Ticket & Show Details
-        function selectTicket(el, id, isGsm, issue, loc) {
-            // UI Selection highlight
-            document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('selected'));
-            el.classList.add('selected');
+        function renderTicketList() {
+            const container = document.getElementById('ticket-stream');
+            container.innerHTML = '';
 
-            // Generate Fake Tech Data
-            const panel = document.getElementById('detailPanel');
-            const ip = `10.${rndNum(10,99)}.${rndNum(0,255)}.${rndNum(1,254)}`;
-            const mac = isGsm ? `IMEI: 354${rndNum(100000000, 999999999)}` : `MAC: 00:1A:2B:${rndNum(10,99)}:${rndNum(10,99)}:${rndNum(10,99)}`;
-            const signal = isGsm ? `-${rndNum(60, 110)} dBm (LTE Band 3)` : `Rx: -${rndNum(15, 30)} dBm (Fiber)`;
+            tickets.forEach(t => {
+                const div = document.createElement('div');
+                div.className = `ticket-row ${selectedTicket && selectedTicket.id === t.id ? 'selected' : ''}`;
+                div.onclick = () => selectTicket(t);
+                div.innerHTML = `
+                    <div><div class="t-icon ${t.colorClass}"><i class="fas ${t.icon}"></i></div></div>
+                    <div style="font-family:'Courier New'; font-weight:bold;">#TRK-${t.id}</div>
+                    <div>
+                        <div style="font-weight:600; color:white;">${t.issue}</div>
+                        <div style="font-size:0.8rem; color:#888;">${t.customer} - ${t.location}</div>
+                    </div>
+                    <div><span style="font-size:0.8rem; padding:2px 6px; background:#333; border-radius:4px;">${t.time}</span></div>
+                    <div style="text-align:right;"><i class="fas fa-chevron-right" style="color:#444;"></i></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectTicket(ticket) {
+            selectedTicket = ticket;
+            renderTicketList(); // to update selection highlight
             
-            let extraData = "";
-            if(isGsm) {
-                extraData = `
-                    <div class="info-row"><span class="info-label">Abone MSISDN:</span> <span class="info-val">532 *** ** 98</span></div>
-                    <div class="info-row"><span class="info-label">Baz İstasyonu ID:</span> <span class="info-val">IST-${rndNum(1000,9999)}</span></div>
-                    <div class="info-row"><span class="info-label">Hücre Yükü:</span> <span class="info-val">%${rndNum(20,95)}</span></div>
-                `;
-            } else {
-                extraData = `
-                    <div class="info-row"><span class="info-label">Abone No:</span> <span class="info-val">520${rndNum(10000,99999)}</span></div>
-                    <div class="info-row"><span class="info-label">Santral:</span> <span class="info-val">POP-${rndNum(1,50)}</span></div>
-                    <div class="info-row"><span class="info-label">Paket Kaybı:</span> <span class="info-val">%${rndNum(0,5)}</span></div>
-                `;
-            }
-
-            panel.innerHTML = `
-                <div class="detail-card">
-                    <div class="detail-title"><i class="fas fa-info-circle"></i> Talep Detayları (#TRK-${id})</div>
-                    <div style="font-size:1.1rem; color:var(--tc-yellow); margin-bottom:10px;">${issue}</div>
-                    <div style="color:white; margin-bottom:5px;">${loc}</div>
-                    <div style="font-size:0.8rem; color:#888;">Oluşturan: Müşteri Hizmetleri Tier-1</div>
+            const pane = document.getElementById('detail-pane');
+            
+            // Random technical data generation for realism
+            const signal = ticket.type === 'gsm' ? `-${Math.floor(Math.random()*40 + 60)} dBm (4G+)` : `Rx: -${Math.floor(Math.random()*20 + 10)} dBm`;
+            const device = ticket.type === 'gsm' ? 'iPhone 14 Pro' : 'Huawei HG255s Modem';
+            
+            pane.innerHTML = `
+                <div class="tabs">
+                    <div class="tab active" onclick="openTab(event, 'tab-genel')">Genel Bakış</div>
+                    <div class="tab" onclick="openTab(event, 'tab-tek')">Teknik Veriler</div>
+                    <div class="tab" onclick="openTab(event, 'tab-log')">Loglar</div>
                 </div>
 
-                <div class="detail-card">
-                    <div class="detail-title"><i class="fas fa-microchip"></i> Teknik Metrikler</div>
-                    <div class="info-row"><span class="info-label">Cihaz / ID:</span> <span class="info-val">${mac}</span></div>
-                    <div class="info-row"><span class="info-label">IP Adresi:</span> <span class="info-val">${ip}</span></div>
-                    <div class="info-row"><span class="info-label">Sinyal Seviyesi:</span> <span class="info-val" style="color:${rndNum(0,1)>0.5?'#7ee787':'#ff6b6b'}">${signal}</span></div>
-                    ${extraData}
-                </div>
-
-                <div class="detail-card">
-                    <div class="detail-title"><i class="fas fa-terminal"></i> Canlı Loglar</div>
-                    <div class="terminal-box" id="term-${id}">
-                        > Pinging Device... <br>
-                        > Reply from ${ip}: time=${rndNum(5,40)}ms<br>
-                        > Checking Auth Status... [OK]<br>
-                        > Querying Profile... [OK]<br>
-                        > Last Error: TIMEOUT_WAITING_FOR_ACK<br>
+                <div id="tab-genel" class="tab-content active">
+                    <h2 style="color:var(--text-header); margin-bottom:10px;">#TRK-${ticket.id} - ${ticket.issue}</h2>
+                    <div style="padding:15px; background:rgba(255,201,0,0.1); border-left:4px solid var(--tc-yellow); margin-bottom:20px; color:#e0e0e0;">
+                        <strong>Müşteri Şikayeti:</strong> "${ticket.desc}"
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item"><label>Abone Adı</label><div>${ticket.customer}</div></div>
+                        <div class="info-item"><label>Lokasyon</label><div>${ticket.location} / Merkez</div></div>
+                        <div class="info-item"><label>Hizmet Tipi</label><div>${ticket.source}</div></div>
+                        <div class="info-item"><label>Açılış Zamanı</label><div>${ticket.time}</div></div>
                     </div>
                 </div>
 
-                <div style="display:flex; gap:10px;">
-                    <button onclick="openRouteModal(${id})" style="flex:1; padding:10px; background:var(--tc-blue); color:white; border:none; border-radius:4px; cursor:pointer;">Yönlendir</button>
-                    <button onclick="alert('Talep çözüldü olarak işaretlendi.')" style="flex:1; padding:10px; background:var(--success); color:white; border:none; border-radius:4px; cursor:pointer;">Çözüldü</button>
+                <div id="tab-tek" class="tab-content">
+                    <div class="info-grid">
+                        <div class="info-item"><label>IP Adresi</label><div>${ticket.ip}</div></div>
+                        <div class="info-item"><label>MAC/IMEI</label><div>AA:BB:CC:${Math.floor(Math.random()*99)}:${Math.floor(Math.random()*99)}</div></div>
+                        <div class="info-item"><label>Cihaz Modeli</label><div>${device}</div></div>
+                        <div class="info-item"><label>Sinyal Seviyesi</label><div style="color:${Math.random()>0.5 ? '#7ee787' : '#d29922'}">${signal}</div></div>
+                        <div class="info-item"><label>Port Durumu</label><div>UP (1000 Mbps Full Duplex)</div></div>
+                        <div class="info-item"><label>Son Restart</label><div>14 saat önce</div></div>
+                    </div>
+                    <div style="height:100px; background:#222; border:1px solid #444; display:flex; align-items:flex-end; padding:5px; gap:2px;">
+                        ${Array(40).fill(0).map(() => `<div style="flex:1; background:var(--tc-blue); height:${Math.random()*100}%;"></div>`).join('')}
+                    </div>
+                    <div style="text-align:center; font-size:0.7rem; color:#888; margin-top:5px;">Son 24 Saat Trafik Grafiği</div>
+                </div>
+
+                <div id="tab-log" class="tab-content">
+                     <div class="log-terminal">
+> Connecting to device ${ticket.ip}...
+> Auth Success. User: admin_view
+> show interface g0/1
+> Interface is UP, Line protocol is UP
+> 4291 packets input, 0 errors, 0 CRC
+> 3402 packets output, 0 errors
+> Running diagnostic...
+> [WARN] Latency spike detected at node IST-LEVENT-GW
+> [INFO] Radius accept packet received.
+> Pinging Gateway... Success (12ms)
+                     </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-primary" onclick="openTransferModal()">Birim Yönlendir</button>
+                    <button class="btn btn-success" onclick="resolveTicket()">Çözüldü Kapat</button>
                 </div>
             `;
         }
 
-        // 3. Routing System (Modal)
-        function openRouteModal(id) {
-            selectedTicketId = id;
-            document.getElementById('modalTicketId').innerText = `#TRK-${id}`;
-            document.getElementById('routeModal').style.display = 'flex';
+        function openTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // --- ACTIONS ---
+        function openTransferModal() {
+            if(!selectedTicket) return;
+            document.getElementById('transferModal').style.display = 'flex';
         }
 
         function closeModal() {
-            document.getElementById('routeModal').style.display = 'none';
+            document.getElementById('transferModal').style.display = 'none';
         }
 
-        function confirmRoute() {
-            const department = document.getElementById('routeSelect').options[document.getElementById('routeSelect').selectedIndex].text;
+        function confirmTransfer() {
+            const dept = document.getElementById('targetDept').value;
+            const note = document.getElementById('transferNote').value;
             
-            // UI Update
-            const row = document.getElementById(`ticket-${selectedTicketId}`);
-            if(row) {
-                row.style.opacity = '0.5';
-                row.innerHTML = `<div colspan="6" style="padding:10px; text-align:center; color:#7ee787;"><i class="fas fa-check"></i> ${department} birimine yönlendirildi.</div>`;
-                setTimeout(() => row.remove(), 2000);
-            }
+            // Move to transferred list
+            transferredTickets.unshift({
+                ...selectedTicket,
+                dept: dept,
+                note: note,
+                transferTime: new Date().toLocaleTimeString(),
+                status: 'Birimde Bekliyor'
+            });
+
+            // Remove from main list
+            tickets = tickets.filter(t => t.id !== selectedTicket.id);
+            selectedTicket = null;
             
+            // UI Updates
+            renderTicketList();
+            renderTransferredList();
+            updateStats();
+            document.getElementById('detail-pane').innerHTML = '<div style="height:100%; display:flex; align-items:center; justify-content:center; color:#555;"><p>İşlem Başarılı. Liste güncellendi.</p></div>';
             closeModal();
-            updateStats(-1); // Decrease pending count
-        }
-
-        // 4. Update Stats (Top Bar)
-        function updateStats(delta = 1) {
-            const pending = document.getElementById('kpi-pending');
-            const total = document.getElementById('kpi-total');
             
-            pending.innerText = parseInt(pending.innerText) + delta;
-            if(delta > 0) total.innerText = parseInt(total.innerText) + 1;
+            // Reset modal input
+            document.getElementById('transferNote').value = '';
         }
 
-        // 5. Flow Control
+        function resolveTicket() {
+            if(!selectedTicket) return;
+            alert(`Talep #TRK-${selectedTicket.id} başarıyla çözüldü ve kapatıldı.`);
+            tickets = tickets.filter(t => t.id !== selectedTicket.id);
+            selectedTicket = null;
+            renderTicketList();
+            document.getElementById('detail-pane').innerHTML = '';
+            updateStats();
+        }
+
+        function renderTransferredList() {
+            const tbody = document.getElementById('transferred-body');
+            tbody.innerHTML = '';
+            transferredTickets.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-family:'Courier New'">#TRK-${t.id}</td>
+                    <td>${t.dept}</td>
+                    <td>${t.issue}</td>
+                    <td>${t.transferTime}</td>
+                    <td style="color:#aaa; font-style:italic;">${t.note.substring(0,30)}...</td>
+                    <td><span style="padding:4px 8px; background:#d29922; color:black; border-radius:4px; font-weight:bold; font-size:0.75rem;">${t.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById('stat-transferred').innerText = transferredTickets.length;
+        }
+
+        // --- HELPERS ---
+        function updateStats() {
+            document.getElementById('stat-pending').innerText = tickets.length;
+        }
+
         function toggleFlow() {
             isFlowing = !isFlowing;
-            const btn = document.getElementById('btnPause');
-            if(isFlowing) {
-                btn.innerHTML = '<i class="fas fa-pause"></i> Akışı Durdur';
-                btn.classList.remove('active');
-            } else {
-                btn.innerHTML = '<i class="fas fa-play"></i> Akışı Başlat';
-                btn.classList.add('active');
-            }
+            document.getElementById('flowBtn').innerText = isFlowing ? 'Akışı Durdur' : 'Akışı Başlat';
         }
 
-        // --- INIT ---
-        // Start generating tickets regularly
-        setInterval(addTicket, 3500); // Her 3.5 saniyede bir yeni talep
-        addTicket(); addTicket(); addTicket(); // Başlangıçta 3 tane olsun
+        function autoGenerateTicket() {
+            if(isFlowing) generateTicket();
+        }
+
+        function generateInitialTickets(count) {
+            for(let i=0; i<count; i++) generateTicket();
+        }
+
+        function startClock() {
+            setInterval(() => {
+                document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+            }, 1000);
+        }
+
+        // --- MAP SIMULATION ---
+        function renderMap() {
+            const mapArea = document.getElementById('map-area');
+            // Random dots for cities
+            const coords = [
+                {x: 30, y: 40, c: '#238636'}, // ist
+                {x: 45, y: 50, c: '#d29922'}, // ank
+                {x: 20, y: 60, c: '#238636'}, // izm
+                {x: 80, y: 45, c: '#238636'}, // erz
+                {x: 50, y: 80, c: '#238636'}, // ant
+                {x: 75, y: 70, c: '#da3633'}, // diy (alert)
+            ];
+
+            coords.forEach(pt => {
+                const dot = document.createElement('div');
+                dot.className = 'city-dot';
+                dot.style.left = pt.x + '%';
+                dot.style.top = pt.y + '%';
+                dot.style.backgroundColor = pt.c;
+                dot.style.color = pt.c; // for shadow
+                mapArea.appendChild(dot);
+            });
+        }
 
     </script>
 </body>
