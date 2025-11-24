@@ -3,86 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turkcell ENDGAME SYSTEM | İlhan Dugan</title>
+    <title>Turkcell INFINITY V10 | İlhan Dugan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- RESET & CORE --- */
-        :root {
-            --bg-dark: #090c10;
-            --bg-panel: #161b22;
-            --bg-hover: #1f252e;
-            --border: #30363d;
-            --tc-blue: #004F9F;
-            --tc-yellow: #FFC900;
-            --text-main: #e6edf3;
-            --text-sub: #8b949e;
-            --accent-green: #238636;
-            --accent-red: #da3633;
-            --accent-purple: #a371f7;
-        }
+        /* --- V9 İLE BİREBİR AYNI TASARIM KODLARI --- */
+        :root { --bg-dark: #090c10; --bg-panel: #161b22; --bg-hover: #1f252e; --border: #30363d; --tc-blue: #004F9F; --tc-yellow: #FFC900; --text-main: #e6edf3; --text-sub: #8b949e; --accent-green: #238636; --accent-red: #da3633; --accent-purple: #a371f7; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; outline: none; }
         body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-size: 13px; }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
-
-        /* --- SIDEBAR --- */
+        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-dark); } ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
         .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 50; }
         .brand { height: 65px; background: white; border-bottom: 3px solid var(--tc-yellow); display: flex; align-items: center; justify-content: center; }
         .brand img { height: 30px; }
-        
         .user-card { padding: 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--tc-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--tc-yellow); }
-        
         .menu-scroll { flex: 1; overflow-y: auto; padding: 10px 0; }
         .menu-group { font-size: 0.7rem; color: #555; padding: 15px 20px 5px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
         .menu-item { padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--text-sub); transition: 0.2s; border-left: 3px solid transparent; }
         .menu-item:hover, .menu-item.active { background: var(--bg-hover); color: white; border-left-color: var(--tc-yellow); }
         .menu-item i { width: 20px; text-align: center; }
         .badge { background: var(--accent-red); color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; margin-left: auto; }
-
-        /* --- MAIN --- */
         .main { flex: 1; display: flex; flex-direction: column; position: relative; }
         .top-bar { height: 50px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         .page-title { font-weight: 600; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px; }
-        
         .view-container { flex: 1; overflow: hidden; position: relative; }
         .view { display: none; height: 100%; flex-direction: column; padding: 0; animation: fadeEffect 0.2s; }
         .view.active { display: flex; }
         @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
-
-        /* --- DASHBOARD LAYOUT (3 COLUMNS) --- */
         .dash-grid { display: grid; grid-template-columns: 320px 1fr 280px; height: 100%; }
-        
-        /* COL 1: LIST */
         .col-list { border-right: 1px solid var(--border); background: var(--bg-dark); display: flex; flex-direction: column; overflow: hidden; }
         .list-header { padding: 10px 15px; border-bottom: 1px solid var(--border); font-weight: bold; background: var(--bg-panel); display: flex; justify-content: space-between; align-items: center; }
         .ticket-scroll { flex: 1; overflow-y: auto; }
-        
         .ticket-card { padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.1s; position: relative; }
         .ticket-card:hover { background: var(--bg-hover); }
         .ticket-card.selected { background: rgba(0, 79, 159, 0.15); border-left: 3px solid var(--tc-blue); }
         .t-top { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.75rem; color: var(--text-sub); }
         .t-title { font-weight: 600; color: #fff; margin-bottom: 3px; font-size: 0.9rem; }
         .t-sub { color: var(--text-sub); font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
-
-        /* COL 2: DETAIL (CENTER) */
         .col-detail { display: flex; flex-direction: column; overflow: hidden; background: #0d1117; position: relative; }
         .detail-header { padding: 15px 20px; border-bottom: 1px solid var(--border); background: var(--bg-panel); display: flex; justify-content: space-between; align-items: center; }
-        .detail-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; /* Space for footer */ }
-        
-        /* FIXED FOOTER BUTTONS */
+        .detail-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
         .detail-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--bg-panel); border-top: 1px solid var(--border); display: flex; gap: 15px; z-index: 10; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .btn-big { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
         .btn-blue { background: var(--tc-blue); } .btn-blue:hover { background: #003d7a; }
         .btn-green { background: var(--accent-green); } .btn-green:hover { background: #1a6328; }
-
-        /* COL 3: LOGS & HISTORY */
         .col-logs { border-left: 1px solid var(--border); background: var(--bg-panel); display: flex; flex-direction: column; }
         .log-area { flex: 1; background: black; color: #0f0; font-family: 'Consolas', monospace; font-size: 0.8rem; padding: 15px; overflow-y: auto; }
-
-        /* --- GENERIC TABLES --- */
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th { text-align: left; padding: 10px; background: rgba(0,0,0,0.2); color: var(--text-sub); font-size: 0.8rem; }
         .data-table td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: white; }
@@ -90,21 +55,15 @@
         .tag-vip { background: linear-gradient(45deg, #ffd700, #ffaa00); color: black; }
         .tag-ok { background: var(--accent-green); color: white; }
         .tag-warn { background: var(--accent-red); color: white; }
-
-        /* --- SORGU & MODAL --- */
         .search-area { max-width: 800px; margin: 30px auto; width: 90%; }
         .search-inp { width: 100%; padding: 15px; background: var(--bg-dark); border: 1px solid var(--border); color: white; font-size: 1.2rem; border-radius: 6px; margin-bottom: 20px; }
         .result-box { display: none; background: var(--bg-panel); padding: 30px; border-radius: 10px; border: 1px solid var(--border); position: relative; }
-        
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-box { width: 500px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 25px; box-shadow: 0 20px 60px black; }
-
-        /* --- INFO BOXES --- */
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .info-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px; border-radius: 4px; }
         .lbl { font-size: 0.7rem; color: var(--text-sub); display: block; }
         .val { font-size: 0.95rem; font-weight: 500; color: white; }
-
     </style>
 </head>
 <body>
@@ -117,25 +76,21 @@
             <div class="avatar">İD</div>
             <div class="user-info">
                 <h4>İLHAN DUGAN</h4>
-                <p>NOC Manager (Admin)</p>
+                <p>BİLGİ İŞLEM SORUMLUSU</p>
             </div>
         </div>
-        
         <div class="menu-scroll">
             <div class="menu-group">Operasyon</div>
             <div class="menu-item active" onclick="setView('dash', this)"><i class="fas fa-satellite-dish"></i> Canlı Arıza</div>
             <div class="menu-item" onclick="setView('history', this)"><i class="fas fa-history"></i> İşlem Tarihçesi <div class="badge" id="hist-count" style="display:none">0</div></div>
-
             <div class="menu-group">Müşteri Segmenti</div>
             <div class="menu-item" onclick="setView('sorgu', this)"><i class="fas fa-user-secret"></i> Yasaklı Bölge (Sorgu)</div>
             <div class="menu-item" onclick="setView('vip', this)"><i class="fas fa-crown"></i> VIP / Platinum Listesi</div>
             <div class="menu-item" onclick="setView('corp', this)"><i class="fas fa-building"></i> Kurumsal Çözüm (B2B)</div>
-
             <div class="menu-group">Teknik Altyapı</div>
             <div class="menu-item" onclick="setView('server', this)"><i class="fas fa-server"></i> Sunucu Odası</div>
             <div class="menu-item" onclick="setView('fiber', this)"><i class="fas fa-network-wired"></i> Fiber Topoloji</div>
             <div class="menu-item" onclick="setView('base', this)"><i class="fas fa-broadcast-tower"></i> Baz İstasyonları</div>
-
             <div class="menu-group">Yönetim</div>
             <div class="menu-item" onclick="setView('hr', this)"><i class="fas fa-users"></i> İK ve Vardiya</div>
             <div class="menu-item" onclick="setView('finance', this)"><i class="fas fa-file-invoice-dollar"></i> Finans / Tahsilat</div>
@@ -147,7 +102,7 @@
         <header class="top-bar">
             <div class="page-title" id="page-header"><i class="fas fa-satellite-dish"></i> Canlı Arıza Paneli</div>
             <div style="font-family:'Consolas'; color:var(--text-sub); font-size:0.85rem;">
-                SYSTEM STATUS: <span style="color:var(--accent-green)">OPTIMAL</span> | <span id="clock">12:00:00</span>
+                SYSTEM: <span style="color:var(--accent-green)">ONLINE</span> | <span id="clock">12:00:00</span>
             </div>
         </header>
 
@@ -160,23 +115,18 @@
                             <span>Gelen Talepler</span>
                             <span id="t-count" style="background:var(--tc-blue); padding:1px 6px; border-radius:4px; font-size:0.8rem;">0</span>
                         </div>
-                        <div class="ticket-scroll" id="ticket-list">
-                            </div>
+                        <div class="ticket-scroll" id="ticket-list"></div>
                     </div>
-
                     <div class="col-detail" id="detail-view">
                         <div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);">
                             <i class="fas fa-hand-pointer" style="font-size:3rem; margin-bottom:20px; opacity:0.3;"></i>
                             <p>Detay ve İşlem için soldan bir talep seçin.</p>
                         </div>
-                        </div>
-
+                    </div>
                     <div class="col-logs">
                         <div style="padding:10px; border-bottom:1px solid var(--border); font-weight:bold;">Canlı Terminal</div>
                         <div class="log-area" id="terminal">
-                            > System init...<br>
-                            > Loaded 12 modules.<br>
-                            > Waiting for tickets...
+                            > System init...<br>> Database connection established.<br>> Infinite mode enabled.<br>
                         </div>
                     </div>
                 </div>
@@ -191,97 +141,15 @@
                 </div>
             </div>
 
-            <div id="vip" class="view">
-                <div style="padding:20px; overflow-y:auto;">
-                    <h2 style="color:var(--tc-yellow); margin-bottom:15px;">Platinum & Black Müşteri Listesi</h2>
-                    <table class="data-table">
-                        <thead><tr><th>ID</th><th>Müşteri</th><th>Paket</th><th>Aylık Harcama</th><th>Statü</th></tr></thead>
-                        <tbody id="vip-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="corp" class="view">
-                <div style="padding:20px; overflow-y:auto;">
-                    <h2 style="color:var(--tc-yellow); margin-bottom:15px;">Kurumsal Arıza Takip (Metro Ethernet)</h2>
-                    <table class="data-table">
-                        <thead><tr><th>Firma</th><th>Hizmet</th><th>Lokasyon</th><th>Kesinti Süresi</th><th>Durum</th></tr></thead>
-                        <tbody>
-                            <tr><td>Acıbadem Hastanesi</td><td>Metro Eth.</td><td>Maslak</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr>
-                            <tr><td>Garanti BBVA GM</td><td>MPLS VPN</td><td>Zincirlikuyu</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr>
-                            <tr><td>Migros Depo</td><td>Radyolink</td><td>Esenyurt</td><td>12 dk</td><td><span class="tag tag-warn">DOWN</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="server" class="view">
-                <div style="padding:20px; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:15px;" id="server-grid"></div>
-            </div>
-
-            <div id="fiber" class="view">
-                <div style="padding:20px;">
-                    <h2 style="margin-bottom:20px;">İstanbul Fiber Omurga Durumu</h2>
-                    <div style="background:#111; height:400px; border-radius:8px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;" id="fiber-map">
-                        <div style="position:absolute; top:20px; left:20px; color:#555;">Live Topology v4.2</div>
-                        </div>
-                </div>
-            </div>
-
-            <div id="base" class="view">
-                <div style="padding:20px; overflow-y:auto;">
-                    <h2 style="margin-bottom:15px;">Saha Kule Durumları</h2>
-                    <table class="data-table">
-                        <thead><tr><th>Site ID</th><th>Bölge</th><th>Tip</th><th>Yük</th><th>Alarm</th></tr></thead>
-                        <tbody id="base-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="hr" class="view">
-                <div style="padding:20px;">
-                    <h2 style="margin-bottom:15px;">NOC Vardiya Listesi (08:00 - 18:00)</h2>
-                    <table class="data-table">
-                        <thead><tr><th>Personel</th><th>Rol</th><th>Lokasyon</th><th>Durum</th></tr></thead>
-                        <tbody>
-                            <tr><td>İlhan Dugan</td><td>Yönetici</td><td>HQ</td><td><span class="tag tag-ok">Aktif</span></td></tr>
-                            <tr><td>Ahmet Yılmaz</td><td>Tier 2 Network</td><td>Plaza</td><td><span class="tag tag-ok">Aktif</span></td></tr>
-                            <tr><td>Ayşe Demir</td><td>Çağrı Merkezi</td><td>Home</td><td><span class="tag tag-warn">Mola</span></td></tr>
-                            <tr><td>Mehmet Çelik</td><td>Saha Ekibi</td><td>Araç 34TRK99</td><td><span class="tag tag-ok">Saha</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="finance" class="view">
-                <div style="padding:20px;">
-                    <h2>Canlı Tahsilat Akışı</h2>
-                    <div style="background:#000; padding:15px; font-family:'Consolas'; color:#0f0; height:300px; overflow-y:hidden; border:1px solid #333;" id="finance-log">
-                        Loading transaction stream...
-                    </div>
-                </div>
-            </div>
-
-            <div id="security" class="view">
-                <div style="padding:20px;">
-                    <h2 style="color:var(--accent-red);">SOC / Güvenlik Olayları</h2>
-                    <table class="data-table">
-                        <thead><tr><th>Zaman</th><th>IP Kaynağı</th><th>Hedef</th><th>Tehdit</th><th>Aksiyon</th></tr></thead>
-                        <tbody id="sec-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="history" class="view">
-                <div style="padding:20px;">
-                    <h2>İşlem Tarihçesi</h2>
-                    <table class="data-table">
-                        <thead><tr><th>ID</th><th>Birim</th><th>Sorun</th><th>Zaman</th><th>Sonuç</th></tr></thead>
-                        <tbody id="hist-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
+            <div id="vip" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="color:var(--tc-yellow); margin-bottom:15px;">Platinum & Black Müşteri Listesi</h2><table class="data-table"><thead><tr><th>ID</th><th>Müşteri</th><th>Paket</th><th>Aylık Harcama</th><th>Statü</th></tr></thead><tbody id="vip-body"></tbody></table></div></div>
+            <div id="corp" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="color:var(--tc-yellow); margin-bottom:15px;">Kurumsal Arıza Takip</h2><table class="data-table"><thead><tr><th>Firma</th><th>Hizmet</th><th>Lokasyon</th><th>Kesinti Süresi</th><th>Durum</th></tr></thead><tbody><tr><td>Acıbadem Hastanesi</td><td>Metro Eth.</td><td>Maslak</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr><tr><td>Garanti BBVA GM</td><td>MPLS VPN</td><td>Zincirlikuyu</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr><tr><td>Getir Depo</td><td>Radyolink</td><td>Tuzla</td><td>14dk</td><td><span class="tag tag-warn">DOWN</span></td></tr></tbody></table></div></div>
+            <div id="server" class="view"><div style="padding:20px; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:15px;" id="server-grid"></div></div>
+            <div id="fiber" class="view"><div style="padding:20px;"><h2 style="margin-bottom:20px;">İstanbul Fiber Omurga Durumu</h2><div style="background:#111; height:400px; border-radius:8px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;" id="fiber-map"><div style="position:absolute; top:20px; left:20px; color:#555;">Live Topology v4.2</div></div></div></div>
+            <div id="base" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="margin-bottom:15px;">Saha Kule Durumları</h2><table class="data-table"><thead><tr><th>Site ID</th><th>Bölge</th><th>Tip</th><th>Yük</th><th>Alarm</th></tr></thead><tbody id="base-body"></tbody></table></div></div>
+            <div id="hr" class="view"><div style="padding:20px;"><h2 style="margin-bottom:15px;">NOC Vardiya Listesi</h2><table class="data-table"><thead><tr><th>Personel</th><th>Rol</th><th>Lokasyon</th><th>Durum</th></tr></thead><tbody><tr><td>İlhan Dugan</td><td>Yönetici</td><td>HQ</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ahmet Yılmaz</td><td>Tier 2 Network</td><td>Plaza</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ayşe Demir</td><td>Çağrı Merkezi</td><td>Home</td><td><span class="tag tag-warn">Mola</span></td></tr><tr><td>Mehmet Çelik</td><td>Saha Ekibi</td><td>Araç 34TRK99</td><td><span class="tag tag-ok">Saha</span></td></tr></tbody></table></div></div>
+            <div id="finance" class="view"><div style="padding:20px;"><h2>Canlı Tahsilat Akışı</h2><div style="background:#000; padding:15px; font-family:'Consolas'; color:#0f0; height:300px; overflow-y:hidden; border:1px solid #333;" id="finance-log"></div></div></div>
+            <div id="security" class="view"><div style="padding:20px;"><h2 style="color:var(--accent-red);">SOC / Güvenlik Olayları</h2><table class="data-table"><thead><tr><th>Zaman</th><th>IP Kaynağı</th><th>Hedef</th><th>Tehdit</th><th>Aksiyon</th></tr></thead><tbody id="sec-body"></tbody></table></div></div>
+            <div id="history" class="view"><div style="padding:20px;"><h2>İşlem Tarihçesi</h2><table class="data-table"><thead><tr><th>ID</th><th>Birim</th><th>Sorun</th><th>Zaman</th><th>Sonuç</th></tr></thead><tbody id="hist-body"></tbody></table></div></div>
         </div>
     </main>
 
@@ -290,57 +158,96 @@
             <h3 style="color:var(--tc-yellow); margin-bottom:15px;">Departman Yönlendirme</h3>
             <p id="m-text" style="color:var(--text-sub); margin-bottom:15px;"></p>
             <label class="lbl">HEDEF BİRİM</label>
-            <select id="m-dept" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px;">
-                <option>Saha Operasyonları (Field Ops)</option>
-                <option>Core Network (Tier 2)</option>
-                <option>Hukuk Departmanı</option>
-                <option>Kurumsal Müşteri Hizmetleri</option>
-                <option>Finans / İtiraz</option>
-            </select>
+            <select id="m-dept" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px;"><option>Saha Operasyonları (Field Ops)</option><option>Core Network (Tier 2)</option><option>Hukuk Departmanı</option><option>Kurumsal Müşteri Hizmetleri</option><option>Finans / İtiraz</option></select>
             <label class="lbl">NOT</label>
             <textarea id="m-note" style="width:100%; height:80px; padding:10px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px;"></textarea>
-            <div style="display:flex; gap:10px; justify-content:flex-end;">
-                <button class="btn-big" style="background:#444; font-size:0.9rem;" onclick="closeModal()">İPTAL</button>
-                <button class="btn-big btn-green" style="font-size:0.9rem;" onclick="confirmRoute()">AKTAR</button>
-            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;"><button class="btn-big" style="background:#444; font-size:0.9rem;" onclick="closeModal()">İPTAL</button><button class="btn-big btn-green" style="font-size:0.9rem;" onclick="confirmRoute()">AKTAR</button></div>
         </div>
     </div>
 
     <script>
-        // --- DATA POOL ---
-        const fNames = ["Ahmet","Mehmet","Can","Murat","Zeynep","Elif","Selin","Ayşe","Fatma","Burak","Mert","Emre"];
-        const lNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Öztürk","Yıldız","Arslan","Doğan"];
-        const locs = ["Kadıköy","Beşiktaş","Şişli","Ümraniye","Çankaya","Bornova","Nilüfer","Bodrum"];
-        const issues = [
-            {t:"Sinyal Yok (Tünel)", d:"Avrasya tünelinde hat komple gitti gelmiyor.", c:"GSM", i:"fa-signal"},
-            {t:"Fiber LOS Hatası", d:"Modem kırmızı yanıyor, internet yok.", c:"SOL", i:"fa-wifi"},
-            {t:"Fatura İtirazı", d:"Paket aşımı olmadığı halde 500TL yansımış.", c:"BILL", i:"fa-file-invoice"},
-            {t:"BiP Çökmesi", d:"BiP uygulamasında fotoğraflar gitmiyor.", c:"APP", i:"fa-comment"},
-            {t:"Yurt Dışı Roaming", d:"Almanya'da şebeke bulamıyorum.", c:"GSM", i:"fa-globe"},
-            {t:"Superbox IP Yok", d:"Cihaz mavi ışık yanıyor ama internete çıkmıyor.", c:"SOL", i:"fa-box"},
-            {t:"TV+ Donma", d:"Maç izlerken yayın sürekli donuyor.", c:"TV", i:"fa-tv"},
-            {t:"Kurumsal VPN Down", d:"Merkez ofis VPN bağlantısı koptu.", c:"CORP", i:"fa-building"},
-            {t:"Sim Kart Bloke", d:"PUK kodunu yanlış girdim hat kapandı.", c:"GSM", i:"fa-sim-card"}
+        // --- DEVASA VERİ HAVUZU (INFINITY POOL) ---
+        // 50 Adet İsim
+        const fNames = ["Ahmet","Mehmet","Mustafa","Ali","Hüseyin","Hasan","İbrahim","İsmail","Osman","Yusuf","Ömer","Murat","Fatih","Ramazan","Halil","Süleyman","Abdullah","Mahmut","Recep","Hakan","Ayşe","Fatma","Emine","Hatice","Zeynep","Elif","Meryem","Şerife","Zehra","Sultan","Hanife","Merve","Havva","Sakine","Hacer","Özlem","Esra","Selma","Yasemin","Melis","Burak","Can","Cem","Deniz","Ege","Umut","Arda","Kaan","Mert","Emre","Pelin","Buse","Gizem","Aleyna","Selin","Aslı","Ceren"];
+        // 40 Adet Soyisim
+        const lNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Yıldırım","Öztürk","Aydın","Özdemir","Arslan","Doğan","Kılıç","Aslan","Çetin","Kara","Koç","Kurt","Özkan","Şimşek","Polat","Korkmaz","Özcan","Çakır","Erdoğan","Yavuz","Can","Acar","Şen","Aktaş","Güler","Yalçın","Güneş","Bozkurt","Bulut","Keskin","Ünal","Turan","Gül","Avcı"];
+        // 40 Adet Lokasyon (Mahalle Detaylı)
+        const locs = ["Kadıköy / Caferağa","Kadıköy / Moda","Beşiktaş / Vişnezade","Beşiktaş / Bebek","Şişli / Nişantaşı","Şişli / Bomonti","Üsküdar / Kuzguncuk","Üsküdar / Çengelköy","Maltepe / Yalı","Kartal / Soğanlık","Pendik / Kurtköy","Ümraniye / Çakmak","Ataşehir / Batı","Sancaktepe / Merkez","Fatih / Balat","Beyoğlu / Cihangir","Bakırköy / Florya","Zeytinburnu / Kazlıçeşme","Sarıyer / Tarabya","Kağıthane / Gültepe","Esenyurt / Cumhuriyet","Bağcılar / Güneşli","Küçükçekmece / Halkalı","Avcılar / Denizköşkler","Beylikdüzü / Adnan Kahveci","Çankaya (ANK) / Bahçelievler","Keçiören (ANK) / Etlik","Mamak (ANK) / Tuzluçayır","Bornova (İZM) / Özkanlar","Karşıyaka (İZM) / Bostanlı","Buca (İZM) / Şirinyer","Konak (İZM) / Alsancak","Nilüfer (BUR) / Özlüce","Osmangazi (BUR) / Çekirge","Muratpaşa (ANT) / Lara","Alanya (ANT) / Mahmutlar","Bodrum (MUĞ) / Yalıkavak","Çorlu (TEK) / Reşadiye","İzmit (KOC) / Yahyakaptan","Trabzon / Meydan"];
+        
+        // DEVASA SORUN HAVUZU (100+ Unique Kombinasyon)
+        const issuePool = [
+            // GSM - DATA
+            {c:"GSM", i:"fa-signal", t:"4.5G Hız Sorunu", d:"Hız testinde 1Mbps altını görüyorum, Instagram videoları yüklenmiyor."},
+            {c:"GSM", i:"fa-signal", t:"Şebeke Yok (Bodrum)", d:"Bodrum kattaki dairede hiç çekmiyor, cama çıkmak zorunda kalıyorum."},
+            {c:"GSM", i:"fa-signal", t:"Hücresel Veri Kopması", d:"Araba kullanırken sürekli 3G'ye düşüyor ve navigasyon donuyor."},
+            {c:"GSM", i:"fa-signal", t:"5G Görünüyor Ama Data Yok", d:"Telefon 5G ikonu gösteriyor ama internete girmiyor."},
+            {c:"GSM", i:"fa-signal", t:"Tethering Çalışmıyor", d:"Kişisel erişim noktasını açıyorum, bilgisayarım bağlanamıyor."},
+            {c:"GSM", i:"fa-signal", t:"Upload Çok Düşük", d:"Dosya yüklemeye çalışıyorum sürekli hata veriyor. Download normal."},
+            // GSM - SES
+            {c:"GSM", i:"fa-phone-slash", t:"Arama Başarısız", d:"Numarayı çeviriyorum, hiç çalmadan 'Arama Sonlandı' diyor."},
+            {c:"GSM", i:"fa-phone-slash", t:"Robotik Ses", d:"Konuşurken karşı tarafın sesi metalik ve robotik geliyor."},
+            {c:"GSM", i:"fa-phone-slash", t:"VoLTE Aktifleşmiyor", d:"Ayarlardan VoLTE açıyorum ama kapanıyor. HD Ses kullanamıyorum."},
+            {c:"GSM", i:"fa-phone-slash", t:"Çağrı Düşmesi (Drop)", d:"Konuşmanın tam 3. dakikasında hat kesiliyor. Sürekli oluyor."},
+            {c:"GSM", i:"fa-phone-slash", t:"Meşgul Çalması", d:"Beni arayanlar sürekli meşgul tonu duyuyor, telefonum açık."},
+            // GSM - ROAMING
+            {c:"GSM", i:"fa-globe", t:"Yurt Dışı Şebeke Yok", d:"Almanya'ya indim, telefon 'Servis Yok' diyor. Roaming açık."},
+            {c:"GSM", i:"fa-globe", t:"Yurt Dışı İnternet Paketi", d:"Paketim olmasına rağmen faturama günlük kullanım yansıdı."},
+            {c:"GSM", i:"fa-globe", t:"Kıbrıs Roaming", d:"KKTC'deyim, internet çok yavaş. Yerel operatöre bağlanmıyor."},
+            // FIBER / SUPERONLINE
+            {c:"SOL", i:"fa-wifi", t:"LOS Işığı Kırmızı Yanıp Sönüyor", d:"Modemdeki LOS ışığı kırmızı. İnternet tamamen kesik."},
+            {c:"SOL", i:"fa-wifi", t:"Modem Sürekli Reset Atıyor", d:"Modem ısınıyor ve kendi kendine kapanıp açılıyor."},
+            {c:"SOL", i:"fa-wifi", t:"Wi-Fi 6 Görünmüyor", d:"Wi-Fi 6 destekli cihazım ağı görmüyor, sadece 2.4Ghz görüyorum."},
+            {c:"SOL", i:"fa-wifi", t:"Hız Düşüklüğü (Akşam)", d:"Gündüz 100Mbps alıyorum, akşam 20:00'den sonra 5Mbps'e düşüyor."},
+            {c:"SOL", i:"fa-wifi", t:"Statik IP Sorunu", d:"Kamera sistemim için statik IP aldım ama port açamıyorum."},
+            {c:"SOL", i:"fa-wifi", t:"DSL Işığı Yanmıyor", d:"VDSL modemimin DSL ışığı söndü. Kabloları kontrol ettim."},
+            {c:"SOL", i:"fa-gamepad", t:"Oyunlarda Yüksek Ping", d:"Valorant oynarken ping 15ms'den aniden 300ms'e fırlıyor."},
+            {c:"SOL", i:"fa-gamepad", t:"Paket Kaybı (Packet Loss)", d:"Discord'da sesim karşıya kesik kesik gidiyor. Packet loss var."},
+            // TV+
+            {c:"TV", i:"fa-tv", t:"Siyah Ekran Hatası", d:"TV+ kutusunu açıyorum, ses var ama görüntü yok."},
+            {c:"TV", i:"fa-tv", t:"Kumanda Eşleşmiyor", d:"Kumandanın pillerini değiştirdim ama kutuyu kontrol etmiyor."},
+            {c:"TV", i:"fa-tv", t:"Geriye Sarma Çalışmıyor", d:"Canlı yayını durduramıyorum veya geri alamıyorum. Hata veriyor."},
+            {c:"TV", i:"fa-tv", t:"Hata Kodu 102", d:"Ekranda sürekli 'Bağlantı Hatası 102' yazıyor."},
+            {c:"TV", i:"fa-tv", t:"Film Kiraladım Açılmıyor", d:"Film kiraladım, ücreti alındı ama 'Oynatılamıyor' diyor."},
+            // BILLING
+            {c:"BILL", i:"fa-file-invoice-dollar", t:"Fatura İtirazı (Tutar)", d:"Faturam her zamankinden 300 TL fazla geldi. Detay istiyorum."},
+            {c:"BILL", i:"fa-file-invoice-dollar", t:"Cayma Bedeli", d:"Taahhüt bitimine 1 ay kala çıktım, yüksek ceza yansıtılmış."},
+            {c:"BILL", i:"fa-file-invoice-dollar", t:"Mükerrer Ödeme", d:"Faturayı hem kredi kartımdan hem hesabımdan çektiniz. İade istiyorum."},
+            {c:"BILL", i:"fa-file-invoice-dollar", t:"Paket Aşımı Uyarısı Gelmedi", d:"Paketim bitmiş ama %80 ve %100 SMS'leri gelmedi."},
+            // APP / DIGITAL
+            {c:"APP", i:"fa-fingerprint", t:"Uygulama Giriş Hatası", d:"Turkcell uygulamasına girerken 'Sistem Hatası' alıyorum."},
+            {c:"APP", i:"fa-fingerprint", t:"Salla Kazan Yapamıyorum", d:"Telefonu sallıyorum ama hediye düşmüyor."},
+            {c:"APP", i:"fa-comment", t:"BiP Mesaj Gitmiyor", d:"BiP üzerinden fotoğraf gönderemiyorum, daire dönüp duruyor."},
+            {c:"APP", i:"fa-music", t:"fizy Listem Silindi", d:"Yıllardır oluşturduğum müzik listelerim kayboldu."},
+            {c:"APP", i:"fa-wallet", t:"Paycell Bakiye Yükleme", d:"Kredi kartımdan para çıktı ama Paycell hesabıma geçmedi."},
+            // CORP
+            {c:"CORP", i:"fa-building", t:"Metro Ethernet Kesintisi", d:"Fabrika lokasyonumuzda fiber erişimi tamamen gitti."},
+            {c:"CORP", i:"fa-building", t:"Bulut Santral Sorunu", d:"Şirket telefonları çalmıyor, santral offline görünüyor."},
+            {c:"CORP", i:"fa-building", t:"VPN Tünel Hatası", d:"Merkez ile şube arasındaki IPsec VPN tüneli koptu."},
+            // DEVICES
+            {c:"DEV", i:"fa-sim-card", t:"eSIM Aktivasyonu", d:"QR kodu okutuyorum 'Geçersiz Kod' hatası alıyorum."},
+            {c:"DEV", i:"fa-sim-card", t:"PUK Kodu Bloke", d:"PIN kodunu 3 kere yanlış girdim, PUK da bloke oldu."},
+            {c:"DEV", i:"fa-mobile-alt", t:"Cihaz Kampanyası", d:"Faturaya ek cihaz almak istiyorum, puanım yetmiyor diyor."}
         ];
 
         let tickets = [];
         let selectedId = null;
-        let idCounter = 42000;
+        let idCounter = 99000;
 
         // --- INIT ---
         window.onload = function() {
             setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
             
-            // Generate Data for all views
-            genTickets(10);
-            setInterval(() => genTickets(1), 5000); // Auto add tickets
+            // Başlangıç için 15 adet oluştur
+            genTickets(15);
+            // Her 4 saniyede bir yeni ekle
+            setInterval(() => genTickets(1), 4000);
             
-            genVIP();
-            genBase();
-            genServers();
-            genSecurity();
-            startFinanceStream();
-            initFiberMap();
+            // Yan verileri yükle
+            genVIP(); genBase(); genServers(); genSecurity(); startFinanceStream(); initFiberMap();
+            
+            // Terminal Log
+            log("Database initialized with 50,000+ entries.");
+            log("Infinity Loop started.");
         };
 
         // --- NAVIGATION ---
@@ -353,27 +260,30 @@
             document.getElementById('page-header').innerHTML = `<i class="fas fa-th-large"></i> ${titles[id]}`;
         }
 
-        // --- TICKET SYSTEM ---
+        // --- TICKET GENERATOR (THE ENGINE) ---
         function genTickets(cnt) {
             for(let i=0; i<cnt; i++) {
                 idCounter++;
-                const tmpl = issues[Math.floor(Math.random()*issues.length)];
+                // Rastgele Seçimler
+                const issue = issuePool[Math.floor(Math.random() * issuePool.length)];
+                const name = fNames[Math.floor(Math.random() * fNames.length)] + " " + lNames[Math.floor(Math.random() * lNames.length)];
+                const loc = locs[Math.floor(Math.random() * locs.length)];
+                
                 const t = {
                     id: idCounter,
-                    title: tmpl.t,
-                    desc: tmpl.d,
-                    cat: tmpl.c,
-                    icon: tmpl.i,
-                    name: fNames[Math.floor(Math.random()*fNames.length)] + " " + lNames[Math.floor(Math.random()*lNames.length)],
-                    loc: locs[Math.floor(Math.random()*locs.length)],
+                    cat: issue.c,
+                    icon: issue.i,
+                    title: issue.t,
+                    desc: issue.d,
+                    name: name,
+                    loc: loc,
                     time: new Date().toLocaleTimeString(),
                     ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
                 };
                 tickets.unshift(t);
-                if(tickets.length > 50) tickets.pop();
+                if(tickets.length > 200) tickets.pop(); // Memory Management
             }
             renderList();
-            log(`Added ${cnt} new tickets.`);
         }
 
         function renderList() {
@@ -423,33 +333,38 @@
             `;
         }
 
-        // --- SORGU ---
+        // --- SORGU (MEHMET DUGAN LOGIC) ---
         function searchUser() {
             const val = document.getElementById('gsm-inp').value.replace(/\s/g,'');
             const res = document.getElementById('search-res');
             res.style.display = 'none';
             if(val.length < 5) { alert('Numara giriniz'); return; }
             
-            // MEHMET DUGAN LOGIC
             let data = {};
+            // *** MEHMET DUGAN TARGET ***
             if(val === "5354653384") {
                 data = { n:"MEHMET DUGAN", t:"254********", d:"Redmi 14C", l:"İstanbul Kartal Soğanlık Yeni Mh. Eraykent Cd.", s:true };
             } else {
-                data = { n:fNames[0]+" "+lNames[0], t:Math.floor(Math.random()*99999999999), d:"Samsung S22", l:"İstanbul / Şişli", s:false };
+                // *** RANDOM GENERATION ***
+                const rName = fNames[Math.floor(Math.random()*fNames.length)] + " " + lNames[Math.floor(Math.random()*lNames.length)];
+                const rLoc = locs[Math.floor(Math.random()*locs.length)];
+                data = { n:rName, t:Math.floor(Math.random()*99999999999), d:"Samsung S22", l:rLoc, s:false };
             }
 
             setTimeout(() => {
                 res.style.display = 'block';
                 res.innerHTML = `
-                    <div style="display:flex; gap:20px; align-items:center; border-bottom:1px solid var(--border); padding-bottom:15px; margin-bottom:15px;">
-                        <div style="font-size:3rem; color:#555;"><i class="fas fa-user-circle"></i></div>
+                    <div style="padding:25px; border-bottom:1px solid var(--border); display:flex; gap:20px; align-items:center;">
+                        <div style="width:80px; height:80px; border-radius:50%; background:#222; border:2px solid ${data.s ? 'var(--accent-red)' : 'var(--border)'}; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:#666;">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
                         <div>
-                            <h2 style="color:white;">${data.n}</h2>
+                            <h2 style="color:white; margin-bottom:5px;">${data.n}</h2>
                             <div style="color:var(--tc-yellow); font-family:'Consolas'; font-size:1.2rem;">${val}</div>
                             ${data.s ? '<span style="background:var(--accent-red); color:white; padding:2px 8px; font-size:0.7rem; border-radius:4px;">HEDEF</span>' : ''}
                         </div>
                     </div>
-                    <div class="info-grid">
+                    <div class="info-grid" style="padding:25px;">
                         <div class="info-card"><span class="lbl">TCKN</span><span class="val">${data.t}</span></div>
                         <div class="info-card"><span class="lbl">Cihaz</span><span class="val">${data.d}</span></div>
                         <div class="info-card" style="grid-column:span 2; border:1px solid ${data.s?'var(--accent-red)':'var(--border)'}"><span class="lbl">Adres / Konum</span><span class="val" style="color:${data.s?'var(--accent-red)':'white'}">${data.l}</span></div>
@@ -458,85 +373,28 @@
             }, 1000);
         }
 
-        // --- OTHER VIEWS GENERATORS ---
-        function genVIP() {
-            const t = document.getElementById('vip-body');
-            for(let i=0;i<10;i++) {
-                t.innerHTML += `<tr><td>${100+i}</td><td>${fNames[i]} ${lNames[i]}</td><td>Platinum Black 50GB</td><td>${(Math.random()*2000).toFixed(2)} TL</td><td><span class="tag tag-vip">VIP</span></td></tr>`;
-            }
-        }
-        function genBase() {
-            const t = document.getElementById('base-body');
-            for(let i=0;i<8;i++) {
-                t.innerHTML += `<tr><td>IST-${900+i}</td><td>${locs[i%locs.length]}</td><td>4.5G Macro</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="tag tag-ok">OK</span></td></tr>`;
-            }
-        }
-        function genSecurity() {
-            const t = document.getElementById('sec-body');
-            setInterval(() => {
-                const ip = `192.168.1.${Math.floor(Math.random()*255)}`;
-                const row = `<tr><td>${new Date().toLocaleTimeString()}</td><td>${ip}</td><td>Core-SW</td><td>DDoS Attempt</td><td><span class="tag tag-warn">BLOCKED</span></td></tr>`;
-                t.innerHTML = row + t.innerHTML;
-                if(t.children.length>10) t.removeChild(t.lastChild);
-            }, 3000);
-        }
-        function genServers() {
-            const g = document.getElementById('server-grid');
-            for(let i=1;i<=12;i++) {
-                g.innerHTML += `<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:4px;"><div style="color:var(--text-sub); font-size:0.8rem;">NODE-${i}</div><div style="height:4px; background:#333; margin-top:5px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%;"></div></div></div>`;
-            }
-        }
-        function startFinanceStream() {
-            const f = document.getElementById('finance-log');
-            setInterval(() => {
-                f.innerHTML += `> Payment Received: ${Math.floor(Math.random()*500)} TL - 53${Math.floor(Math.random()*9)}...<br>`;
-                f.scrollTop = f.scrollHeight;
-            }, 1500);
-        }
-        function initFiberMap() {
-            const m = document.getElementById('fiber-map');
-            for(let i=0;i<20;i++) m.innerHTML += `<div style="position:absolute; width:6px; height:6px; background:cyan; border-radius:50%; box-shadow:0 0 5px cyan; top:${Math.random()*90}%; left:${Math.random()*90}%;"></div>`;
-        }
+        // --- YAN MODÜLLER ---
+        function genVIP() { const t=document.getElementById('vip-body'); for(let i=0;i<15;i++) t.innerHTML+=`<tr><td>${100+i}</td><td>${fNames[i]} ${lNames[i]}</td><td>Platinum Black 100GB</td><td>${(Math.random()*3000).toFixed(2)} TL</td><td><span class="tag tag-vip">VIP</span></td></tr>`; }
+        function genBase() { const t=document.getElementById('base-body'); for(let i=0;i<8;i++) t.innerHTML+=`<tr><td>IST-${900+i}</td><td>${locs[i]}</td><td>4.5G Macro</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="tag tag-ok">OK</span></td></tr>`; }
+        function genSecurity() { const t=document.getElementById('sec-body'); setInterval(()=>{ const ip=`192.168.1.${Math.floor(Math.random()*255)}`; t.innerHTML=`<tr><td>${new Date().toLocaleTimeString()}</td><td>${ip}</td><td>Core-SW</td><td>DDoS Attempt</td><td><span class="tag tag-warn">BLOCKED</span></td></tr>`+t.innerHTML; if(t.children.length>10)t.removeChild(t.lastChild); }, 3000); }
+        function genServers() { const g=document.getElementById('server-grid'); for(let i=1;i<=12;i++) g.innerHTML+=`<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:4px;"><div style="color:var(--text-sub); font-size:0.8rem;">NODE-${i}</div><div style="height:4px; background:#333; margin-top:5px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%;"></div></div></div>`; }
+        function startFinanceStream() { const f=document.getElementById('finance-log'); setInterval(()=>{ f.innerHTML+=`> Payment Received: ${Math.floor(Math.random()*500)} TL - 53${Math.floor(Math.random()*9)}...<br>`; f.scrollTop=f.scrollHeight; }, 1500); }
+        function initFiberMap() { const m=document.getElementById('fiber-map'); for(let i=0;i<20;i++) m.innerHTML+=`<div style="position:absolute; width:6px; height:6px; background:cyan; border-radius:50%; box-shadow:0 0 5px cyan; top:${Math.random()*90}%; left:${Math.random()*90}%;"></div>`; }
 
-        // --- UTILS ---
-        function log(msg) {
-            const t = document.getElementById('terminal');
-            t.innerHTML += `> ${msg}<br>`;
-            t.scrollTop = t.scrollHeight;
-        }
-
-        function openModal() {
-            if(!selectedId) return;
-            document.getElementById('m-text').innerText = `#TRK-${selectedId} nolu talep için işlem yapılıyor.`;
-            document.getElementById('route-modal').style.display = 'flex';
-        }
-        function closeModal() { document.getElementById('route-modal').style.display = 'none'; }
-        
+        // --- MODALS & UTILS ---
+        function log(msg) { const t=document.getElementById('terminal'); t.innerHTML+=`> ${msg}<br>`; t.scrollTop=t.scrollHeight; }
+        function openModal() { if(!selectedId)return; document.getElementById('m-text').innerText=`#TRK-${selectedId} nolu talep için işlem yapılıyor.`; document.getElementById('route-modal').style.display='flex'; }
+        function closeModal() { document.getElementById('route-modal').style.display='none'; }
         function confirmRoute() {
             const dept = document.getElementById('m-dept').value;
             const tb = document.getElementById('hist-body');
             tb.innerHTML = `<tr><td>#${selectedId}</td><td>${dept}</td><td>Yönlendirildi</td><td>${new Date().toLocaleTimeString()}</td><td><span class="tag tag-ok">OK</span></td></tr>` + tb.innerHTML;
-            
-            // Remove
-            tickets = tickets.filter(t => t.id !== selectedId);
-            selectedId = null;
-            renderList();
-            document.getElementById('detail-view').innerHTML = `<div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);"><i class="fas fa-check-circle" style="font-size:3rem; color:var(--accent-green); margin-bottom:10px;"></i><p>Yönlendirildi.</p></div>`;
+            tickets = tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList();
+            document.getElementById('detail-view').innerHTML=`<div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);"><i class="fas fa-check-circle" style="font-size:3rem; color:var(--accent-green); margin-bottom:10px;"></i><p>Yönlendirildi.</p></div>`;
+            let c=parseInt(document.getElementById('hist-count').innerText); document.getElementById('hist-count').innerText=c+1; document.getElementById('hist-count').style.display='inline-block';
             closeModal();
-            
-            let cnt = parseInt(document.getElementById('hist-count').innerText);
-            document.getElementById('hist-count').innerText = cnt+1;
-            document.getElementById('hist-count').style.display = 'inline-block';
         }
-
-        function resolve() {
-            if(!selectedId) return;
-            alert('Talep Çözüldü olarak kapatıldı.');
-            tickets = tickets.filter(t => t.id !== selectedId);
-            selectedId = null;
-            renderList();
-            document.getElementById('detail-view').innerHTML = "";
-        }
+        function resolve() { if(!selectedId)return; alert('Talep Çözüldü olarak kapatıldı.'); tickets=tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList(); document.getElementById('detail-view').innerHTML=""; }
     </script>
 </body>
 </html>
