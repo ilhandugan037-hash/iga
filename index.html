@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turkcell LIVING SYSTEM V11 | İlhan Dugan</title>
+    <title>Turkcell SIMULATION V12 | İlhan Dugan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- CORE DESIGN (V9/V10 Temeli Korundu) --- */
-        :root { --bg-dark: #090c10; --bg-panel: #161b22; --bg-hover: #1f252e; --border: #30363d; --tc-blue: #004F9F; --tc-yellow: #FFC900; --text-main: #e6edf3; --text-sub: #8b949e; --accent-green: #238636; --accent-red: #da3633; --accent-orange: #d29922; }
+        /* --- CORE DESIGN (DEĞİŞTİRİLMEDİ) --- */
+        :root { --bg-dark: #090c10; --bg-panel: #161b22; --bg-hover: #1f252e; --border: #30363d; --tc-blue: #004F9F; --tc-yellow: #FFC900; --text-main: #e6edf3; --text-sub: #8b949e; --accent-green: #238636; --accent-red: #da3633; --accent-purple: #a371f7; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; outline: none; }
         body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-size: 13px; }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-dark); } ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
@@ -54,6 +54,14 @@
         .btn-blue { background: var(--tc-blue); } .btn-blue:hover { background: #003d7a; }
         .btn-green { background: var(--accent-green); } .btn-green:hover { background: #1a6328; }
         
+        /* TOOLS PANEL (NEW) */
+        .tools-panel { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 20px; }
+        .tools-title { font-size: 0.8rem; color: var(--tc-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .btn-tool { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .btn-tool:hover { background: var(--tc-blue); border-color: var(--tc-blue); }
+        .btn-tool i { font-size: 1.2rem; }
+
         /* LOGS */
         .col-logs { border-left: 1px solid var(--border); background: var(--bg-panel); display: flex; flex-direction: column; }
         .log-area { flex: 1; background: black; color: #0f0; font-family: 'Consolas', monospace; font-size: 0.8rem; padding: 15px; overflow-y: auto; }
@@ -144,16 +152,18 @@
                         </div>
                         <div class="ticket-scroll" id="ticket-list"></div>
                     </div>
+                    
                     <div class="col-detail" id="detail-view">
                         <div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);">
                             <i class="fas fa-hand-pointer" style="font-size:3rem; margin-bottom:20px; opacity:0.3;"></i>
                             <p>Detay ve İşlem için soldan bir talep seçin.</p>
                         </div>
                     </div>
+
                     <div class="col-logs">
-                        <div style="padding:10px; border-bottom:1px solid var(--border); font-weight:bold;">Canlı Terminal</div>
+                        <div style="padding:10px; border-bottom:1px solid var(--border); font-weight:bold;">Sistem Terminali</div>
                         <div class="log-area" id="terminal">
-                            > System init...<br>> Database connection established.<br>> Infinite mode enabled.<br>
+                            > System init...<br>> Procedural Generation Engine v12.0 Loaded.<br>> Waiting for events...
                         </div>
                     </div>
                 </div>
@@ -161,7 +171,7 @@
 
             <div id="sorgu" class="view">
                 <div class="search-area">
-                    <h2 style="text-align:center; margin-bottom:20px; color:var(--tc-yellow);">YASAKLI BÖLGE: İSTİHBARAT</h2>
+                    <h2 style="text-align:center; margin-bottom:20px; color:var(--tc-yellow);">YASAKLI BÖLGE: İSTİHBARAT SERVİSİ</h2>
                     <input type="text" class="search-inp" id="gsm-inp" placeholder="GSM No (5354653384) veya TCKN">
                     <button class="btn-big btn-blue" onclick="searchUser()">SORGULA</button>
                     <div id="search-res" class="result-box" style="margin-top:20px;"></div>
@@ -186,6 +196,7 @@
             <div id="hr" class="view"><div style="padding:20px;"><h2 style="margin-bottom:15px;">NOC Vardiya Listesi</h2><table class="data-table"><thead><tr><th>Personel</th><th>Rol</th><th>Lokasyon</th><th>Durum</th></tr></thead><tbody><tr><td>İlhan Dugan</td><td>Yönetici</td><td>HQ</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ahmet Yılmaz</td><td>Tier 2 Network</td><td>Plaza</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ayşe Demir</td><td>Çağrı Merkezi</td><td>Home</td><td><span class="tag tag-warn">Mola</span></td></tr><tr><td>Mehmet Çelik</td><td>Saha Ekibi</td><td>Araç 34TRK99</td><td><span class="tag tag-ok">Saha</span></td></tr></tbody></table></div></div>
             <div id="finance" class="view"><div style="padding:20px;"><h2>Canlı Tahsilat Akışı</h2><div style="background:#000; padding:15px; font-family:'Consolas'; color:#0f0; height:300px; overflow-y:hidden; border:1px solid #333;" id="finance-log"></div></div></div>
             <div id="security" class="view"><div style="padding:20px;"><h2 style="color:var(--accent-red);">SOC / Güvenlik Olayları</h2><table class="data-table"><thead><tr><th>Zaman</th><th>IP Kaynağı</th><th>Hedef</th><th>Tehdit</th><th>Aksiyon</th></tr></thead><tbody id="sec-body"></tbody></table></div></div>
+
         </div>
     </main>
 
@@ -204,54 +215,46 @@
     </div>
 
     <script>
-        // --- DEVASA VERİ HAVUZU (100+ Benzersiz Sorun) ---
-        const firstNames = ["Ahmet","Mehmet","Mustafa","Ali","Hüseyin","Hasan","İbrahim","İsmail","Osman","Yusuf","Ömer","Murat","Fatih","Ramazan","Halil","Süleyman","Abdullah","Mahmut","Recep","Hakan","Ayşe","Fatma","Emine","Hatice","Zeynep","Elif","Meryem","Şerife","Zehra","Sultan","Hanife","Merve","Havva","Sakine","Hacer","Özlem","Esra","Selma","Yasemin","Melis","Burak","Can","Cem","Deniz","Ege","Umut","Arda","Kaan","Mert","Emre","Pelin","Buse","Gizem","Aleyna","Selin","Aslı","Ceren"];
-        const lastNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Yıldırım","Öztürk","Aydın","Özdemir","Arslan","Doğan","Kılıç","Aslan","Çetin","Kara","Koç","Kurt","Özkan","Şimşek","Polat","Korkmaz","Özcan","Çakır","Erdoğan","Yavuz","Can","Acar","Şen","Aktaş","Güler","Yalçın","Güneş","Bozkurt","Bulut","Keskin","Ünal","Turan","Gül","Avcı"];
-        const locs = ["Kadıköy","Beşiktaş","Şişli","Üsküdar","Maltepe","Kartal","Pendik","Ümraniye","Ataşehir","Sancaktepe","Fatih","Beyoğlu","Bakırköy","Zeytinburnu","Sarıyer","Kağıthane","Esenyurt","Bağcılar","Küçükçekmece","Avcılar","Beylikdüzü","Çankaya (ANK)","Keçiören (ANK)","Mamak (ANK)","Bornova (İZM)","Karşıyaka (İZM)","Buca (İZM)","Konak (İZM)","Nilüfer (BUR)","Osmangazi (BUR)","Muratpaşa (ANT)","Alanya (ANT)","Bodrum (MUĞ)","Çorlu (TEK)","İzmit (KOC)"];
+        // --- INFINITE ENGINE DATA POOL ---
+        const fNames = ["Ahmet","Mehmet","Mustafa","Ali","Hüseyin","Hasan","İbrahim","İsmail","Osman","Yusuf","Ömer","Murat","Fatih","Ramazan","Halil","Süleyman","Abdullah","Mahmut","Recep","Hakan","Ayşe","Fatma","Emine","Hatice","Zeynep","Elif","Meryem","Şerife","Zehra","Sultan","Hanife","Merve","Havva","Sakine","Hacer","Özlem","Esra","Selma","Yasemin","Melis","Burak","Can","Cem","Deniz","Ege","Umut","Arda","Kaan","Mert","Emre","Pelin","Buse","Gizem","Aleyna","Selin","Aslı","Ceren"];
+        const lNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Yıldırım","Öztürk","Aydın","Özdemir","Arslan","Doğan","Kılıç","Aslan","Çetin","Kara","Koç","Kurt","Özkan","Şimşek","Polat","Korkmaz","Özcan","Çakır","Erdoğan","Yavuz","Can","Acar","Şen","Aktaş","Güler","Yalçın","Güneş","Bozkurt","Bulut","Keskin","Ünal","Turan","Gül","Avcı"];
+        const districts = ["Kadıköy","Beşiktaş","Şişli","Üsküdar","Maltepe","Kartal","Pendik","Ümraniye","Ataşehir","Sancaktepe","Fatih","Beyoğlu","Bakırköy","Zeytinburnu","Sarıyer","Kağıthane","Esenyurt","Bağcılar","Küçükçekmece","Avcılar","Beylikdüzü","Çankaya (ANK)","Keçiören (ANK)","Mamak (ANK)","Bornova (İZM)","Karşıyaka (İZM)","Buca (İZM)","Konak (İZM)","Nilüfer (BUR)","Osmangazi (BUR)","Muratpaşa (ANT)","Alanya (ANT)","Bodrum (MUĞ)","Çorlu (TEK)","İzmit (KOC)","Gebze (KOC)","Merkez (TRB)","Akçaabat (TRB)"];
+        const situations = ["maç izlerken","Zoom toplantısında","asansöre binince","bodrum kata inince","yeni eve taşınınca","faturayı ödedikten sonra","cihaz güncellemesinden sonra","yurt dışına çıkınca","yağmur yağınca","akşam saatlerinde","sabah uyanınca","arabayla tünele girince","metroya binince","oyun oynarken","Netflix izlerken"];
         
-        // Massive Issue Pool
-        const issuePool = [
-            {c:"GSM", i:"fa-signal", t:"4.5G Hız Sorunu", d:"Hız testinde 1Mbps altını görüyorum, Instagram videoları yüklenmiyor."},
-            {c:"GSM", i:"fa-signal", t:"Şebeke Yok (Bodrum)", d:"Bodrum kattaki dairede hiç çekmiyor, cama çıkmak zorunda kalıyorum."},
-            {c:"GSM", i:"fa-signal", t:"Apple Watch eSIM Aktivasyon", d:"Akıllı saatime eSIM kurmaya çalışıyorum, QR kod hatası veriyor."},
-            {c:"GSM", i:"fa-phone-slash", t:"Arama Başarısız", d:"Numara çevirdiğimde 'Ağ meşgul' hatası alıyorum, hiç çalmıyor."},
-            {c:"GSM", i:"fa-globe", t:"Yurt Dışı Roaming", d:"Almanya'ya indim, telefon 'Servis Yok' diyor. Roaming açık."},
-            {c:"GSM", i:"fa-globe", t:"Kıbrıs İnternet Sorunu", d:"KKTC'deyim, internetim paketten değil faturadan düşüyor."},
-            {c:"SOL", i:"fa-wifi", t:"LOS Işığı Kırmızı", d:"Modemdeki LOS ışığı kırmızı. İnternet tamamen kesik."},
-            {c:"SOL", i:"fa-gamepad", t:"Gamer Paketi Ping Sorunu", d:"Gamer paketi aldım ama LoL pingim hala 80ms. Düşmedi."},
-            {c:"SOL", i:"fa-wifi", t:"Wi-Fi 6 Kopması", d:"Wi-Fi 6'da iPhone 14 sürekli ağdan düşüyor. 2.4Ghz sağlam."},
-            {c:"TV", i:"fa-tv", t:"Siyah Ekran Hatası", d:"TV+ kutusunu açıyorum, ses var ama görüntü yok."},
-            {c:"TV", i:"fa-tv", t:"Geriye Sarma Çalışmıyor", d:"Canlı yayını durduramıyorum veya geri alamıyorum. Hata veriyor."},
-            {c:"BILL", i:"fa-file-invoice-dollar", t:"Fatura İtirazı", d:"Paketim bitmediği halde faturama 250 TL ek ücret yansımış."},
-            {c:"BILL", i:"fa-file-invoice-dollar", t:"Cayma Bedeli", d:"Taahhüt bitimine 1 ay kala çıktım, yüksek ceza yansıtılmış."},
-            {c:"APP", i:"fa-fingerprint", t:"Uygulama Giriş Hatası", d:"Turkcell uygulamasına girerken 'Sistem Hatası' alıyorum."},
-            {c:"APP", i:"fa-comment", t:"BiP Mesaj Gitmiyor", d:"BiP üzerinden fotoğraf gönderemiyorum, daire dönüp duruyor."},
-            {c:"CORP", i:"fa-building", t:"Metro Ethernet Kesintisi", d:"Fabrika lokasyonumuzda fiber erişimi tamamen gitti."},
-            {c:"CORP", i:"fa-building", t:"VPN Tünel Hatası", d:"Merkez ile şube arasındaki IPsec VPN tüneli koptu."},
-            {c:"DEV", i:"fa-sim-card", t:"PUK Kodu Bloke", d:"PIN kodunu 3 kere yanlış girdim, PUK da bloke oldu."},
-            {c:"DEV", i:"fa-mobile-alt", t:"VolTE Aktifleşmiyor", d:"Ayarlardan VoLTE açıyorum ama hemen kapanıyor."}
+        // TEMPLATES FOR GENERATION
+        const templates = [
+            {c:"GSM", i:"fa-signal", t:"Şebeke Sorunu", d:"{LOKASYON}'da {DURUM} telefonum 'Servis Yok' demeye başladı."},
+            {c:"GSM", i:"fa-signal", t:"4.5G Hız Düşüklüğü", d:"{LOKASYON}'da {DURUM} internet hızım 1Mbps altına düşüyor."},
+            {c:"GSM", i:"fa-phone-slash", t:"Arama Kesilmesi", d:"{LOKASYON}'da konuşurken hat sürekli kesiliyor, ses robotlaşıyor."},
+            {c:"SOL", i:"fa-wifi", t:"Fiber Bağlantı Yok", d:"Modemdeki LOS ışığı kırmızı yanıyor. {DURUM} internet gitti."},
+            {c:"SOL", i:"fa-gamepad", t:"Ping Sorunu", d:"{DURUM} ping değerim 20ms'den 300ms'e fırlıyor."},
+            {c:"TV", i:"fa-tv", t:"Yayın Donması", d:"TV+ kutusunda {DURUM} görüntü donuyor ve ses kayması oluyor."},
+            {c:"APP", i:"fa-fingerprint", t:"Giriş Hatası", d:"Turkcell uygulamasına {DURUM} giriş yapamıyorum, hata veriyor."},
+            {c:"BILL", i:"fa-file-invoice-dollar", t:"Fatura İtirazı", d:"Paketim bitmediği halde faturama ek ücret yansımış."},
+            {c:"DEV", i:"fa-sim-card", t:"eSIM Aktivasyon", d:"Yeni cihazımda eSIM aktivasyonunu yapamıyorum, QR kod geçersiz."}
         ];
 
-        // --- GLOBAL STATE ---
         let tickets = [];
         let historyLog = [];
         let selectedId = null;
-        let idCounter = 77000;
+        let idCounter = 33000;
 
         // --- INIT ---
         window.onload = function() {
             setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
-            genTickets(10);
-            setInterval(() => genTickets(1), 5000);
+            
+            // GENERATE INITIAL DATA
+            generateInfiniteTickets(10);
+            setInterval(() => generateInfiniteTickets(1), 4000); // New ticket every 4s
             
             // SIDE MODULES
             genVIP(); genBase(); genServers(); genSecurity(); startFinanceStream(); initFiberMap();
             
-            // *** SIMULATION LOOP FOR FEEDBACK ***
+            // SIMULATION LOOP
             setInterval(simulationLoop, 3000);
-
-            log("System initialized.");
-            log("Feedback loop active...");
+            
+            log("Procedural Generation Engine Loaded.");
+            log("Infinite Scenario Mode: ACTIVE");
         };
 
         // --- NAVIGATION ---
@@ -264,17 +267,20 @@
             document.getElementById('page-header').innerHTML = `<i class="fas fa-th-large"></i> ${titles[id]}`;
         }
 
-        // --- TICKET GENERATOR ---
-        function genTickets(cnt) {
-            for(let i=0; i<cnt; i++) {
+        // --- INFINITE TICKET ENGINE ---
+        function generateInfiniteTickets(count) {
+            for(let i=0; i<count; i++) {
                 idCounter++;
-                const issue = issuePool[Math.floor(Math.random() * issuePool.length)];
-                const name = firstNames[Math.floor(Math.random() * firstNames.length)] + " " + lastNames[Math.floor(Math.random() * lastNames.length)];
-                const loc = locs[Math.floor(Math.random() * locs.length)];
+                const tmpl = templates[Math.floor(Math.random() * templates.length)];
+                const loc = districts[Math.floor(Math.random() * districts.length)];
+                const sit = situations[Math.floor(Math.random() * situations.length)];
+                const name = fNames[Math.floor(Math.random() * fNames.length)] + " " + lNames[Math.floor(Math.random() * lNames.length)];
+                
+                // Replace Placeholders
+                let desc = tmpl.d.replace("{LOKASYON}", loc).replace("{DURUM}", sit);
                 
                 const t = {
-                    id: idCounter,
-                    cat: issue.c, icon: issue.i, title: issue.t, desc: issue.d,
+                    id: idCounter, cat: tmpl.c, icon: tmpl.i, title: tmpl.t, desc: desc,
                     name: name, loc: loc, time: new Date().toLocaleTimeString(),
                     ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
                 };
@@ -292,7 +298,7 @@
                 const div = document.createElement('div');
                 div.className = `ticket-card ${selectedId===t.id?'selected':''}`;
                 div.onclick = () => showDetail(t);
-                div.innerHTML = `<div class="t-top"><span>#TRK-${t.id}</span><span>${t.time}</span></div><div class="t-title">${t.title}</div><div class="t-sub"><i class="fas ${t.icon}"></i> ${t.name} • ${t.loc}</div>`;
+                div.innerHTML = `<div class="t-top"><span>#TRK-${t.id}</span><span>${t.time}</span></div><div class="t-title">${t.title}</div><div class="t-sub"><i class="fas ${t.icon}"></i> ${t.name} • ${t.loc.split('/')[0]}</div>`;
                 el.appendChild(div);
             });
         }
@@ -304,11 +310,21 @@
                 <div class="detail-header"><div><h2 style="color:white; margin-bottom:5px;">#TRK-${t.id}</h2><div style="color:var(--text-sub); font-size:0.9rem;">${t.title}</div></div><div class="badge" style="background:var(--tc-blue); font-size:0.9rem;">${t.cat}</div></div>
                 <div class="detail-body">
                     <div style="background:rgba(0,79,159,0.1); border-left:4px solid var(--tc-blue); padding:15px; margin-bottom:20px; color:#ddd; font-style:italic;">"${t.desc}"</div>
+                    
+                    <div class="tools-panel">
+                        <div class="tools-title">CANLI MÜDAHALE ARAÇLARI</div>
+                        <div class="tools-grid">
+                            <div class="btn-tool" onclick="runTool('Bağlantı Reset')"><i class="fas fa-sync-alt"></i><span>Hat Reset</span></div>
+                            <div class="btn-tool" onclick="runTool('Port Kontrol')"><i class="fas fa-ethernet"></i><span>Port Check</span></div>
+                            <div class="btn-tool" onclick="runTool('Sinyal Güçlendir')"><i class="fas fa-signal"></i><span>Sinyal Boost</span></div>
+                        </div>
+                    </div>
+
                     <div class="info-grid">
                         <div class="info-card"><span class="lbl">Abone</span><span class="val">${t.name}</span></div>
                         <div class="info-card"><span class="lbl">Lokasyon</span><span class="val">${t.loc}</span></div>
                         <div class="info-card"><span class="lbl">IP Adresi</span><span class="val">${t.ip}</span></div>
-                        <div class="info-card"><span class="lbl">Sinyal</span><span class="val" style="color:var(--accent-green)">-85 dBm (İyi)</span></div>
+                        <div class="info-card"><span class="lbl">Sinyal</span><span class="val" style="color:var(--accent-green)">-82 dBm (Stabil)</span></div>
                     </div>
                 </div>
                 <div class="detail-footer">
@@ -317,14 +333,14 @@
                 </div>`;
         }
 
-        // --- ROUTING & HISTORY SIMULATION ---
-        const replies = {
-            "Saha Operasyonları": ["Saha ekibi yönlendirildi, fiber kesiği tespit edildi.", "Baz istasyonu kart arızası giderildi.", "Bina içi kablolama hatası, müşteriye bilgi verildi."],
-            "Core Network (Tier 2)": ["IP bloğu blacklisten çıkarıldı.", "Hız profili güncellendi, sorun çözüldü.", "Roaming kısıtlaması kaldırıldı."],
-            "Hukuk Departmanı": ["Savcılık kararı incelendi, loglar paylaşıldı.", "Yasal takip süreci başlatıldı."],
-            "Kurumsal Müşteri Hizmetleri": ["Firma yetkilisi ile görüşüldü, VPN resetlendi.", "Metro Ethernet portu aktif edildi."],
-            "Finans / İtiraz": ["Fatura incelendi, hatalı ücret iade edildi.", "Kullanım detayları müşteriye mail atıldı."]
-        };
+        // --- TOOLS LOGIC ---
+        function runTool(name) {
+            log(`Executing: ${name}...`);
+            setTimeout(() => log(`> ${name} Success. Status: OK`), 1000);
+        }
+
+        // --- ROUTING & SIMULATION ---
+        const replies = {"Saha Operasyonları":["Saha ekibi yönlendirildi.","Baz istasyonu resetlendi."], "Core Network (Tier 2)":["Profil güncellendi.","Hız kısıtı kaldırıldı."], "Hukuk Departmanı":["İnceleniyor."], "Finans / İtiraz":["İade yapıldı."]};
 
         function openModal() { if(!selectedId)return; document.getElementById('m-text').innerText=`#TRK-${selectedId} nolu talep için işlem yapılıyor.`; document.getElementById('route-modal').style.display='flex'; }
         function closeModal() { document.getElementById('route-modal').style.display='none'; }
@@ -332,101 +348,49 @@
         function confirmRoute() {
             const ticket = tickets.find(t=>t.id===selectedId);
             const dept = document.getElementById('m-dept').value;
-            
-            historyLog.unshift({
-                id: ticket.id, dept: dept, issue: ticket.title, status: "Bekliyor", note: "-", timestamp: Date.now()
-            });
-            updateHistoryTable();
-            updateHistoryBadge();
-
+            historyLog.unshift({id: ticket.id, dept: dept, issue: ticket.title, status: "Bekliyor", note: "-", timestamp: Date.now()});
+            updateHistoryTable(); updateHistoryBadge();
             tickets = tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList();
             document.getElementById('detail-view').innerHTML=`<div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);"><i class="fas fa-check-circle" style="font-size:3rem; color:var(--accent-green); margin-bottom:10px;"></i><p>Yönlendirildi.</p></div>`;
-            closeModal();
-            log(`Routed Ticket #${ticket.id} to ${dept}`);
+            closeModal(); log(`Routed Ticket #${ticket.id} to ${dept}`);
         }
 
-        // --- SIMULATION LOOP (THE MAGIC) ---
         function simulationLoop() {
-            // Find a random pending item
-            const pendingItems = historyLog.filter(i => i.status === "Bekliyor" || i.status === "İşlemde");
-            if (pendingItems.length === 0) return;
-
-            const item = pendingItems[Math.floor(Math.random() * pendingItems.length)];
-            
-            // Advance status
-            if(item.status === "Bekliyor") {
-                item.status = "İşlemde";
-            } else if (item.status === "İşlemde") {
+            const pending = historyLog.filter(i => i.status === "Bekliyor" || i.status === "İşlemde");
+            if (pending.length === 0) return;
+            const item = pending[Math.floor(Math.random() * pending.length)];
+            if(item.status === "Bekliyor") { item.status = "İşlemde"; }
+            else if (item.status === "İşlemde") {
                 item.status = "Yanıtlandı";
-                // Generate random reply
-                const possibleReplies = replies[item.dept] || ["İşlem tamamlandı."];
-                item.note = possibleReplies[Math.floor(Math.random() * possibleReplies.length)];
-                
-                // Show Notification
+                const reps = replies[item.dept] || ["İşlem tamam."];
+                item.note = reps[Math.floor(Math.random() * reps.length)];
                 showToast(item.dept, item.id);
             }
             updateHistoryTable();
         }
 
         function updateHistoryTable() {
-            const tb = document.getElementById('hist-body');
-            tb.innerHTML = "";
-            historyLog.forEach((h, index) => {
-                let badgeClass = h.status==="Bekliyor"?"tag-wait":(h.status==="İşlemde"?"tag-proc":"tag-done");
-                let actionBtn = "";
-                if(h.status === "Yanıtlandı") {
-                    actionBtn = `<button onclick="archiveHistory(${index})" style="padding:4px 8px; background:var(--tc-blue); border:none; color:white; border-radius:4px; cursor:pointer;">Tamamla</button>`;
-                } else if(h.status === "Arşivlendi") {
-                    actionBtn = `<i class="fas fa-check" style="color:#555;"></i>`;
-                    badgeClass = "tag-vip"; // Greyish
-                } else {
-                    actionBtn = `<i class="fas fa-clock" style="color:#555;"></i>`;
-                }
-
-                const row = `<tr>
-                    <td>#${h.id}</td>
-                    <td>${h.dept}</td>
-                    <td>${h.issue}</td>
-                    <td><span class="tag ${badgeClass}">${h.status}</span></td>
-                    <td style="color:${h.status==='Yanıtlandı'?'var(--accent-green)':'#777'}">${h.note}</td>
-                    <td>${actionBtn}</td>
-                </tr>`;
-                tb.innerHTML += row;
+            const tb = document.getElementById('hist-body'); tb.innerHTML = "";
+            historyLog.forEach((h, idx) => {
+                let badge = h.status==="Bekliyor"?"tag-wait":(h.status==="İşlemde"?"tag-proc":"tag-done");
+                let btn = h.status==="Yanıtlandı" ? `<button onclick="archive(${idx})" style="padding:4px 8px; background:var(--tc-blue); border:none; color:white; border-radius:4px; cursor:pointer;">Tamamla</button>` : (h.status==="Arşivlendi" ? '<i class="fas fa-check"></i>' : '<i class="fas fa-clock"></i>');
+                if(h.status==="Arşivlendi") badge="tag-vip";
+                tb.innerHTML += `<tr><td>#${h.id}</td><td>${h.dept}</td><td>${h.issue}</td><td><span class="tag ${badge}">${h.status}</span></td><td style="color:${h.status==='Yanıtlandı'?'var(--accent-green)':'#777'}">${h.note}</td><td>${btn}</td></tr>`;
             });
         }
 
-        function archiveHistory(index) {
-            historyLog[index].status = "Arşivlendi";
-            updateHistoryTable();
-            updateHistoryBadge();
-        }
-
-        function updateHistoryBadge() {
-            const count = historyLog.filter(h => h.status !== "Arşivlendi").length;
-            const badge = document.getElementById('badge-hist');
-            badge.innerText = count;
-            badge.style.display = count > 0 ? 'inline-block' : 'none';
-        }
-
-        function showToast(dept, id) {
-            const cont = document.getElementById('toast-area');
-            const div = document.createElement('div');
-            div.className = "toast";
-            div.innerHTML = `<div class="toast-icon"><i class="fas fa-bell"></i></div><div><strong>${dept}</strong><br>#TRK-${id} nolu talebi yanıtladı.</div>`;
-            cont.appendChild(div);
-            setTimeout(() => div.classList.add('show'), 100);
-            setTimeout(() => { div.classList.remove('show'); setTimeout(()=>div.remove(), 300); }, 5000);
-        }
+        function archive(i) { historyLog[i].status="Arşivlendi"; updateHistoryTable(); updateHistoryBadge(); }
+        function updateHistoryBadge() { const c = historyLog.filter(h=>h.status!=="Arşivlendi").length; const b=document.getElementById('badge-hist'); b.innerText=c; b.style.display=c>0?'inline-block':'none'; }
+        function showToast(d, id) { const c=document.getElementById('toast-area'); const el=document.createElement('div'); el.className="toast"; el.innerHTML=`<div class="toast-icon"><i class="fas fa-bell"></i></div><div><strong>${d}</strong><br>#TRK-${id} yanıtladı.</div>`; c.appendChild(el); setTimeout(()=>el.classList.add('show'),100); setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),300)},5000); }
 
         // --- SORGU ---
         function searchUser() {
             const val = document.getElementById('gsm-inp').value.replace(/\s/g,'');
-            const res = document.getElementById('search-res');
-            res.style.display = 'none';
+            const res = document.getElementById('search-res'); res.style.display='none';
             if(val.length < 5) { alert('Numara giriniz'); return; }
             let data = {};
             if(val === "5354653384") { data = { n:"MEHMET DUGAN", t:"254********", d:"Redmi 14C", l:"İstanbul Kartal Soğanlık Yeni Mh. Eraykent Cd.", s:true }; }
-            else { data = { n:firstNames[0]+" "+lastNames[0], t:Math.floor(Math.random()*99999999999), d:"Samsung S22", l:locs[0], s:false }; }
+            else { data = { n:fNames[0]+" "+lNames[0], t:Math.floor(Math.random()*99999999999), d:"Samsung S22", l:locs[0], s:false }; }
             setTimeout(() => {
                 res.style.display = 'block';
                 res.innerHTML = `<div style="padding:25px; border-bottom:1px solid var(--border); display:flex; gap:20px; align-items:center;"><div style="width:80px; height:80px; border-radius:50%; background:#222; border:2px solid ${data.s?'var(--accent-red)':'var(--border)'}; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:#666;"><i class="fas fa-user-circle"></i></div><div><h2 style="color:white; margin-bottom:5px;">${data.n}</h2><div style="color:var(--tc-yellow); font-family:'Consolas'; font-size:1.2rem;">${val}</div>${data.s?'<span style="background:var(--accent-red); color:white; padding:2px 8px; font-size:0.7rem; border-radius:4px;">HEDEF</span>':''}</div></div><div class="info-grid" style="padding:25px;"><div class="info-card"><span class="lbl">TCKN</span><span class="val">${data.t}</span></div><div class="info-card"><span class="lbl">Cihaz</span><span class="val">${data.d}</span></div><div class="info-card" style="grid-column:span 2; border:1px solid ${data.s?'var(--accent-red)':'var(--border)'}"><span class="lbl">Adres / Konum</span><span class="val" style="color:${data.s?'var(--accent-red)':'white'}">${data.l}</span></div></div>`;
@@ -434,14 +398,12 @@
         }
 
         // --- SIDE MODULES ---
-        function genVIP() { const t=document.getElementById('vip-body'); for(let i=0;i<15;i++) t.innerHTML+=`<tr><td>${100+i}</td><td>${firstNames[i]} ${lastNames[i]}</td><td>Platinum Black 100GB</td><td>${(Math.random()*3000).toFixed(2)} TL</td><td><span class="tag tag-vip">VIP</span></td></tr>`; }
-        function genBase() { const t=document.getElementById('base-body'); for(let i=0;i<8;i++) t.innerHTML+=`<tr><td>IST-${900+i}</td><td>${locs[i%locs.length]}</td><td>4.5G Macro</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="tag tag-ok">OK</span></td></tr>`; }
+        function genVIP() { const t=document.getElementById('vip-body'); for(let i=0;i<15;i++) t.innerHTML+=`<tr><td>${100+i}</td><td>${fNames[i]} ${lNames[i]}</td><td>Platinum Black 100GB</td><td>${(Math.random()*3000).toFixed(2)} TL</td><td><span class="tag tag-vip">VIP</span></td></tr>`; }
+        function genBase() { const t=document.getElementById('base-body'); for(let i=0;i<8;i++) t.innerHTML+=`<tr><td>IST-${900+i}</td><td>${locs[i%locs.length].split('/')[0]}</td><td>4.5G Macro</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="tag tag-ok">OK</span></td></tr>`; }
         function genSecurity() { const t=document.getElementById('sec-body'); setInterval(()=>{ const ip=`192.168.1.${Math.floor(Math.random()*255)}`; t.innerHTML=`<tr><td>${new Date().toLocaleTimeString()}</td><td>${ip}</td><td>Core-SW</td><td>DDoS Attempt</td><td><span class="tag tag-warn">BLOCKED</span></td></tr>`+t.innerHTML; if(t.children.length>10)t.removeChild(t.lastChild); }, 3000); }
         function genServers() { const g=document.getElementById('server-grid'); for(let i=1;i<=12;i++) g.innerHTML+=`<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:4px;"><div style="color:var(--text-sub); font-size:0.8rem;">NODE-${i}</div><div style="height:4px; background:#333; margin-top:5px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%;"></div></div></div>`; }
         function startFinanceStream() { const f=document.getElementById('finance-log'); setInterval(()=>{ f.innerHTML+=`> Payment Received: ${Math.floor(Math.random()*500)} TL - 53${Math.floor(Math.random()*9)}...<br>`; f.scrollTop=f.scrollHeight; }, 1500); }
         function initFiberMap() { const m=document.getElementById('fiber-map'); for(let i=0;i<20;i++) m.innerHTML+=`<div style="position:absolute; width:6px; height:6px; background:cyan; border-radius:50%; box-shadow:0 0 5px cyan; top:${Math.random()*90}%; left:${Math.random()*90}%;"></div>`; }
-
-        // --- UTILS ---
         function log(msg) { const t=document.getElementById('terminal'); t.innerHTML+=`> ${msg}<br>`; t.scrollTop=t.scrollHeight; }
         function resolve() { if(!selectedId)return; alert('Talep Çözüldü olarak kapatıldı.'); tickets=tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList(); document.getElementById('detail-view').innerHTML=""; }
     </script>
