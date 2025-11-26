@@ -3,409 +3,537 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turkcell SIMULATION V12 | İlhan Dugan</title>
+    <title>Turkcell OMNIPOTENT V13 | İlhan Dugan</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* --- CORE DESIGN (DEĞİŞTİRİLMEDİ) --- */
-        :root { --bg-dark: #090c10; --bg-panel: #161b22; --bg-hover: #1f252e; --border: #30363d; --tc-blue: #004F9F; --tc-yellow: #FFC900; --text-main: #e6edf3; --text-sub: #8b949e; --accent-green: #238636; --accent-red: #da3633; --accent-purple: #a371f7; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; outline: none; }
-        body { background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; font-size: 13px; }
-        ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-dark); } ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
-        
-        /* SIDEBAR */
-        .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; z-index: 50; }
-        .brand { height: 65px; background: white; border-bottom: 3px solid var(--tc-yellow); display: flex; align-items: center; justify-content: center; }
-        .brand img { height: 30px; }
-        .user-card { padding: 15px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--tc-blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--tc-yellow); }
-        .menu-scroll { flex: 1; overflow-y: auto; padding: 10px 0; }
-        .menu-group { font-size: 0.7rem; color: #555; padding: 15px 20px 5px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        .menu-item { padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: var(--text-sub); transition: 0.2s; border-left: 3px solid transparent; }
-        .menu-item:hover, .menu-item.active { background: var(--bg-hover); color: white; border-left-color: var(--tc-yellow); }
-        .menu-item i { width: 20px; text-align: center; }
-        .badge { background: var(--accent-red); color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; margin-left: auto; display: none; }
+        /* --- CORE VISUALS --- */
+        :root { --bg-dark: #0d1117; --bg-panel: #161b22; --border: #30363d; --tc-blue: #004F9F; --tc-yellow: #FFC900; --text: #c9d1d9; --green: #238636; --red: #da3633; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg-dark); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 13px; }
+        ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 
-        /* MAIN */
+        /* --- LAYOUT --- */
+        .sidebar { width: 260px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 10; }
         .main { flex: 1; display: flex; flex-direction: column; position: relative; }
         .top-bar { height: 50px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .view-container { flex: 1; overflow: hidden; position: relative; }
-        .view { display: none; height: 100%; flex-direction: column; padding: 0; animation: fadeEffect 0.2s; }
-        .view.active { display: flex; }
-        @keyframes fadeEffect { from { opacity: 0; } to { opacity: 1; } }
 
-        /* DASHBOARD GRID */
-        .dash-grid { display: grid; grid-template-columns: 320px 1fr 280px; height: 100%; }
-        .col-list { border-right: 1px solid var(--border); background: var(--bg-dark); display: flex; flex-direction: column; overflow: hidden; }
-        .list-header { padding: 10px 15px; border-bottom: 1px solid var(--border); font-weight: bold; background: var(--bg-panel); display: flex; justify-content: space-between; align-items: center; }
-        .ticket-scroll { flex: 1; overflow-y: auto; }
-        .ticket-card { padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.1s; position: relative; }
-        .ticket-card:hover { background: var(--bg-hover); }
-        .ticket-card.selected { background: rgba(0, 79, 159, 0.15); border-left: 3px solid var(--tc-blue); }
-        .t-top { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 0.75rem; color: var(--text-sub); }
-        .t-title { font-weight: 600; color: #fff; margin-bottom: 3px; font-size: 0.9rem; }
-        .t-sub { color: var(--text-sub); font-size: 0.8rem; display: flex; align-items: center; gap: 5px; }
-        
-        /* DETAIL */
-        .col-detail { display: flex; flex-direction: column; overflow: hidden; background: #0d1117; position: relative; }
-        .detail-header { padding: 15px 20px; border-bottom: 1px solid var(--border); background: var(--bg-panel); display: flex; justify-content: space-between; align-items: center; }
-        .detail-body { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 80px; }
-        .detail-footer { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--bg-panel); border-top: 1px solid var(--border); display: flex; gap: 15px; z-index: 10; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
-        .btn-big { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn-blue { background: var(--tc-blue); } .btn-blue:hover { background: #003d7a; }
-        .btn-green { background: var(--accent-green); } .btn-green:hover { background: #1a6328; }
-        
-        /* TOOLS PANEL (NEW) */
-        .tools-panel { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 20px; }
-        .tools-title { font-size: 0.8rem; color: var(--tc-yellow); font-weight: bold; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
-        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .btn-tool { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-main); padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .btn-tool:hover { background: var(--tc-blue); border-color: var(--tc-blue); }
-        .btn-tool i { font-size: 1.2rem; }
+        /* --- SIDEBAR ITEMS --- */
+        .brand { height: 60px; background: white; display: flex; align-items: center; justify-content: center; border-bottom: 3px solid var(--tc-yellow); }
+        .brand img { height: 28px; }
+        .user-box { padding: 15px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.02); }
+        .avatar { width: 35px; height: 35px; background: var(--tc-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--tc-yellow); }
+        .menu { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .m-header { font-size: 0.7rem; color: #666; padding: 15px 20px 5px; font-weight: bold; text-transform: uppercase; }
+        .m-item { padding: 10px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #8b949e; transition: 0.2s; border-left: 3px solid transparent; }
+        .m-item:hover, .m-item.active { background: #1f242c; color: white; border-left-color: var(--tc-yellow); }
+        .badge { background: var(--red); color: white; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; margin-left: auto; display: none; }
 
-        /* LOGS */
-        .col-logs { border-left: 1px solid var(--border); background: var(--bg-panel); display: flex; flex-direction: column; }
-        .log-area { flex: 1; background: black; color: #0f0; font-family: 'Consolas', monospace; font-size: 0.8rem; padding: 15px; overflow-y: auto; }
-
-        /* TABLES & TAGS */
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th { text-align: left; padding: 12px; background: rgba(0,0,0,0.2); color: var(--text-sub); font-size: 0.8rem; }
-        .data-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: white; vertical-align: middle; }
-        .tag { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
-        .tag-wait { background: #d29922; color: #000; }
-        .tag-proc { background: var(--tc-blue); color: #fff; animation: pulse 2s infinite; }
-        .tag-done { background: var(--accent-green); color: #fff; }
-        .tag-vip { background: linear-gradient(45deg, #ffd700, #ffaa00); color: black; }
+        /* --- DASHBOARD GRID --- */
+        .view { display: none; height: 100%; } .view.active { display: flex; }
+        .grid-3 { display: grid; grid-template-columns: 350px 1fr 300px; height: 100%; }
         
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-
-        /* SEARCH & MODAL */
-        .search-area { max-width: 800px; margin: 30px auto; width: 90%; }
-        .search-inp { width: 100%; padding: 15px; background: var(--bg-dark); border: 1px solid var(--border); color: white; font-size: 1.2rem; border-radius: 6px; margin-bottom: 20px; }
-        .result-box { display: none; background: var(--bg-panel); padding: 30px; border-radius: 10px; border: 1px solid var(--border); position: relative; }
+        /* COLUMN STYLES */
+        .col { display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--border); background: var(--bg-dark); }
+        .col-header { padding: 10px 15px; background: var(--bg-panel); border-bottom: 1px solid var(--border); font-weight: bold; display: flex; justify-content: space-between; }
         
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { width: 500px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 25px; box-shadow: 0 20px 60px black; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .info-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px; border-radius: 4px; }
-        .lbl { font-size: 0.7rem; color: var(--text-sub); display: block; }
+        /* TICKET CARD */
+        .ticket { padding: 12px 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.1s; position: relative; }
+        .ticket:hover { background: #1c2128; }
+        .ticket.selected { background: rgba(0,79,159,0.15); border-left: 3px solid var(--tc-blue); }
+        .t-row { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 0.8rem; color: #8b949e; }
+        .t-title { color: white; font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+
+        /* DETAIL PANEL */
+        .detail-content { padding: 20px; overflow-y: auto; flex: 1; padding-bottom: 80px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .info-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px; border-radius: 5px; }
+        .lbl { font-size: 0.7rem; color: #8b949e; display: block; }
         .val { font-size: 0.95rem; font-weight: 500; color: white; }
+        
+        /* ACTION FOOTER */
+        .actions { padding: 15px; background: var(--bg-panel); border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; transition: 0.2s; }
+        .btn-blue { background: var(--tc-blue); } .btn-blue:hover { background: #003d7a; }
+        .btn-green { background: var(--green); } .btn-green:hover { background: #1a6328; }
+        
+        /* TERMINAL */
+        .terminal { background: #000; color: #0f0; font-family: 'Consolas', monospace; padding: 15px; overflow-y: auto; flex: 1; font-size: 0.8rem; }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px solid #222; padding-bottom: 2px; }
 
-        /* TOAST NOTIFICATION */
-        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
-        .toast { background: var(--bg-panel); border-left: 4px solid var(--accent-green); padding: 15px 20px; border-radius: 4px; color: white; width: 320px; box-shadow: 0 10px 30px black; transform: translateX(120%); transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        /* TABLES */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; background: rgba(0,0,0,0.3); color: #8b949e; }
+        td { padding: 12px; border-bottom: 1px solid var(--border); }
+        .status { padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .st-wait { background: #d29922; color: #000; }
+        .st-proc { background: var(--tc-blue); color: #fff; animation: pulse 1.5s infinite; }
+        .st-done { background: var(--green); color: #fff; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* SEARCH */
+        .search-box { max-width: 700px; margin: 40px auto; }
+        .inp { width: 100%; padding: 15px; background: #0d1117; border: 1px solid var(--border); color: white; font-size: 1.2rem; border-radius: 5px; margin-bottom: 15px; }
+        .res-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 25px; display: none; position: relative; }
+        .target-badge { position: absolute; top: 0; right: 0; background: var(--red); color: white; padding: 5px 15px; font-weight: bold; border-bottom-left-radius: 10px; font-size: 0.8rem; }
+
+        /* MODAL */
+        .modal-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal { width: 450px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 25px; box-shadow: 0 20px 50px black; }
+        
+        /* TOAST */
+        .toast { position: fixed; top: 20px; right: 20px; background: var(--bg-panel); border-left: 4px solid var(--green); padding: 15px; width: 300px; transform: translateX(120%); transition: 0.3s; z-index: 200; box-shadow: 0 10px 30px black; display: flex; align-items: center; gap: 15px; }
         .toast.show { transform: translateX(0); }
-        .toast-icon { font-size: 1.2rem; color: var(--accent-green); }
+
+        /* TOOLS */
+        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .tool-btn { background: #1f242c; border: 1px solid var(--border); color: #ccc; padding: 8px; text-align: center; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .tool-btn:hover { background: var(--tc-blue); color: white; }
+
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
-        <div class="brand">
-            <img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png" alt="Turkcell">
-        </div>
-        <div class="user-card">
+        <div class="brand"><img src="https://logos-world.net/wp-content/uploads/2020/12/Turkcell-Logo.png"></div>
+        <div class="user-box">
             <div class="avatar">İD</div>
-            <div class="user-info">
-                <h4>İLHAN DUGAN</h4>
-                <p>NOC Manager (Admin)</p>
-            </div>
+            <div><div style="font-weight:bold; color:var(--tc-yellow)">İLHAN DUGAN</div><div style="font-size:0.75rem; color:#777">Operasyon Direktörü</div></div>
         </div>
-        
-        <div class="menu-scroll">
-            <div class="menu-group">Operasyon</div>
-            <div class="menu-item active" onclick="setView('dash', this)"><i class="fas fa-satellite-dish"></i> Canlı Arıza</div>
-            <div class="menu-item" onclick="setView('history', this)"><i class="fas fa-history"></i> İşlem Geçmişi <div class="badge" id="badge-hist">0</div></div>
+        <div class="menu">
+            <div class="m-header">ANA MODÜLLER</div>
+            <div class="m-item active" onclick="nav('dash', this)"><i class="fas fa-th-large"></i> Canlı Arıza Akışı</div>
+            <div class="m-item" onclick="nav('history', this)"><i class="fas fa-history"></i> İşlem Geçmişi <div class="badge" id="badge-hist">0</div></div>
+            
+            <div class="m-header">İSTİHBARAT & MÜŞTERİ</div>
+            <div class="m-item" onclick="nav('sorgu', this)"><i class="fas fa-user-secret"></i> Yasaklı Bölge (Sorgu)</div>
+            <div class="m-item" onclick="nav('vip', this)"><i class="fas fa-crown"></i> VIP Müşteri Listesi</div>
+            <div class="m-item" onclick="nav('corp', this)"><i class="fas fa-building"></i> Kurumsal Hatlar</div>
 
-            <div class="menu-group">Müşteri Segmenti</div>
-            <div class="menu-item" onclick="setView('sorgu', this)"><i class="fas fa-user-secret"></i> Yasaklı Bölge (Sorgu)</div>
-            <div class="menu-item" onclick="setView('vip', this)"><i class="fas fa-crown"></i> VIP / Platinum Listesi</div>
-            <div class="menu-item" onclick="setView('corp', this)"><i class="fas fa-building"></i> Kurumsal Çözüm (B2B)</div>
-
-            <div class="menu-group">Teknik Altyapı</div>
-            <div class="menu-item" onclick="setView('server', this)"><i class="fas fa-server"></i> Sunucu Odası</div>
-            <div class="menu-item" onclick="setView('fiber', this)"><i class="fas fa-network-wired"></i> Fiber Topoloji</div>
-            <div class="menu-item" onclick="setView('base', this)"><i class="fas fa-broadcast-tower"></i> Baz İstasyonları</div>
-
-            <div class="menu-group">Yönetim</div>
-            <div class="menu-item" onclick="setView('hr', this)"><i class="fas fa-users"></i> İK ve Vardiya</div>
-            <div class="menu-item" onclick="setView('finance', this)"><i class="fas fa-file-invoice-dollar"></i> Finans / Tahsilat</div>
-            <div class="menu-item" onclick="setView('security', this)"><i class="fas fa-shield-alt"></i> Güvenlik Logları</div>
+            <div class="m-header">TEKNİK ALTYAPI</div>
+            <div class="m-item" onclick="nav('fiber', this)"><i class="fas fa-network-wired"></i> Fiber Omurga</div>
+            <div class="m-item" onclick="nav('base', this)"><i class="fas fa-broadcast-tower"></i> Saha Kuleleri</div>
+            <div class="m-item" onclick="nav('server', this)"><i class="fas fa-server"></i> Sunucu Odası</div>
+            
+            <div class="m-header">YÖNETİM</div>
+            <div class="m-item" onclick="nav('finance', this)"><i class="fas fa-coins"></i> Finans & Tahsilat</div>
+            <div class="m-item" onclick="nav('security', this)"><i class="fas fa-shield-alt"></i> Güvenlik Logları</div>
         </div>
     </nav>
 
     <main class="main">
         <header class="top-bar">
-            <div class="page-title" id="page-header"><i class="fas fa-satellite-dish"></i> Canlı Arıza Paneli</div>
-            <div style="font-family:'Consolas'; color:var(--text-sub); font-size:0.85rem;">
-                SYSTEM: <span style="color:var(--accent-green)">ONLINE</span> | <span id="clock">12:00:00</span>
-            </div>
+            <div style="font-weight:600; font-size:1.1rem; color:white;" id="pg-title"><i class="fas fa-th-large"></i> Canlı Arıza Akışı</div>
+            <div style="font-family:'Consolas'; color:#777;">SYSTEM: <span style="color:var(--green)">ONLINE</span> | <span id="clock">12:00</span></div>
         </header>
 
-        <div class="view-container">
-
-            <div id="dash" class="view active">
-                <div class="dash-grid">
-                    <div class="col-list">
-                        <div class="list-header">
-                            <span>Gelen Talepler</span>
-                            <span id="t-count" style="background:var(--tc-blue); padding:1px 6px; border-radius:4px; font-size:0.8rem;">0</span>
-                        </div>
-                        <div class="ticket-scroll" id="ticket-list"></div>
-                    </div>
-                    
-                    <div class="col-detail" id="detail-view">
-                        <div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);">
-                            <i class="fas fa-hand-pointer" style="font-size:3rem; margin-bottom:20px; opacity:0.3;"></i>
-                            <p>Detay ve İşlem için soldan bir talep seçin.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-logs">
-                        <div style="padding:10px; border-bottom:1px solid var(--border); font-weight:bold;">Sistem Terminali</div>
-                        <div class="log-area" id="terminal">
-                            > System init...<br>> Procedural Generation Engine v12.0 Loaded.<br>> Waiting for events...
+        <div id="dash" class="view active">
+            <div class="grid-3">
+                <div class="col">
+                    <div class="col-header"><span>Gelen Talepler</span><span id="cnt-ticket" style="background:var(--tc-blue); padding:0 6px; border-radius:4px; font-size:0.8rem; color:white;">0</span></div>
+                    <div style="overflow-y:auto; flex:1;" id="list-area"></div>
+                </div>
+                <div class="col" style="background:#0d1117;">
+                    <div class="col-header"><span>Talep Detayı</span><span id="det-id" style="color:var(--tc-yellow); font-family:'Consolas'">-</span></div>
+                    <div id="detail-area" style="flex:1; display:flex; flex-direction:column;">
+                        <div style="flex:1; display:flex; align-items:center; justify-content:center; color:#555; flex-direction:column;">
+                            <i class="fas fa-mouse-pointer" style="font-size:3rem; margin-bottom:20px;"></i>
+                            <p>İşlem yapmak için bir talep seçin.</p>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div id="sorgu" class="view">
-                <div class="search-area">
-                    <h2 style="text-align:center; margin-bottom:20px; color:var(--tc-yellow);">YASAKLI BÖLGE: İSTİHBARAT SERVİSİ</h2>
-                    <input type="text" class="search-inp" id="gsm-inp" placeholder="GSM No (5354653384) veya TCKN">
-                    <button class="btn-big btn-blue" onclick="searchUser()">SORGULA</button>
-                    <div id="search-res" class="result-box" style="margin-top:20px;"></div>
+                <div class="col">
+                    <div class="col-header">Sistem Terminali</div>
+                    <div class="terminal" id="term">
+                        > System initialized...<br>
+                        > Workflow Engine: Active<br>
+                        > Listening for events...
+                    </div>
                 </div>
             </div>
-
-            <div id="history" class="view">
-                <div style="padding:20px; height:100%; overflow-y:auto;">
-                    <h2 style="margin-bottom:20px;">İşlem Tarihçesi & Geri Bildirimler</h2>
-                    <table class="data-table">
-                        <thead><tr><th>ID</th><th>Birim</th><th>Sorun</th><th>Durum</th><th>Birim Notu</th><th>İşlem</th></tr></thead>
-                        <tbody id="hist-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="vip" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="color:var(--tc-yellow); margin-bottom:15px;">Platinum & Black Müşteri Listesi</h2><table class="data-table"><thead><tr><th>ID</th><th>Müşteri</th><th>Paket</th><th>Aylık Harcama</th><th>Statü</th></tr></thead><tbody id="vip-body"></tbody></table></div></div>
-            <div id="corp" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="color:var(--tc-yellow); margin-bottom:15px;">Kurumsal Arıza Takip</h2><table class="data-table"><thead><tr><th>Firma</th><th>Hizmet</th><th>Lokasyon</th><th>Kesinti Süresi</th><th>Durum</th></tr></thead><tbody><tr><td>Acıbadem Hastanesi</td><td>Metro Eth.</td><td>Maslak</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr><tr><td>Garanti BBVA GM</td><td>MPLS VPN</td><td>Zincirlikuyu</td><td>-</td><td><span class="tag tag-ok">UP</span></td></tr><tr><td>Getir Depo</td><td>Radyolink</td><td>Tuzla</td><td>14dk</td><td><span class="tag tag-warn">DOWN</span></td></tr></tbody></table></div></div>
-            <div id="server" class="view"><div style="padding:20px; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:15px;" id="server-grid"></div></div>
-            <div id="fiber" class="view"><div style="padding:20px;"><h2 style="margin-bottom:20px;">İstanbul Fiber Omurga Durumu</h2><div style="background:#111; height:400px; border-radius:8px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;" id="fiber-map"><div style="position:absolute; top:20px; left:20px; color:#555;">Live Topology v4.2</div></div></div></div>
-            <div id="base" class="view"><div style="padding:20px; overflow-y:auto;"><h2 style="margin-bottom:15px;">Saha Kule Durumları</h2><table class="data-table"><thead><tr><th>Site ID</th><th>Bölge</th><th>Tip</th><th>Yük</th><th>Alarm</th></tr></thead><tbody id="base-body"></tbody></table></div></div>
-            <div id="hr" class="view"><div style="padding:20px;"><h2 style="margin-bottom:15px;">NOC Vardiya Listesi</h2><table class="data-table"><thead><tr><th>Personel</th><th>Rol</th><th>Lokasyon</th><th>Durum</th></tr></thead><tbody><tr><td>İlhan Dugan</td><td>Yönetici</td><td>HQ</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ahmet Yılmaz</td><td>Tier 2 Network</td><td>Plaza</td><td><span class="tag tag-ok">Aktif</span></td></tr><tr><td>Ayşe Demir</td><td>Çağrı Merkezi</td><td>Home</td><td><span class="tag tag-warn">Mola</span></td></tr><tr><td>Mehmet Çelik</td><td>Saha Ekibi</td><td>Araç 34TRK99</td><td><span class="tag tag-ok">Saha</span></td></tr></tbody></table></div></div>
-            <div id="finance" class="view"><div style="padding:20px;"><h2>Canlı Tahsilat Akışı</h2><div style="background:#000; padding:15px; font-family:'Consolas'; color:#0f0; height:300px; overflow-y:hidden; border:1px solid #333;" id="finance-log"></div></div></div>
-            <div id="security" class="view"><div style="padding:20px;"><h2 style="color:var(--accent-red);">SOC / Güvenlik Olayları</h2><table class="data-table"><thead><tr><th>Zaman</th><th>IP Kaynağı</th><th>Hedef</th><th>Tehdit</th><th>Aksiyon</th></tr></thead><tbody id="sec-body"></tbody></table></div></div>
-
         </div>
+
+        <div id="sorgu" class="view">
+            <div class="search-box">
+                <h2 style="text-align:center; color:var(--tc-yellow); margin-bottom:20px;">YASAKLI BÖLGE: İSTİHBARAT</h2>
+                <input type="text" class="inp" id="src-inp" placeholder="Numara (5354653384) veya TCKN">
+                <button class="btn btn-blue" style="width:100%; font-size:1.1rem;" onclick="doSearch()">SORGULA</button>
+                <div id="src-res" class="res-card" style="margin-top:20px;"></div>
+            </div>
+        </div>
+
+        <div id="history" class="view">
+            <div style="padding:20px; overflow-y:auto;">
+                <h2 style="margin-bottom:20px;">İşlem Geçmişi & Geri Bildirimler</h2>
+                <table id="hist-table">
+                    <thead><tr><th>ID</th><th>Birim</th><th>Sorun</th><th>Durum</th><th>Birim Notu</th><th>İşlem</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="vip" class="view"><div style="padding:20px;"><h2>VIP Listesi</h2><table id="vip-table"><thead><tr><th>ID</th><th>İsim</th><th>Paket</th><th>Harcama</th><th>Statü</th></tr></thead><tbody></tbody></table></div></div>
+        <div id="corp" class="view"><div style="padding:20px;"><h2>Kurumsal Hatlar</h2><table><thead><tr><th>Firma</th><th>Hizmet</th><th>Durum</th></tr></thead><tbody><tr><td>Getir Depo</td><td>Metro Ethernet</td><td><span class="status st-done">UP</span></td></tr><tr><td>Yemeksepeti HQ</td><td>VPN Tunnel</td><td><span class="status st-wait">DOWN</span></td></tr></tbody></table></div></div>
+        <div id="server" class="view"><div style="padding:20px; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:15px;" id="srv-grid"></div></div>
+        <div id="finance" class="view"><div style="padding:20px;"><h2>Canlı Tahsilat</h2><div class="terminal" id="fin-log" style="height:400px;"></div></div></div>
+        <div id="fiber" class="view"><div style="padding:20px;"><h2>Fiber Haritası</h2><div style="height:400px; background:#111; border-radius:10px; position:relative;" id="map-area"></div></div></div>
+        <div id="base" class="view"><div style="padding:20px;"><h2>Saha Kuleleri</h2><table id="base-table"><thead><tr><th>ID</th><th>Lokasyon</th><th>Yük</th><th>Durum</th></tr></thead><tbody></tbody></table></div></div>
+        <div id="security" class="view"><div style="padding:20px;"><h2 style="color:var(--red)">Güvenlik Logları</h2><table id="sec-table"><thead><tr><th>Zaman</th><th>IP</th><th>Tehdit</th></tr></thead><tbody></tbody></table></div></div>
+        <div id="hr" class="view"><div style="padding:20px;"><h2>Vardiya Listesi</h2><table><tr><td>İlhan Dugan</td><td>Yönetici</td><td style="color:var(--green)">Online</td></tr><tr><td>Ahmet Yılmaz</td><td>Tier 2</td><td style="color:var(--green)">Online</td></tr></table></div></div>
+
     </main>
 
-    <div class="toast-container" id="toast-area"></div>
+    <div class="modal-bg" id="modal">
+        <div class="modal">
+            <h3 style="color:var(--tc-yellow); margin-bottom:15px;">Talebi Yönlendir</h3>
+            <p id="m-desc" style="color:#888; margin-bottom:15px;"></p>
+            <select id="m-dept" class="inp" style="padding:10px; margin-bottom:15px;">
+                <option>Saha Operasyonları</option>
+                <option>Core Network (Tier 2)</option>
+                <option>Hukuk Departmanı</option>
+                <option>Kurumsal Müşteri Hizmetleri</option>
+                <option>Finans / İtiraz</option>
+            </select>
+            <textarea id="m-note" class="inp" style="height:80px; margin-bottom:15px;" placeholder="Teknik not..."></textarea>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" style="background:#444;" onclick="closeModal()">İptal</button>
+                <button class="btn btn-green" onclick="confirmRoute()">Aktar</button>
+            </div>
+        </div>
+    </div>
 
-    <div class="modal-overlay" id="route-modal">
-        <div class="modal-box">
-            <h3 style="color:var(--tc-yellow); margin-bottom:15px;">Departman Yönlendirme</h3>
-            <p id="m-text" style="color:var(--text-sub); margin-bottom:15px;"></p>
-            <label class="lbl">HEDEF BİRİM</label>
-            <select id="m-dept" style="width:100%; padding:12px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px;"><option>Saha Operasyonları</option><option>Core Network (Tier 2)</option><option>Hukuk Departmanı</option><option>Kurumsal Müşteri Hizmetleri</option><option>Finans / İtiraz</option></select>
-            <label class="lbl">NOT</label>
-            <textarea id="m-note" style="width:100%; height:80px; padding:10px; background:var(--bg-dark); border:1px solid var(--border); color:white; margin-bottom:15px;"></textarea>
-            <div style="display:flex; gap:10px; justify-content:flex-end;"><button class="btn-big" style="background:#444; font-size:0.9rem;" onclick="closeModal()">İPTAL</button><button class="btn-big btn-green" style="font-size:0.9rem;" onclick="confirmRoute()">AKTAR</button></div>
+    <div class="toast" id="toast">
+        <div style="font-size:1.5rem; color:var(--green);"><i class="fas fa-check-circle"></i></div>
+        <div>
+            <div style="font-weight:bold; font-size:0.9rem;">Birim Yanıtladı</div>
+            <div id="toast-msg" style="font-size:0.8rem;"></div>
         </div>
     </div>
 
     <script>
-        // --- INFINITE ENGINE DATA POOL ---
-        const fNames = ["Ahmet","Mehmet","Mustafa","Ali","Hüseyin","Hasan","İbrahim","İsmail","Osman","Yusuf","Ömer","Murat","Fatih","Ramazan","Halil","Süleyman","Abdullah","Mahmut","Recep","Hakan","Ayşe","Fatma","Emine","Hatice","Zeynep","Elif","Meryem","Şerife","Zehra","Sultan","Hanife","Merve","Havva","Sakine","Hacer","Özlem","Esra","Selma","Yasemin","Melis","Burak","Can","Cem","Deniz","Ege","Umut","Arda","Kaan","Mert","Emre","Pelin","Buse","Gizem","Aleyna","Selin","Aslı","Ceren"];
-        const lNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Yıldırım","Öztürk","Aydın","Özdemir","Arslan","Doğan","Kılıç","Aslan","Çetin","Kara","Koç","Kurt","Özkan","Şimşek","Polat","Korkmaz","Özcan","Çakır","Erdoğan","Yavuz","Can","Acar","Şen","Aktaş","Güler","Yalçın","Güneş","Bozkurt","Bulut","Keskin","Ünal","Turan","Gül","Avcı"];
-        const districts = ["Kadıköy","Beşiktaş","Şişli","Üsküdar","Maltepe","Kartal","Pendik","Ümraniye","Ataşehir","Sancaktepe","Fatih","Beyoğlu","Bakırköy","Zeytinburnu","Sarıyer","Kağıthane","Esenyurt","Bağcılar","Küçükçekmece","Avcılar","Beylikdüzü","Çankaya (ANK)","Keçiören (ANK)","Mamak (ANK)","Bornova (İZM)","Karşıyaka (İZM)","Buca (İZM)","Konak (İZM)","Nilüfer (BUR)","Osmangazi (BUR)","Muratpaşa (ANT)","Alanya (ANT)","Bodrum (MUĞ)","Çorlu (TEK)","İzmit (KOC)","Gebze (KOC)","Merkez (TRB)","Akçaabat (TRB)"];
-        const situations = ["maç izlerken","Zoom toplantısında","asansöre binince","bodrum kata inince","yeni eve taşınınca","faturayı ödedikten sonra","cihaz güncellemesinden sonra","yurt dışına çıkınca","yağmur yağınca","akşam saatlerinde","sabah uyanınca","arabayla tünele girince","metroya binince","oyun oynarken","Netflix izlerken"];
-        
-        // TEMPLATES FOR GENERATION
-        const templates = [
-            {c:"GSM", i:"fa-signal", t:"Şebeke Sorunu", d:"{LOKASYON}'da {DURUM} telefonum 'Servis Yok' demeye başladı."},
-            {c:"GSM", i:"fa-signal", t:"4.5G Hız Düşüklüğü", d:"{LOKASYON}'da {DURUM} internet hızım 1Mbps altına düşüyor."},
-            {c:"GSM", i:"fa-phone-slash", t:"Arama Kesilmesi", d:"{LOKASYON}'da konuşurken hat sürekli kesiliyor, ses robotlaşıyor."},
-            {c:"SOL", i:"fa-wifi", t:"Fiber Bağlantı Yok", d:"Modemdeki LOS ışığı kırmızı yanıyor. {DURUM} internet gitti."},
-            {c:"SOL", i:"fa-gamepad", t:"Ping Sorunu", d:"{DURUM} ping değerim 20ms'den 300ms'e fırlıyor."},
-            {c:"TV", i:"fa-tv", t:"Yayın Donması", d:"TV+ kutusunda {DURUM} görüntü donuyor ve ses kayması oluyor."},
-            {c:"APP", i:"fa-fingerprint", t:"Giriş Hatası", d:"Turkcell uygulamasına {DURUM} giriş yapamıyorum, hata veriyor."},
-            {c:"BILL", i:"fa-file-invoice-dollar", t:"Fatura İtirazı", d:"Paketim bitmediği halde faturama ek ücret yansımış."},
-            {c:"DEV", i:"fa-sim-card", t:"eSIM Aktivasyon", d:"Yeni cihazımda eSIM aktivasyonunu yapamıyorum, QR kod geçersiz."}
-        ];
+        // --- 1. PROCEDURAL GENERATION ENGINE (SORUN ÜRETİM MOTORU) ---
+        const devices = ["iPhone 15 Pro","Samsung S24 Ultra","Xiaomi 13T","Redmi Note 12","Superbox B618","Huawei P60","Modem ZTE H3600","Apple Watch Ultra","iPad Pro M2"];
+        const locations = ["Kadıköy Rıhtım","Avrasya Tüneli","15 Temmuz Köprüsü","Beşiktaş Meydan","Metro (M4 Hattı)","Bodrum Kat","Asansör İçi","Plaza 42. Kat","Havalimanı Dış Hatlar","Otoban Gişeleri","Ev (Arka Oda)"];
+        const actions = ["Netflix izlerken","Zoom toplantısında","PUBG oynarken","Instagram canlı yayında","WhatsApp görüntülü konuşurken","e-Devlet'e girerken","Dosya yüklerken","Fatura öderken","Araç kullanırken"];
+        const errors = ["internet tamamen kopuyor","hız 1Mbps altına düşüyor","ping 500ms oluyor","ses robotlaşıyor","karşıya ses gitmiyor","cihaz 3G'ye düşüyor","'Servis Yok' yazıyor","DNS hatası veriyor","paketimden düşmüyor"];
+        const times = ["sadece akşamları","sabah saatlerinde","yağmurlu havalarda","rastgele zamanlarda","sürekli","gece 2'den sonra"];
 
-        let tickets = [];
-        let historyLog = [];
-        let selectedId = null;
-        let idCounter = 33000;
+        const fNames = ["Ahmet","Mehmet","Can","Zeynep","Elif","Selin","Burak","Mert","Emre","Ceren","Gizem","Pelin","Oğuz","Kaan","Murat","Hakan"];
+        const lNames = ["Yılmaz","Kaya","Demir","Çelik","Şahin","Yıldız","Öztürk","Aydın","Arslan","Doğan","Koç","Kurt","Polat","Çakır","Erdoğan"];
 
-        // --- INIT ---
-        window.onload = function() {
-            setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
+        function genIssue() {
+            // Rastgele kombinasyon oluştur
+            const dev = devices[Math.floor(Math.random() * devices.length)];
+            const loc = locations[Math.floor(Math.random() * locations.length)];
+            const act = actions[Math.floor(Math.random() * actions.length)];
+            const err = errors[Math.floor(Math.random() * errors.length)];
+            const time = times[Math.floor(Math.random() * times.length)];
             
-            // GENERATE INITIAL DATA
-            generateInfiniteTickets(10);
-            setInterval(() => generateInfiniteTickets(1), 4000); // New ticket every 4s
+            // Cümleyi kur
+            const desc = `${dev} cihazımla ${loc}'da ${act}, ${err}. Bu sorun ${time} yaşanıyor.`;
             
-            // SIDE MODULES
-            genVIP(); genBase(); genServers(); genSecurity(); startFinanceStream(); initFiberMap();
-            
-            // SIMULATION LOOP
-            setInterval(simulationLoop, 3000);
-            
-            log("Procedural Generation Engine Loaded.");
-            log("Infinite Scenario Mode: ACTIVE");
-        };
+            // Başlık türet
+            let title = "Bağlantı Sorunu";
+            let cat = "GSM";
+            let icon = "fa-signal";
 
-        // --- NAVIGATION ---
-        function setView(id, el) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            el.classList.add('active');
-            const titles = {'dash':'Canlı Arıza', 'sorgu':'İstihbarat', 'history':'Tarihçe', 'vip':'VIP Listesi', 'corp':'Kurumsal', 'server':'Sunucu Odası', 'fiber':'Fiber Map', 'base':'Baz İstasyonları', 'hr':'İK', 'finance':'Finans', 'security':'Güvenlik'};
-            document.getElementById('page-header').innerHTML = `<i class="fas fa-th-large"></i> ${titles[id]}`;
+            if(desc.includes("Modem") || desc.includes("Superbox")) { cat="SOL"; icon="fa-wifi"; title="Ev İnterneti Arızası"; }
+            else if(desc.includes("Fatura")) { cat="BILL"; icon="fa-file-invoice"; title="Fatura Sorunu"; }
+            else if(desc.includes("ses")) { title="Ses Kalitesi"; icon="fa-phone-slash"; }
+            else if(desc.includes("ping")) { title="Yüksek Gecikme"; cat="SOL"; icon="fa-gamepad"; }
+            
+            return { desc, title, cat, icon };
         }
 
-        // --- INFINITE TICKET ENGINE ---
-        function generateInfiniteTickets(count) {
-            for(let i=0; i<count; i++) {
-                idCounter++;
-                const tmpl = templates[Math.floor(Math.random() * templates.length)];
-                const loc = districts[Math.floor(Math.random() * districts.length)];
-                const sit = situations[Math.floor(Math.random() * situations.length)];
-                const name = fNames[Math.floor(Math.random() * fNames.length)] + " " + lNames[Math.floor(Math.random() * lNames.length)];
-                
-                // Replace Placeholders
-                let desc = tmpl.d.replace("{LOKASYON}", loc).replace("{DURUM}", sit);
-                
-                const t = {
-                    id: idCounter, cat: tmpl.c, icon: tmpl.i, title: tmpl.t, desc: desc,
-                    name: name, loc: loc, time: new Date().toLocaleTimeString(),
-                    ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
-                };
-                tickets.unshift(t);
-                if(tickets.length > 200) tickets.pop();
-            }
+        // --- GLOBAL STATE ---
+        let tickets = [];
+        let history = [];
+        let idCounter = 11000;
+        let selectedTicket = null;
+
+        // --- INIT ---
+        window.onload = () => {
+            setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString(), 1000);
+            
+            // Başlangıç verisi
+            for(let i=0; i<8; i++) addTicket();
+            
+            // Otomatik döngüler
+            setInterval(addTicket, 4000); // Yeni talep
+            setInterval(workflowLoop, 2000); // İş akışı kontrolü
+            
+            // Yan modüller
+            initSideModules();
+            
+            log("Procedural Engine Started.");
+            log("Workflow Manager Active.");
+        };
+
+        // --- TICKET SYSTEM ---
+        function addTicket() {
+            idCounter++;
+            const issue = genIssue();
+            const name = fNames[Math.floor(Math.random()*fNames.length)] + " " + lNames[Math.floor(Math.random()*lNames.length)];
+            
+            const t = {
+                id: idCounter,
+                ...issue,
+                name: name,
+                time: new Date().toLocaleTimeString(),
+                ip: `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`
+            };
+            
+            tickets.unshift(t);
+            if(tickets.length > 50) tickets.pop();
             renderList();
         }
 
         function renderList() {
-            const el = document.getElementById('ticket-list');
-            el.innerHTML = "";
-            document.getElementById('t-count').innerText = tickets.length;
+            const area = document.getElementById('list-area');
+            area.innerHTML = "";
+            document.getElementById('cnt-ticket').innerText = tickets.length;
+            
             tickets.forEach(t => {
                 const div = document.createElement('div');
-                div.className = `ticket-card ${selectedId===t.id?'selected':''}`;
-                div.onclick = () => showDetail(t);
-                div.innerHTML = `<div class="t-top"><span>#TRK-${t.id}</span><span>${t.time}</span></div><div class="t-title">${t.title}</div><div class="t-sub"><i class="fas ${t.icon}"></i> ${t.name} • ${t.loc.split('/')[0]}</div>`;
-                el.appendChild(div);
+                div.className = `ticket ${selectedTicket && selectedTicket.id === t.id ? 'selected' : ''}`;
+                div.onclick = () => selectTicket(t);
+                div.innerHTML = `
+                    <div class="t-row"><span>#TRK-${t.id}</span><span>${t.time}</span></div>
+                    <div class="t-title">${t.title}</div>
+                    <div class="t-row" style="margin-top:2px"><i class="fas ${t.icon}"></i> ${t.name} • ${t.cat}</div>
+                `;
+                area.appendChild(div);
             });
         }
 
-        function showDetail(t) {
-            selectedId = t.id; renderList();
-            const el = document.getElementById('detail-view');
-            el.innerHTML = `
-                <div class="detail-header"><div><h2 style="color:white; margin-bottom:5px;">#TRK-${t.id}</h2><div style="color:var(--text-sub); font-size:0.9rem;">${t.title}</div></div><div class="badge" style="background:var(--tc-blue); font-size:0.9rem;">${t.cat}</div></div>
-                <div class="detail-body">
-                    <div style="background:rgba(0,79,159,0.1); border-left:4px solid var(--tc-blue); padding:15px; margin-bottom:20px; color:#ddd; font-style:italic;">"${t.desc}"</div>
+        function selectTicket(t) {
+            selectedTicket = t;
+            renderList();
+            document.getElementById('det-id').innerText = "#TRK-" + t.id;
+            
+            const area = document.getElementById('detail-area');
+            area.innerHTML = `
+                <div class="detail-content">
+                    <div style="background:rgba(0,79,159,0.1); border-left:4px solid var(--tc-blue); padding:15px; margin-bottom:15px; font-style:italic; color:#ddd;">
+                        "${t.desc}"
+                    </div>
                     
-                    <div class="tools-panel">
-                        <div class="tools-title">CANLI MÜDAHALE ARAÇLARI</div>
+                    <div style="margin-bottom:15px;">
+                        <div class="lbl" style="font-weight:bold; margin-bottom:5px; color:var(--tc-yellow);">CANLI MÜDAHALE ARAÇLARI</div>
                         <div class="tools-grid">
-                            <div class="btn-tool" onclick="runTool('Bağlantı Reset')"><i class="fas fa-sync-alt"></i><span>Hat Reset</span></div>
-                            <div class="btn-tool" onclick="runTool('Port Kontrol')"><i class="fas fa-ethernet"></i><span>Port Check</span></div>
-                            <div class="btn-tool" onclick="runTool('Sinyal Güçlendir')"><i class="fas fa-signal"></i><span>Sinyal Boost</span></div>
+                            <div class="tool-btn" onclick="runTool('Hat Reset')"><i class="fas fa-sync"></i><br>Hat Reset</div>
+                            <div class="tool-btn" onclick="runTool('Port Kontrol')"><i class="fas fa-ethernet"></i><br>Port Check</div>
+                            <div class="tool-btn" onclick="runTool('Sinyal Boost')"><i class="fas fa-signal"></i><br>Sinyal Güç</div>
                         </div>
                     </div>
 
                     <div class="info-grid">
-                        <div class="info-card"><span class="lbl">Abone</span><span class="val">${t.name}</span></div>
-                        <div class="info-card"><span class="lbl">Lokasyon</span><span class="val">${t.loc}</span></div>
-                        <div class="info-card"><span class="lbl">IP Adresi</span><span class="val">${t.ip}</span></div>
-                        <div class="info-card"><span class="lbl">Sinyal</span><span class="val" style="color:var(--accent-green)">-82 dBm (Stabil)</span></div>
+                        <div class="info-box"><span class="lbl">Abone</span><span class="val">${t.name}</span></div>
+                        <div class="info-box"><span class="lbl">Kategori</span><span class="val">${t.cat}</span></div>
+                        <div class="info-box"><span class="lbl">IP Adresi</span><span class="val">${t.ip}</span></div>
+                        <div class="info-box"><span class="lbl">Sinyal</span><span class="val" style="color:var(--green)">-85 dBm (İyi)</span></div>
                     </div>
                 </div>
-                <div class="detail-footer">
-                    <button class="btn-big btn-blue" onclick="openModal()"><i class="fas fa-share-square"></i> YÖNLENDİR</button>
-                    <button class="btn-big btn-green" onclick="resolve()"><i class="fas fa-check-circle"></i> ÇÖZÜLDÜ</button>
-                </div>`;
+                <div class="actions">
+                    <button class="btn btn-blue" onclick="openModal()">YÖNLENDİR</button>
+                    <button class="btn btn-green" onclick="resolve()">ÇÖZÜLDÜ</button>
+                </div>
+            `;
         }
 
-        // --- TOOLS LOGIC ---
         function runTool(name) {
-            log(`Executing: ${name}...`);
-            setTimeout(() => log(`> ${name} Success. Status: OK`), 1000);
+            log(`Executing: ${name} on #${selectedTicket.id}...`);
+            setTimeout(() => log(`> ${name}: SUCCESS [Code: 200]`), 800);
         }
 
-        // --- ROUTING & SIMULATION ---
-        const replies = {"Saha Operasyonları":["Saha ekibi yönlendirildi.","Baz istasyonu resetlendi."], "Core Network (Tier 2)":["Profil güncellendi.","Hız kısıtı kaldırıldı."], "Hukuk Departmanı":["İnceleniyor."], "Finans / İtiraz":["İade yapıldı."]};
+        // --- WORKFLOW SYSTEM (THE FIX) ---
+        const deptReplies = {
+            "Saha Operasyonları": ["Baz istasyonu kartı değişti, sorun giderildi.", "Fiber kesiği onarıldı.", "Sinyal optimizasyonu yapıldı."],
+            "Core Network (Tier 2)": ["Hız profili güncellendi.", "IP bloğu temizlendi.", "QoS ayarları düzeltildi."],
+            "Finans / İtiraz": ["İade onaylandı.", "Fatura detayları mail atıldı."]
+        };
 
-        function openModal() { if(!selectedId)return; document.getElementById('m-text').innerText=`#TRK-${selectedId} nolu talep için işlem yapılıyor.`; document.getElementById('route-modal').style.display='flex'; }
-        function closeModal() { document.getElementById('route-modal').style.display='none'; }
+        function openModal() { if(!selectedTicket)return; document.getElementById('m-desc').innerText=`#TRK-${selectedTicket.id} nolu talep için işlem yapılıyor.`; document.getElementById('modal').style.display='flex'; }
+        function closeModal() { document.getElementById('modal').style.display='none'; }
         
         function confirmRoute() {
-            const ticket = tickets.find(t=>t.id===selectedId);
             const dept = document.getElementById('m-dept').value;
-            historyLog.unshift({id: ticket.id, dept: dept, issue: ticket.title, status: "Bekliyor", note: "-", timestamp: Date.now()});
-            updateHistoryTable(); updateHistoryBadge();
-            tickets = tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList();
-            document.getElementById('detail-view').innerHTML=`<div style="height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:var(--text-sub);"><i class="fas fa-check-circle" style="font-size:3rem; color:var(--accent-green); margin-bottom:10px;"></i><p>Yönlendirildi.</p></div>`;
-            closeModal(); log(`Routed Ticket #${ticket.id} to ${dept}`);
-        }
-
-        function simulationLoop() {
-            const pending = historyLog.filter(i => i.status === "Bekliyor" || i.status === "İşlemde");
-            if (pending.length === 0) return;
-            const item = pending[Math.floor(Math.random() * pending.length)];
-            if(item.status === "Bekliyor") { item.status = "İşlemde"; }
-            else if (item.status === "İşlemde") {
-                item.status = "Yanıtlandı";
-                const reps = replies[item.dept] || ["İşlem tamam."];
-                item.note = reps[Math.floor(Math.random() * reps.length)];
-                showToast(item.dept, item.id);
-            }
-            updateHistoryTable();
-        }
-
-        function updateHistoryTable() {
-            const tb = document.getElementById('hist-body'); tb.innerHTML = "";
-            historyLog.forEach((h, idx) => {
-                let badge = h.status==="Bekliyor"?"tag-wait":(h.status==="İşlemde"?"tag-proc":"tag-done");
-                let btn = h.status==="Yanıtlandı" ? `<button onclick="archive(${idx})" style="padding:4px 8px; background:var(--tc-blue); border:none; color:white; border-radius:4px; cursor:pointer;">Tamamla</button>` : (h.status==="Arşivlendi" ? '<i class="fas fa-check"></i>' : '<i class="fas fa-clock"></i>');
-                if(h.status==="Arşivlendi") badge="tag-vip";
-                tb.innerHTML += `<tr><td>#${h.id}</td><td>${h.dept}</td><td>${h.issue}</td><td><span class="tag ${badge}">${h.status}</span></td><td style="color:${h.status==='Yanıtlandı'?'var(--accent-green)':'#777'}">${h.note}</td><td>${btn}</td></tr>`;
+            // Add to history with timestamp
+            history.unshift({
+                id: selectedTicket.id,
+                dept: dept,
+                issue: selectedTicket.title,
+                status: "İşlemde", // Start as processing
+                note: "-",
+                reqTime: Date.now() // Track time
             });
+            
+            log(`Ticket #${selectedTicket.id} routed to ${dept}`);
+            
+            // Remove from main list
+            tickets = tickets.filter(t => t.id !== selectedTicket.id);
+            selectedTicket = null;
+            renderList();
+            document.getElementById('detail-area').innerHTML = `<div style="flex:1; display:flex; align-items:center; justify-content:center; color:var(--green); flex-direction:column;"><i class="fas fa-check-circle" style="font-size:3rem; margin-bottom:10px;"></i><p>Yönlendirildi</p></div>`;
+            closeModal();
+            updateHistory();
         }
 
-        function archive(i) { historyLog[i].status="Arşivlendi"; updateHistoryTable(); updateHistoryBadge(); }
-        function updateHistoryBadge() { const c = historyLog.filter(h=>h.status!=="Arşivlendi").length; const b=document.getElementById('badge-hist'); b.innerText=c; b.style.display=c>0?'inline-block':'none'; }
-        function showToast(d, id) { const c=document.getElementById('toast-area'); const el=document.createElement('div'); el.className="toast"; el.innerHTML=`<div class="toast-icon"><i class="fas fa-bell"></i></div><div><strong>${d}</strong><br>#TRK-${id} yanıtladı.</div>`; c.appendChild(el); setTimeout(()=>el.classList.add('show'),100); setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.remove(),300)},5000); }
+        // --- THE HEARTBEAT (WORKFLOW LOOP) ---
+        function workflowLoop() {
+            const now = Date.now();
+            let updated = false;
+
+            history.forEach(h => {
+                // 8 saniye sonra otomatik yanıtla
+                if (h.status === "İşlemde" && (now - h.reqTime > 8000)) {
+                    h.status = "Yanıtlandı";
+                    const replies = deptReplies[h.dept] || ["İşlem tamamlandı."];
+                    h.note = replies[Math.floor(Math.random() * replies.length)];
+                    
+                    showToast(h.dept, h.id);
+                    updated = true;
+                }
+            });
+
+            if(updated) updateHistory();
+        }
+
+        function updateHistory() {
+            const tb = document.querySelector('#hist-table tbody');
+            tb.innerHTML = "";
+            let pendingCount = 0;
+
+            history.forEach((h, idx) => {
+                if(h.status !== "Tamamlandı") pendingCount++;
+                
+                let badge = "";
+                if(h.status === "İşlemde") badge = "st-proc";
+                else if(h.status === "Yanıtlandı") badge = "st-done";
+                else badge = "st-wait";
+
+                let action = "";
+                if(h.status === "Yanıtlandı") {
+                    action = `<button onclick="archive(${idx})" style="padding:4px 8px; background:var(--tc-blue); border:none; border-radius:4px; color:white; cursor:pointer;">Arşivle</button>`;
+                } else if (h.status === "Tamamlandı") {
+                    action = `<i class="fas fa-check" style="color:#555"></i>`;
+                } else {
+                    action = `<i class="fas fa-clock" style="color:#555"></i>`;
+                }
+
+                const row = `<tr>
+                    <td>#${h.id}</td>
+                    <td>${h.dept}</td>
+                    <td>${h.issue}</td>
+                    <td><span class="status ${badge}">${h.status}</span></td>
+                    <td style="color:${h.status==='Yanıtlandı'?'var(--green)':'#777'}">${h.note}</td>
+                    <td>${action}</td>
+                </tr>`;
+                tb.innerHTML += row;
+            });
+            
+            const badgeEl = document.getElementById('badge-hist');
+            badgeEl.innerText = pendingCount;
+            badgeEl.style.display = pendingCount > 0 ? 'inline-block' : 'none';
+        }
+
+        function archive(idx) {
+            history[idx].status = "Tamamlandı";
+            updateHistory();
+        }
+
+        function resolve() {
+            if(!selectedTicket) return;
+            alert('Kayıt kapatıldı.');
+            tickets = tickets.filter(t => t.id !== selectedTicket.id);
+            selectedTicket = null;
+            renderList();
+            document.getElementById('detail-area').innerHTML = "";
+        }
 
         // --- SORGU ---
-        function searchUser() {
-            const val = document.getElementById('gsm-inp').value.replace(/\s/g,'');
-            const res = document.getElementById('search-res'); res.style.display='none';
-            if(val.length < 5) { alert('Numara giriniz'); return; }
-            let data = {};
-            if(val === "5354653384") { data = { n:"MEHMET DUGAN", t:"254********", d:"Redmi 14C", l:"İstanbul Kartal Soğanlık Yeni Mh. Eraykent Cd.", s:true }; }
-            else { data = { n:fNames[0]+" "+lNames[0], t:Math.floor(Math.random()*99999999999), d:"Samsung S22", l:locs[0], s:false }; }
+        function doSearch() {
+            const val = document.getElementById('src-inp').value.replace(/\s/g,'');
+            const res = document.getElementById('src-res');
+            res.style.display = 'none';
+            
+            if(val.length < 5) return alert("Numara giriniz");
+            
+            let d = {};
+            if(val === "5354653384") {
+                d = { n:"MEHMET DUGAN", t:"254********", dev:"Redmi 14C", loc:"İstanbul Kartal Soğanlık Yeni Mh. Eraykent Cd.", isTarget:true };
+            } else {
+                d = { n: fNames[0]+" "+lNames[0], t:Math.floor(Math.random()*9e10), dev:"Samsung A54", loc:"İstanbul / Şişli", isTarget:false };
+            }
+            
             setTimeout(() => {
                 res.style.display = 'block';
-                res.innerHTML = `<div style="padding:25px; border-bottom:1px solid var(--border); display:flex; gap:20px; align-items:center;"><div style="width:80px; height:80px; border-radius:50%; background:#222; border:2px solid ${data.s?'var(--accent-red)':'var(--border)'}; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:#666;"><i class="fas fa-user-circle"></i></div><div><h2 style="color:white; margin-bottom:5px;">${data.n}</h2><div style="color:var(--tc-yellow); font-family:'Consolas'; font-size:1.2rem;">${val}</div>${data.s?'<span style="background:var(--accent-red); color:white; padding:2px 8px; font-size:0.7rem; border-radius:4px;">HEDEF</span>':''}</div></div><div class="info-grid" style="padding:25px;"><div class="info-card"><span class="lbl">TCKN</span><span class="val">${data.t}</span></div><div class="info-card"><span class="lbl">Cihaz</span><span class="val">${data.d}</span></div><div class="info-card" style="grid-column:span 2; border:1px solid ${data.s?'var(--accent-red)':'var(--border)'}"><span class="lbl">Adres / Konum</span><span class="val" style="color:${data.s?'var(--accent-red)':'white'}">${data.l}</span></div></div>`;
-            }, 1000);
+                res.innerHTML = `
+                    ${d.isTarget ? '<div class="target-badge">HEDEF TESPİT EDİLDİ</div>' : ''}
+                    <div style="display:flex; gap:15px; align-items:center; border-bottom:1px solid var(--border); padding-bottom:15px;">
+                        <div style="font-size:3rem; color:#555;"><i class="fas fa-user-circle"></i></div>
+                        <div>
+                            <h2 style="color:white; margin-bottom:5px;">${d.n}</h2>
+                            <div style="font-family:'Consolas'; color:var(--tc-yellow); font-size:1.2rem;">${val}</div>
+                        </div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-box"><span class="lbl">TCKN</span><span class="val">${d.t}</span></div>
+                        <div class="info-box"><span class="lbl">Cihaz</span><span class="val">${d.dev}</span></div>
+                        <div class="info-box" style="grid-column:span 2; border-color:${d.isTarget?'var(--red)':'var(--border)'}"><span class="lbl">Adres</span><span class="val" style="color:${d.isTarget?'var(--red)':'white'}">${d.loc}</span></div>
+                    </div>
+                `;
+            }, 800);
         }
 
-        // --- SIDE MODULES ---
-        function genVIP() { const t=document.getElementById('vip-body'); for(let i=0;i<15;i++) t.innerHTML+=`<tr><td>${100+i}</td><td>${fNames[i]} ${lNames[i]}</td><td>Platinum Black 100GB</td><td>${(Math.random()*3000).toFixed(2)} TL</td><td><span class="tag tag-vip">VIP</span></td></tr>`; }
-        function genBase() { const t=document.getElementById('base-body'); for(let i=0;i<8;i++) t.innerHTML+=`<tr><td>IST-${900+i}</td><td>${locs[i%locs.length].split('/')[0]}</td><td>4.5G Macro</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="tag tag-ok">OK</span></td></tr>`; }
-        function genSecurity() { const t=document.getElementById('sec-body'); setInterval(()=>{ const ip=`192.168.1.${Math.floor(Math.random()*255)}`; t.innerHTML=`<tr><td>${new Date().toLocaleTimeString()}</td><td>${ip}</td><td>Core-SW</td><td>DDoS Attempt</td><td><span class="tag tag-warn">BLOCKED</span></td></tr>`+t.innerHTML; if(t.children.length>10)t.removeChild(t.lastChild); }, 3000); }
-        function genServers() { const g=document.getElementById('server-grid'); for(let i=1;i<=12;i++) g.innerHTML+=`<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:4px;"><div style="color:var(--text-sub); font-size:0.8rem;">NODE-${i}</div><div style="height:4px; background:#333; margin-top:5px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%;"></div></div></div>`; }
-        function startFinanceStream() { const f=document.getElementById('finance-log'); setInterval(()=>{ f.innerHTML+=`> Payment Received: ${Math.floor(Math.random()*500)} TL - 53${Math.floor(Math.random()*9)}...<br>`; f.scrollTop=f.scrollHeight; }, 1500); }
-        function initFiberMap() { const m=document.getElementById('fiber-map'); for(let i=0;i<20;i++) m.innerHTML+=`<div style="position:absolute; width:6px; height:6px; background:cyan; border-radius:50%; box-shadow:0 0 5px cyan; top:${Math.random()*90}%; left:${Math.random()*90}%;"></div>`; }
-        function log(msg) { const t=document.getElementById('terminal'); t.innerHTML+=`> ${msg}<br>`; t.scrollTop=t.scrollHeight; }
-        function resolve() { if(!selectedId)return; alert('Talep Çözüldü olarak kapatıldı.'); tickets=tickets.filter(t=>t.id!==selectedId); selectedId=null; renderList(); document.getElementById('detail-view').innerHTML=""; }
+        // --- UTILS ---
+        function nav(id, el) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.m-item').forEach(m => m.classList.remove('active'));
+            el.classList.add('active');
+            const titles = {'dash':'Canlı Arıza', 'history':'Geçmiş', 'sorgu':'İstihbarat', 'vip':'VIP', 'corp':'Kurumsal', 'server':'Sunucu', 'fiber':'Fiber', 'base':'Kuleler', 'hr':'İK', 'finance':'Finans', 'security':'Güvenlik'};
+            document.getElementById('pg-title').innerHTML = `<i class="fas fa-th-large"></i> ${titles[id]}`;
+        }
+        
+        function log(m) { const t=document.getElementById('term'); t.innerHTML+=`<div class="log-entry">> ${m}</div>`; t.scrollTop=t.scrollHeight; }
+        function showToast(dept, id) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').innerHTML = `<strong>${dept}</strong><br>#TRK-${id} talebini yanıtladı.`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 5000);
+        }
+
+        // --- SIDE MODULES INIT ---
+        function initSideModules() {
+            // VIP
+            const vt = document.querySelector('#vip-table tbody');
+            for(let i=0;i<10;i++) vt.innerHTML += `<tr><td>${100+i}</td><td>${fNames[i]} ${lNames[i]}</td><td>Platinum 100GB</td><td>${(Math.random()*5000).toFixed(2)} TL</td><td><span class="status st-done">VIP</span></td></tr>`;
+            
+            // Server
+            const sg = document.getElementById('srv-grid');
+            for(let i=1;i<=12;i++) sg.innerHTML += `<div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:5px;"><div style="color:#777; font-size:0.8rem">NODE-${i}</div><div style="height:5px; background:#333; margin-top:5px;"><div style="width:${Math.random()*100}%; background:var(--tc-blue); height:100%"></div></div></div>`;
+
+            // Security
+            const st = document.querySelector('#sec-table tbody');
+            setInterval(() => {
+                const r = `<tr><td>${new Date().toLocaleTimeString()}</td><td>192.168.1.${Math.floor(Math.random()*255)}</td><td style="color:var(--red)">DDoS Blocked</td></tr>`;
+                st.innerHTML = r + st.innerHTML;
+                if(st.children.length > 8) st.removeChild(st.lastChild);
+            }, 2500);
+
+            // Fiber Map
+            const fm = document.getElementById('map-area');
+            for(let i=0;i<20;i++) fm.innerHTML += `<div style="position:absolute; top:${Math.random()*90}%; left:${Math.random()*90}%; width:6px; height:6px; background:cyan; border-radius:50%; box-shadow:0 0 5px cyan;"></div>`;
+
+            // Base Stations
+            const bt = document.querySelector('#base-table tbody');
+            for(let i=0;i<8;i++) bt.innerHTML += `<tr><td>IST-${900+i}</td><td>${locations[i]}</td><td>%${Math.floor(Math.random()*90)}</td><td><span class="status st-done">OK</span></td></tr>`;
+            
+            // Finance
+            const fl = document.getElementById('fin-log');
+            setInterval(() => { fl.innerHTML += `> Payment: ${Math.floor(Math.random()*1000)} TL received.<br>`; fl.scrollTop=fl.scrollHeight; }, 1500);
+        }
+
     </script>
 </body>
 </html>
